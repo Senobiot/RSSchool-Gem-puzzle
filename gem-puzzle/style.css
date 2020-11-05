@@ -68,6 +68,7 @@ h1, h2, h3, h4, h5, h6 {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  background: #cacaca;
   -webkit-tap-highlight-color: transparent; }
 
 .grid {
@@ -82,7 +83,7 @@ h1, h2, h3, h4, h5, h6 {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background-color: #cacaca;
+  background-color: #A2839E;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
@@ -100,4 +101,5 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.5s; }
 
 .empty {
-  font-size: 0; }
+  font-size: 0;
+  background: transparent; }
