@@ -1,5 +1,6 @@
 //import {puzzle} from './puzzle.js';
 //document.addEventListener("DOMContentLoaded", )
+
 let difficult = 3,
 	form = document.querySelector(".choice"),
 	start = document.querySelector(".button");
@@ -18,11 +19,6 @@ let difficult = 3,
 		}, 200)
 	})
 
-
-
-
-
-
 function startGame () {
  	Puzzle.init(difficult*difficult)
 let puzzleCss = document.querySelector(".puzzle"),
@@ -32,7 +28,10 @@ let puzzleCss = document.querySelector(".puzzle"),
 	gems = Array.from(document.querySelectorAll(".gem")),
 	gemsCurrentPosCheck,
 	gemsNativePos = "",
-	animation = false;
+	anDuration = 200,
+	tanslate = 95,
+	animation = false,
+	counter = 0;
 
 function gemsNative() {
 	for (var i = 1; i <= difficult*difficult ; i++) {
@@ -52,7 +51,10 @@ function checkWin() {
 	animation = false;
 	gems = Array.from(document.querySelectorAll(".gem"))
 	gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
-	if (gemsCurrentPosCheck === gemsNativePos) alert("Your   WIN!!!!");			
+	if (gemsCurrentPosCheck === gemsNativePos) {
+		setTimeout(() => {
+			alert("Your   WIN!!!!")}, 100)
+	};			
 }
 
 	for (let i = 0; i < gems.length; i++) {
@@ -66,82 +68,82 @@ function checkWin() {
 					console.log("!!!!")
 					animation = true;
 					this.animate([
-					  { transform: 'translate(-95px)' }, 
+					  { transform: `translate(-${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					empty.animate([
-					  { transform: 'translate(95px)' }, 
+					  { transform: `translate(${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 					setTimeout(() => {
 					 this.parentNode.insertBefore(this, empty);
 					 checkWin();
-					 }, 205);					
+					 }, anDuration);					
 				
 				}
 				else if(this.nextElementSibling === empty && !animation) {
 					animation = true;
 					this.animate([
-					  { transform: 'translate(95px)' }, 
+					  { transform: `translate(${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					empty.animate([
-					  { transform: 'translate(-95px)' }, 
+					  { transform: `translate(-${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					setTimeout(() => {
 					empty.parentNode.insertBefore(empty, this);
 					checkWin()
-					}, 205);		
+					}, anDuration);		
 					
 				}
 				else if (gems.indexOf(this) + difficult === emptyPos && !animation){
 					animation = true;
 					this.animate([
-					  { transform: 'translate(0, 95px)' }, 
+					  { transform: `translateY(${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					empty.animate([
-					  { transform: 'translate(0, -95px)' }, 
+					  { transform: `translateY(${tanslate})` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					setTimeout(() => {
 						this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
 						checkWin()
-						}, 205);
+						}, anDuration);
 						
 				}
 				else if (gems.indexOf(this) - difficult === emptyPos && !animation){
 					animation = true;
 					this.animate([
-					  { transform: 'translate(0, -95px)' }, 
+					  { transform: `translateY(-${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					empty.animate([
-					  { transform: 'translate(0, 95px)' }, 
+					  { transform: `translateY(${tanslate}px)` }, 
 					], {
-					  duration: 200,
+					  duration: anDuration,
 					})
 
 					setTimeout(() => {
 						this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);	
 						checkWin();
-						}, 205);
+						}, anDuration);
 				};		
 			 })
 		}
