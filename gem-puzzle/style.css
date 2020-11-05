@@ -63,7 +63,12 @@ h1, h2, h3, h4, h5, h6 {
   height: 500px;
   border: 1px solid #000;
   margin: 0 auto;
-  margin-top: 100px; }
+  margin-top: 100px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-tap-highlight-color: transparent; }
 
 .grid {
   display: grid;
@@ -88,7 +93,11 @@ h1, h2, h3, h4, h5, h6 {
           align-items: center;
   font-size: 26px;
   font-family: Arial;
-  font-weight: 700; }
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s; }
 
 .empty {
   font-size: 0; }

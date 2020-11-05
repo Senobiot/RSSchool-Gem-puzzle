@@ -6,6 +6,8 @@
 	border: 1px solid #000;
 	margin: 0 auto;
 	margin-top: 100px;
+	user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .grid {
 	display: grid;
@@ -23,6 +25,8 @@
 	font-size: 26px;
 	font-family: Arial;
 	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.5s;
 }
 .empty {
 	font-size: 0;

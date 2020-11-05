@@ -7,11 +7,12 @@ const Puzzle = {
 
    properties: {
     unknown1: false,
-    unknown2: false
+    unknown2: false,
+    arrRandomNum: []
   },
 
    init(num) {
-    
+    this._getRand(num)
     this.elements.puzzle = document.createElement("div");
     this.elements.grid = document.createElement("div");
     
@@ -23,23 +24,35 @@ const Puzzle = {
     
     this.elements.puzzle.appendChild(this.elements.grid);
     document.body.appendChild(this.elements.puzzle);
-    //gems = Array.from(this.elements.buttons);
   },
+
+
+ 	_getRandomIntInclusive(min, max) {
+  		return Math.floor(Math.random() * (max - min + 1)) + min; 
+	},
+
+ 	_getRand (qty) {
+		if (this.properties.arrRandomNum.length < qty) {
+			let number = this._getRandomIntInclusive(1, 16);
+			if (this.properties.arrRandomNum.includes(number)) {
+				this._getRand(qty)
+			} else {
+				this.properties.arrRandomNum.push(number);
+				this._getRand(qty)}
+		} else { return }
+	},
 
 
 	  _createGems(num) {
 	  	const fragment = document.createDocumentFragment();
 
-	  	const gemLayout = [];
-		  	for (let i = 1; i <= num; i++) {
-		  		gemLayout.push(i)
-		  	}
-		  	gemLayout.forEach(item => {
+
+		  	this.properties.arrRandomNum.forEach(item => {
 		  		const gemElement = document.createElement("div");
 		  		gemElement.classList.add("gem");
-		  		if (item !== gemLayout.length) gemElement.textContent = item;
+		  		if (item !== this.properties.arrRandomNum.length) gemElement.textContent = item;
 		  		else {gemElement.classList.add("empty");
-		  		gemElement.textContent = "+"
+		  		gemElement.textContent = item
 		  	}
 		  		
 
@@ -62,29 +75,95 @@ let empty = document.querySelector(".empty");
 let emptyPos;
 let gems = Array.from(document.querySelectorAll(".gem"));
 let gemsCurrentPosCheck;
-let gemsNativePos = "123456789101112131415+"
+let gemsNativePos = "12345678910111213141516"
 let win = 16;
 for (let i = 0; i < gems.length; i++) {
 	
 	if (this !== empty) {
 		gems[i].addEventListener('click', function () {
 			emptyPos = gems.indexOf(empty)
-			if (this.previousElementSibling === empty) {
-				this.parentNode.insertBefore(this, empty)
 
+			if (this.previousElementSibling === empty) {
+				// let cache = this;
+				// cache.animate([
+				//   { transform: 'translate(-125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+				// empty.animate([
+				//   { transform: 'translate(125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+
+					this.parentNode.insertBefore(this, empty)
+
+				
 			}
 			else if(this.nextElementSibling === empty) {
-				empty.parentNode.insertBefore(empty, this)
+				// let cache = this;
+				// cache.animate([
+				//   { transform: 'translate(125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+				// empty.animate([
+				//   { transform: 'translate(-125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+					empty.parentNode.insertBefore(empty, this)
+
+
+
 				
 			}
 			else if (gems.indexOf(this) + 4 === emptyPos){
-				this.parentNode.insertBefore(empty, gems[emptyPos - 4])
-				this.parentNode.insertBefore(this, gems[emptyPos + 1])	
+				// let cache = this;
+				// this.parentNode.insertBefore(empty, gems[emptyPos - 4])
+				// this.parentNode.insertBefore(this, gems[emptyPos + 1])	
+				// console.log(cache)
+				// cache.animate([
+				//   { transform: 'translateY(125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+				// empty.animate([
+				//   { transform: 'translateY(-125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+
+					this.parentNode.insertBefore(empty, gems[emptyPos - 4])
+					this.parentNode.insertBefore(this, gems[emptyPos + 1])	
 				
 			}
 			else if (gems.indexOf(this) - 4 === emptyPos){
-				this.parentNode.insertBefore(empty, gems[emptyPos + 4])
-				this.parentNode.insertBefore(this, gems[emptyPos + 1])	
+				let cache = this;
+				// this.parentNode.insertBefore(empty, gems[emptyPos + 4])
+				// this.parentNode.insertBefore(this, gems[emptyPos + 1])	
+				console.log(cache)
+
+				// cache.animate([
+				//   { transform: 'translateY(-125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+				// empty.animate([
+				//   { transform: 'translateY(125px)' }, 
+				// ], {
+				//   duration: 200,
+				// })
+
+					this.parentNode.insertBefore(empty, gems[emptyPos + 4])
+					this.parentNode.insertBefore(this, gems[emptyPos + 1])	
 				
 			};
 
