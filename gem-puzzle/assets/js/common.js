@@ -77,8 +77,14 @@ let emptyPos;
 let gems = Array.from(document.querySelectorAll(".gem"));
 let gemsCurrentPosCheck;
 let gemsNativePos = "12345678910111213141516"
-let win = 16;
 let animation = false;
+
+function checkWin() {
+	animation = false;
+	gems = Array.from(document.querySelectorAll(".gem"))
+	gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
+	if (gemsCurrentPosCheck === gemsNativePos) alert("Your   WIN!!!!");			
+}
 
 for (let i = 0; i < gems.length; i++) {
 	
@@ -86,7 +92,6 @@ for (let i = 0; i < gems.length; i++) {
 		gems[i].addEventListener('click', function () {
 
 			empty = document.querySelector(".empty")
-			gems = Array.from(document.querySelectorAll(".gem"))
 			emptyPos = gems.indexOf(empty);
 			if (this.previousElementSibling === empty && !animation) {
 				animation = true;
@@ -103,7 +108,7 @@ for (let i = 0; i < gems.length; i++) {
 				})
 				setTimeout(() => {
 				 this.parentNode.insertBefore(this, empty);
-				 animation = false;
+				 checkWin();
 				 }, 200);					
 
 				
@@ -124,7 +129,7 @@ for (let i = 0; i < gems.length; i++) {
 
 				setTimeout(() => {
 				empty.parentNode.insertBefore(empty, this);
-				animation = false;
+				checkWin()
 				}, 200);		
 
 
@@ -144,10 +149,11 @@ for (let i = 0; i < gems.length; i++) {
 				  duration: 200,
 				})
 
-				setTimeout(() => { this.parentNode.insertBefore(empty, gems[emptyPos - 4]);
-									this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-									animation = false;
-								}, 205);
+				setTimeout(() => {
+					this.parentNode.insertBefore(empty, gems[emptyPos - 4]);
+					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+					checkWin()
+					}, 200);
 
 						
 			}
@@ -165,20 +171,12 @@ for (let i = 0; i < gems.length; i++) {
 				  duration: 200,
 				})
 
-					setTimeout(() => { this.parentNode.insertBefore(empty, gems[emptyPos + 4]);
-										this.parentNode.insertBefore(this, gems[emptyPos + 1]);	
-										animation = false;
-								}, 205);
-
-			
-			};
-
-			//gems = Array.from(document.querySelectorAll(".gem"))
-			gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
-			setTimeout(function(){
-				if (gemsCurrentPosCheck === gemsNativePos) alert("Your   WIN!!!!")
-			}, 200)
-			
+				setTimeout(() => {
+					this.parentNode.insertBefore(empty, gems[emptyPos + 4]);
+					this.parentNode.insertBefore(this, gems[emptyPos + 1]);	
+					checkWin();
+					}, 200);
+			};		
 		 })
 	}
 }
