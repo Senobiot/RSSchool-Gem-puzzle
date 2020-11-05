@@ -78,18 +78,18 @@ let gems = Array.from(document.querySelectorAll(".gem"));
 let gemsCurrentPosCheck;
 let gemsNativePos = "12345678910111213141516"
 let win = 16;
+let animation = false;
 
 for (let i = 0; i < gems.length; i++) {
 	
 	if (gems[i] !== empty) {
 		gems[i].addEventListener('click', function () {
+
 			empty = document.querySelector(".empty")
-			console.log(empty)
 			gems = Array.from(document.querySelectorAll(".gem"))
 			emptyPos = gems.indexOf(empty);
-			console.log(emptyPos)
-			if (this.previousElementSibling === empty) {
-
+			if (this.previousElementSibling === empty && !animation) {
+				animation = true;
 				this.animate([
 				  { transform: 'translate(-125px)' }, 
 				], {
@@ -101,12 +101,15 @@ for (let i = 0; i < gems.length; i++) {
 				], {
 				  duration: 200,
 				})
-				setTimeout(() => { this.parentNode.insertBefore(this, empty) }, 200);					
+				setTimeout(() => {
+				 this.parentNode.insertBefore(this, empty);
+				 animation = false;
+				 }, 200);					
 
 				
 			}
-			else if(this.nextElementSibling === empty) {
-
+			else if(this.nextElementSibling === empty && !animation) {
+				animation = true;
 				this.animate([
 				  { transform: 'translate(125px)' }, 
 				], {
@@ -119,13 +122,16 @@ for (let i = 0; i < gems.length; i++) {
 				  duration: 200,
 				})
 
-				setTimeout(() => { empty.parentNode.insertBefore(empty, this) }, 200);		
+				setTimeout(() => {
+				empty.parentNode.insertBefore(empty, this);
+				animation = false;
+				}, 200);		
 
 
 				
 			}
-			else if (gems.indexOf(this) + 4 === emptyPos){
-
+			else if (gems.indexOf(this) + 4 === emptyPos && !animation){
+				animation = true;
 				this.animate([
 				  { transform: 'translate(0, 125px)' }, 
 				], {
@@ -140,12 +146,13 @@ for (let i = 0; i < gems.length; i++) {
 
 				setTimeout(() => { this.parentNode.insertBefore(empty, gems[emptyPos - 4]);
 									this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-								}, 200);
+									animation = false;
+								}, 205);
 
 						
 			}
-			else if (gems.indexOf(this) - 4 === emptyPos){
-
+			else if (gems.indexOf(this) - 4 === emptyPos && !animation){
+				animation = true;
 				this.animate([
 				  { transform: 'translate(0, -125px)' }, 
 				], {
@@ -160,12 +167,13 @@ for (let i = 0; i < gems.length; i++) {
 
 					setTimeout(() => { this.parentNode.insertBefore(empty, gems[emptyPos + 4]);
 										this.parentNode.insertBefore(this, gems[emptyPos + 1]);	
-								}, 200);
+										animation = false;
+								}, 205);
 
 			
 			};
 
-			gems = Array.from(document.querySelectorAll(".gem"))
+			//gems = Array.from(document.querySelectorAll(".gem"))
 			gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
 			setTimeout(function(){
 				if (gemsCurrentPosCheck === gemsNativePos) alert("Your   WIN!!!!")

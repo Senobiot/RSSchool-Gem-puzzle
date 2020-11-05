@@ -68,8 +68,9 @@ h1, h2, h3, h4, h5, h6 {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  background: #cacaca;
-  -webkit-tap-highlight-color: transparent; }
+  background: #A2839E;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden; }
 
 .grid {
   display: grid;
@@ -96,10 +97,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Arial;
   font-weight: 700;
   cursor: pointer;
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s; }
+  -webkit-box-shadow: inset rgba(0, 0, 0, 0.5) -3px -3px 8px, inset rgba(255, 255, 255, 0.9) 3px 3px 8px, rgba(0, 0, 0, 0.8) 3px 3px 8px -3px;
+          box-shadow: inset rgba(0, 0, 0, 0.5) -3px -3px 8px, inset rgba(255, 255, 255, 0.9) 3px 3px 8px, rgba(0, 0, 0, 0.8) 3px 3px 8px -3px; }
 
 .empty {
   font-size: 0;
-  background: transparent; }
+  opacity: 0; }
