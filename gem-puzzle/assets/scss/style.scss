@@ -1,6 +1,48 @@
 @import "fonts.scss";
 @import "../css/reset";
 
+body {
+	padding-top: 100px;
+	position: relative;
+}
+
+body.block {
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100vh;
+		z-index: 5;
+		overflow: hidden;
+		background-color: rgba(120,80,115,0.6);
+	}
+}
+
+.win_popup {
+	position: absolute;
+	width: 30%;
+	height: 30%;
+	z-index: 6;
+	background-color: rgba(120,80,115, 1);
+	color: #fff;
+	font-size: 20px;
+	font-family: Arial, serif;
+	line-height: 2;
+	padding: 10px;
+	top: 35%;
+	left: 35%;
+	border-radius: 5px;
+	box-shadow: rgba(0,0,0,.8) 3px 3px 8px -3px;
+	display: none;
+	transform: scale(0);
+	transition: all 0.3s;
+	&.active {
+		display: block;
+		transform: scale(1);
+	}
+}
+
 .choice {
 	padding-top: 200px;
 	width: 300px;
@@ -16,23 +58,18 @@
 	} 
 }
 .puzzle {
-	// width: 300px;
-	// height: 300px;
-	border: 1px solid #000;
+	overflow: hidden;
+	position: relative;
 	margin: 0 auto;
-	margin-top: 100px;
 	user-select: none;
 	background: #A2839E;
 	-webkit-tap-highlight-color: transparent;
-	 overflow: hidden;
-}
-.grid {
 	display: grid;
-	// grid-template-columns: repeat(3, 1fr);
 	grid-auto-rows: 95px;
 	grid-row-gap: 5px;
 	grid-column-gap: 5px;
-
+	box-shadow:
+	rgba(0,0,0,.8) 3px 3px 8px -3px;
 }
 .gem {
 	display: flex;
@@ -43,13 +80,47 @@
 	font-family: Arial;
 	font-weight: 700;
 	cursor: pointer;
-	 box-shadow:
-   inset rgba(0,0,0,.5) -3px -3px 8px,
-   inset rgba(255,255,255,.9) 3px 3px 8px,
-   rgba(0,0,0,.8) 3px 3px 8px -3px;
+	box-shadow:
+	inset rgba(0,0,0,.5) -3px -3px 8px,
+	inset rgba(255,255,255,.9) 3px 3px 8px,
+	rgba(0,0,0,.8) 3px 3px 8px -3px;
 }
 .empty {
 	font-size: 0;
-	opacity: 0;
+	visibility: hidden;
+	box-shadow:
+	inset rgba(0,0,0,.5) -3px -3px 8px,
+	inset rgba(255,255,255,.9) 3px 3px 8px,
+	rgba(0,0,0,.8) 3px 3px 8px -3px;
 
+}
+.statistic {
+	position: absolute;
+	width: 40%;
+	height: 50px;
+	background-color: #cacaca;
+	top: 10px;
+	left: 30%;
+	display: flex;
+	font-size: 16px;	
+	font-weight: 700;
+	font-family: Arial, serif;
+	.timer, .moves {
+		border: 1px solid #000;
+		width: 50%;
+		position: relative;
+		text-align: right;
+		padding-right: 10px;
+		font-size: 1.2em;
+		padding-top: 0.6em;	
+		&:before {
+			content: 'Сделано ходов:';
+			position: absolute;
+			left: 1em;
+			top: calc(50% - 0.6em);
+		}
+	}
+	.timer:before {
+		content: 'Время:';
+	}
 }

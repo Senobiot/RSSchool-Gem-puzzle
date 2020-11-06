@@ -2,29 +2,38 @@
 const Puzzle = {
   elements: {
     puzzle: null,
-    grid: null,
+    statistic: null,
+    moves: null,
+    timer: null,
     gems: []
   },
 
    properties: {
-    unknown1: false,
-    unknown2: false,
+    time: 0,
     arrRandomNum: []
   },
 
    init(num) {
     this._getRand(num)
     this.elements.puzzle = document.createElement("div");
-    this.elements.grid = document.createElement("div");
-    
+    this.elements.statistic = document.createElement("div");
+    this.elements.moves = document.createElement("div");
+    this.elements.timer = document.createElement("div");
+
     this.elements.puzzle.classList.add("puzzle");
-    this.elements.grid.classList.add("grid");
-   
-    this.elements.grid.appendChild(this._createGems(num));
-    this.elements.gems = this.elements.grid.querySelectorAll(".gem");
+    this.elements.statistic.classList.add("statistic");
+    this.elements.moves.classList.add("moves");
+    this.elements.moves.innertText = '0';
+    this.elements.timer.classList.add("timer");
+
+    this.elements.puzzle.appendChild(this._createGems(num));
+	this.elements.statistic.appendChild(this.elements.moves);
+	this.elements.statistic.appendChild(this.elements.timer);
+    this.elements.gems = this.elements.puzzle.querySelectorAll(".gem");
     
-    this.elements.puzzle.appendChild(this.elements.grid);
     document.body.appendChild(this.elements.puzzle);
+    document.body.appendChild(this.elements.statistic);
+
   },
 
 
@@ -52,7 +61,7 @@ const Puzzle = {
 		  		gemElement.classList.add("gem");
 		  		if (item !== this.properties.arrRandomNum.length) gemElement.textContent = item;
 		  		else {gemElement.classList.add("empty");
-		  		gemElement.textContent = item
+		  		gemElement.textContent = item;
 		  	}
 		  		
 		  	fragment.appendChild(gemElement);
