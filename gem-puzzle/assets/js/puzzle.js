@@ -14,7 +14,7 @@ const Puzzle = {
   },
 
    init(num) {
-    this._getRand(num)
+    this._getRand(num);
     this.elements.puzzle = document.createElement("div");
     this.elements.statistic = document.createElement("div");
     this.elements.moves = document.createElement("div");
@@ -49,7 +49,28 @@ const Puzzle = {
 			} else {
 				this.properties.arrRandomNum.push(number);
 				this._getRand(num)}
-		} else { return }
+		} else { this._solutionCheck(num) }
+	},
+
+	_solutionCheck (num) {
+		let checkNum = 0,
+		array = this.properties.arrRandomNum;
+		for (let i = 0; i < array.length; i++) {
+			if (array[i] !== array.length) {
+				for (let j = i; j < array.length; j++) {
+			 		if (array[j+1] < array[i] ) checkNum++;
+				 }
+			} 
+		}
+		let empty = array.indexOf(array.length);
+		let emptyOrder = Math.ceil((empty + 1) / Math.sqrt(array.length))
+		checkNum += emptyOrder;
+		if (checkNum % 2 === 0 && array.length % 2 === 0) {console.log("ok")}
+		else if (checkNum % 2 !== 0 && array.length % 2 !== 0) {console.log("ok")}
+		else {
+			this.properties.arrRandomNum = [];
+			this._getRand(num);
+		}
 	},
 
 
