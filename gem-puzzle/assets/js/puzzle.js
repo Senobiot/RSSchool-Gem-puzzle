@@ -10,12 +10,17 @@ const Puzzle = {
 
    properties: {
     time: 0,
-    arrRandomNum: [1, 2, 9, 4, 6, 3, 7, 5, 8]
+    qty: 500,
+    randMoves: [],
+    finalRandMoves: [],
+    startArr: []
   },
 
    init(num) {
     // this._getRand(num);
     // this._getSize(num);
+    this._getStartPosition(num);
+    this._getMixed(num);
     this.elements.puzzle = document.createElement("div");
     this.elements.statistic = document.createElement("div");
     this.elements.moves = document.createElement("div");
@@ -37,10 +42,51 @@ const Puzzle = {
 
   },
 
+  _getStartPosition(num) {
+  		for (let i = 1; i <= num; i++) {
+		this.properties.startArr.push(i)
+	}
+  }, 
 
- // 	_getRandomIntInclusive(min, max) {
- //  		return Math.floor(Math.random() * (max - min + 1)) + min; 
-	// },
+  _getMixed(num) {
+  	//let arr = this.properties.startArr;
+  	let empty = num;
+	let emptyPos = this.properties.startArr.indexOf(empty);
+	let mixedArr = this.properties.startArr.map(el => {
+			if ((this.properties.startArr.indexOf(el) + Math.sqrt(num)) === this.properties.startArr.indexOf(empty) ||
+			(this.properties.startArr.indexOf(el) - Math.sqrt(num)) === this.properties.startArr.indexOf(empty) ||
+			(this.properties.startArr.indexOf(el) + 1) === this.properties.startArr.indexOf(empty) &&  (Math.ceil((this.properties.startArr.indexOf(el) + 1) / Math.sqrt(num)) === Math.ceil((this.properties.startArr.indexOf(empty) + 1) / Math.sqrt(num))) ||
+			(this.properties.startArr.indexOf(el) - 1) === this.properties.startArr.indexOf(empty) &&  (Math.ceil((this.properties.startArr.indexOf(el) + 1) / Math.sqrt(num)) === Math.ceil((this.properties.startArr.indexOf(empty) + 1) / Math.sqrt(num)))) 
+				return el
+			}
+		).filter(e => e)
+
+		//console.log(`mixedARR ${mixedArr}`)
+
+	let lastNum = this._getRandomIntInclusive(0, mixedArr.length - 1);
+
+		//console.log(`lastNum ${lastNum}`)
+
+	this.properties.randMoves.push(mixedArr[lastNum]) 
+
+		//console.log(`randMoves ${randMoves}`)
+
+	this.properties.startArr[this.properties.startArr.indexOf(this.properties.randMoves[this.properties.randMoves.length - 1])] = empty;
+	this.properties.startArr[emptyPos] = this.properties.randMoves[this.properties.randMoves.length - 1];
+	this.properties.qty--;
+
+	if(this.properties.qty > 0) {this._getMixed(num)}
+		else {
+				for (let i = 0; i < this.properties.randMoves.length; i++) {
+				if (this.properties.randMoves[i] !== this.properties.randMoves[i - 1]) this.properties.finalRandMoves.push(this.properties.randMoves[i])
+			}
+		}
+  },
+
+
+ 	_getRandomIntInclusive(min, max) {
+  		return Math.floor(Math.random() * (max - min + 1)) + min; 
+	},
 
 	// _getSize(num) {
 	// 	for (var i = 1; i <= num; i++) {
@@ -87,10 +133,10 @@ const Puzzle = {
 	_createGems(num) {
 	  	const fragment = document.createDocumentFragment();
 
-		  	this.properties.arrRandomNum.forEach(item => {
+		  this.properties.startArr.forEach(item => {
 		  		const gemElement = document.createElement("div");
 		  		gemElement.classList.add("gem");
-		  		if (item !== this.properties.arrRandomNum.length) gemElement.textContent = item;
+		  		if (item !== this.properties.startArr.length) gemElement.textContent = item;
 		  		else {gemElement.classList.add("empty");
 		  		gemElement.textContent = item;
 		  	}
