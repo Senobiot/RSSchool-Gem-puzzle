@@ -8,7 +8,7 @@ let difficult = 3,
 	popupWin = document.querySelector(".win_popup"),
 	popupMoves = document.querySelector(".win_popupMoves"),
 	popupTime = document.querySelector(".win_popupTime");
-
+	showSolution = document.querySelector(".solution")
 
 
 	start.addEventListener('click', function(){
@@ -222,40 +222,45 @@ function getRandomIntInclusive(min, max) {
 // 			// }, 350)
 // }
 
-let qty = 100,
-	randMoves = [];
-
-let arr = []
-	for (let i = 1; i <= difficult*difficult; i++) {
-		arr.push(i)
-	}
-	let empty = difficult*difficult;
-
-	let finalRandMoves = []
-
-function mix() {
-	let emptyPos = arr.indexOf(empty);
-	let mixedArr = arr.map(el => {
-			if ((arr.indexOf(el) + difficult) === arr.indexOf(empty) ||
-			(arr.indexOf(el) - difficult) === arr.indexOf(empty) ||
-			(arr.indexOf(el) + 1) === arr.indexOf(empty) &&  (Math.ceil((arr.indexOf(el) + 1) / difficult) === Math.ceil((arr.indexOf(empty) + 1) / difficult)) ||
-			(arr.indexOf(el) - 1) === arr.indexOf(empty) &&  (Math.ceil((arr.indexOf(el) + 1) / difficult) === Math.ceil((arr.indexOf(empty) + 1) / difficult))) 
-				return el
-			}
-		).filter(e => e)
+// let turn = Puzzle.properties.finalRandMoves.length - 1
+// function showSolution (){
+// 	let btns = Array.from(document.querySelectorAll(".gem"))
 	
-	let lastNum = getRandomIntInclusive(0, mixedArr.length - 1);
-	randMoves.push(mixedArr[lastNum]) 
-	arr[arr.indexOf(randMoves[randMoves.length - 1])] = empty;
-	arr[emptyPos] = randMoves[randMoves.length - 1];
-	qty--;
-	if(qty > 0) {mix()}
-		else {
-				for (let i = 0; i < randMoves.length; i++) {
-				if (randMoves[i] !== randMoves[i - 1]) finalRandMoves.push(randMoves[i])
-			}
-		}
-	}
+// 	setTimeout(function(){
+// 			btns.find(e => e.textContent.includes(Puzzle.properties.finalRandMoves[turn])).click()
+// 				turn--;
+// 				// if (qty >0) {mix()}
+// 				// else {console.log(randMoves)}
+// 	 }, 200)
+// }
+
+
+
+
+
+// function mix() {
+// 	let emptyPos = arr.indexOf(empty);
+// 	let mixedArr = arr.map(el => {
+// 			if ((arr.indexOf(el) + difficult) === arr.indexOf(empty) ||
+// 			(arr.indexOf(el) - difficult) === arr.indexOf(empty) ||
+// 			(arr.indexOf(el) + 1) === arr.indexOf(empty) &&  (Math.ceil((arr.indexOf(el) + 1) / difficult) === Math.ceil((arr.indexOf(empty) + 1) / difficult)) ||
+// 			(arr.indexOf(el) - 1) === arr.indexOf(empty) &&  (Math.ceil((arr.indexOf(el) + 1) / difficult) === Math.ceil((arr.indexOf(empty) + 1) / difficult))) 
+// 				return el
+// 			}
+// 		).filter(e => e)
+	
+// 	let lastNum = getRandomIntInclusive(0, mixedArr.length - 1);
+// 	randMoves.push(mixedArr[lastNum]) 
+// 	arr[arr.indexOf(randMoves[randMoves.length - 1])] = empty;
+// 	arr[emptyPos] = randMoves[randMoves.length - 1];
+// 	qty--;
+// 	if(qty > 0) {mix()}
+// 		else {
+// 				for (let i = 0; i < randMoves.length; i++) {
+// 				if (randMoves[i] !== randMoves[i - 1]) finalRandMoves.push(randMoves[i])
+// 			}
+// 		}
+// 	}
 
 
 
