@@ -10,11 +10,12 @@ const Puzzle = {
 
    properties: {
     time: 0,
-    arrRandomNum: []
+    arrRandomNum: [1, 2, 9, 4, 6, 3, 7, 5, 8]
   },
 
    init(num) {
-    this._getRand(num);
+    // this._getRand(num);
+    // this._getSize(num);
     this.elements.puzzle = document.createElement("div");
     this.elements.statistic = document.createElement("div");
     this.elements.moves = document.createElement("div");
@@ -37,41 +38,50 @@ const Puzzle = {
   },
 
 
- 	_getRandomIntInclusive(min, max) {
-  		return Math.floor(Math.random() * (max - min + 1)) + min; 
-	},
+ // 	_getRandomIntInclusive(min, max) {
+ //  		return Math.floor(Math.random() * (max - min + 1)) + min; 
+	// },
 
- 	_getRand (num) {
-		if (this.properties.arrRandomNum.length < num) {
-			let number = this._getRandomIntInclusive(1, num);
-			if (this.properties.arrRandomNum.includes(number)) {
-				this._getRand(num)
-			} else {
-				this.properties.arrRandomNum.push(number);
-				this._getRand(num)}
-		} else { this._solutionCheck(num) }
-	},
+	// _getSize(num) {
+	// 	for (var i = 1; i <= num; i++) {
+	// 		this.properties.arrRandomNum.push(i)
+	// 	}
+	// },
 
-	_solutionCheck (num) {
-		let checkNum = 0,
-		array = this.properties.arrRandomNum;
-		for (let i = 0; i < array.length; i++) {
-			if (array[i] !== array.length) {
-				for (let j = i; j < array.length; j++) {
-			 		if (array[j+1] < array[i] ) checkNum++;
-				 }
-			} 
-		}
-		let empty = array.indexOf(array.length);
-		let emptyOrder = Math.ceil((empty + 1) / Math.sqrt(array.length))
-		checkNum += emptyOrder;
-		if (checkNum % 2 === 0 && array.length % 2 === 0) {console.log("ok")}
-		else if (checkNum % 2 !== 0 && array.length % 2 !== 0) {console.log("ok")}
-		else {
-			this.properties.arrRandomNum = [];
-			this._getRand(num);
-		}
-	},
+
+
+ // 	_getRand (num) {
+	// 	if (this.properties.arrRandomNum.length < num) {
+	// 		let number = this._getRandomIntInclusive(1, num);
+	// 		if (this.properties.arrRandomNum.includes(number)) {
+	// 			this._getRand(num)
+	// 		} else {
+	// 			this.properties.arrRandomNum.push(number);
+	// 			this._getRand(num)}
+	// 	} else { this._solutionCheck(num) }
+	// },
+
+	// _solutionCheck (num) {
+	// 	let checkNum = 0,
+	// 	array = this.properties.arrRandomNum;
+	// 	for (let i = 0; i < array.length; i++) {
+	// 		if (array[i] !== array.length) {
+	// 			for (let j = i; j < array.length; j++) {
+	// 		 		if (array[j+1] < array[i] ) checkNum++;
+	// 			 }
+	// 		} 
+	// 	}
+	// 	let empty = array.indexOf(array.length);
+	// 	let emptyOrder = Math.ceil((empty + 1) / Math.sqrt(array.length))
+	// 	checkNum += emptyOrder;
+	// 	if (checkNum % 2 === 0) {console.log("ok"); console.log(checkNum)}
+	// 	// if (checkNum % 2 === 0 && array.length % 2 === 0) {console.log("ok"); console.log(checkNum)}
+	// 	// else if (checkNum % 2 !== 0 && array.length % 2 !== 0) {console.log("ok"); console.log(checkNum)}
+	// 	else {
+	// 		this.properties.arrRandomNum = [];
+	// 		this._getRand(num);
+	// 	}
+	// },
 
 
 	_createGems(num) {
