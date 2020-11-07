@@ -33,9 +33,8 @@ let puzzleCss = document.querySelector(".puzzle"),
 	gems = Array.from(document.querySelectorAll(".gem")),
 	gemsCurrentPosCheck,
 	gemsNativePos = "",
-	anDuration = 200,
+	anDuration = 500,
 	translate = 103,
-	animation = false,
 	counter = 0,
 	timer = document.querySelector(".timer"),
 	time = -1;
@@ -76,7 +75,6 @@ function puzzleSize() {
 puzzleSize()
 
 function checkWin() {
-	animation = false;
 	gems = Array.from(document.querySelectorAll(".gem"))
 	gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
 	if (gemsCurrentPosCheck === gemsNativePos) {
@@ -96,10 +94,10 @@ function checkWin() {
 				empty = document.querySelector(".empty")
 				emptyPos = gems.indexOf(empty);
 				if (this.previousElementSibling === empty
-				 	&& !animation
+				 	&& !Puzzle.properties.animation
 				  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
 					counter++;
-					animation = true;
+					Puzzle.properties.animation = true;
 					this.animate([
 					  { transform: `translate(-${translate}px)` }, 
 					], {
@@ -115,14 +113,18 @@ function checkWin() {
 					 this.parentNode.insertBefore(this, empty);
 					 movesDisplay.innerText = counter;
 					 checkWin();
-					 }, anDuration + 10);					
+					 Puzzle.properties.randMoves.push(+this.innerText);
+					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+					 Puzzle.properties.animation = false;
+
+					 }, anDuration - 10);					
 				
 				}
 				else if(this.nextElementSibling === empty
-						&& !animation
+						&& !Puzzle.properties.animation
 						&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
 					counter++;
-					animation = true;
+					Puzzle.properties.animation = true;
 					this.animate([
 					  { transform: `translate(${translate}px)` }, 
 					], {
@@ -139,12 +141,15 @@ function checkWin() {
 					empty.parentNode.insertBefore(empty, this);
 					movesDisplay.innerText = counter;
 					checkWin()
-					}, anDuration + 10);		
+					Puzzle.properties.randMoves.push(+this.innerText);
+					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+					Puzzle.properties.animation = false;
+					}, anDuration - 10);		
 					
 				}
-				else if (gems.indexOf(this) + difficult === emptyPos && !animation){
+				else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
 					counter++;
-					animation = true;
+					Puzzle.properties.animation = true;
 					this.animate([
 					  { transform: `translateY(${translate}px)` }, 
 					], {
@@ -162,12 +167,15 @@ function checkWin() {
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
 						movesDisplay.innerText = counter;
 						checkWin()
-						}, anDuration + 10);
+						Puzzle.properties.randMoves.push(+this.innerText);
+						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+						Puzzle.properties.animation = false;
+						}, anDuration - 10);
 						
 				}
-				else if (gems.indexOf(this) - difficult === emptyPos && !animation){
+				else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
 					counter++;
-					animation = true;
+					Puzzle.properties.animation = true;
 					this.animate([
 					  { transform: `translateY(-${translate}px)` }, 
 					], {
@@ -185,11 +193,22 @@ function checkWin() {
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);	
 						movesDisplay.innerText = counter;
 						checkWin();
-						}, anDuration + 10);
+						//навесим событие, по клику будем записывать в randMoves ходы игрока и делать снимки расклада
+						Puzzle.properties.randMoves.push(+this.innerText);
+						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+						Puzzle.properties.animation = false;
+						}, anDuration - 10);
 				};		
 			 })
 		}
 	}
+
+	// showSolution.addEventListener('click', function () {
+ //    	Puzzle._getKeys();
+ //    	setTimeout(()=>{
+ //    		Puzzle._showSolution ()
+ //    	}, 150)	
+ //    })
 }
 
 
@@ -197,70 +216,7 @@ function getRandomIntInclusive(min, max) {
   			return Math.floor(Math.random() * (max - min + 1)) + min; 
  }
 
-// function mix_old() {
-// 		let empty = document.querySelector(".empty")
-// 		let btns = Array.from(document.querySelectorAll(".gem"))
-// 		let arr = [];
-// 		arr = btns.map(el => {
-// 			if ((btns.indexOf(el) + difficult) === btns.indexOf(empty) ||
-// 			(btns.indexOf(el) - difficult) === btns.indexOf(empty) ||
-// 			(btns.indexOf(el) + 1) === btns.indexOf(empty) &&  (Math.ceil((btns.indexOf(el) + 1) / difficult) === Math.ceil((btns.indexOf(empty) + 1) / difficult)) ||
-// 			(btns.indexOf(el) - 1) === btns.indexOf(empty) &&  (Math.ceil((btns.indexOf(el) + 1) / difficult) === Math.ceil((btns.indexOf(empty) + 1) / difficult))) 
-// 				return el.innerText
-// 			}
-// 		).filter(e => e)
 
-// 		randMoves.push(arr[getRandomIntInclusive(0, arr.length - 1)])  
-// 		//console.log(randMoves)
-		
-// 		//console.log(btns.textContent.includes(randMoves[length-1]))
-// 		// setTimeout(function(){
-// 			// btns.find(e => e.textContent.includes(randMoves[randMoves.length-1])).click()
-// 				qty--;
-// 				if (qty >0) {mix()}
-// 				else {console.log(randMoves)}
-// 			// }, 350)
-// }
-
-// let turn = Puzzle.properties.finalRandMoves.length - 1
-// function showSolution (){
-// 	let btns = Array.from(document.querySelectorAll(".gem"))
-	
-// 	setTimeout(function(){
-// 			btns.find(e => e.textContent.includes(Puzzle.properties.finalRandMoves[turn])).click()
-// 				turn--;
-// 				// if (qty >0) {mix()}
-// 				// else {console.log(randMoves)}
-// 	 }, 200)
-// }
-
-
-
-
-
-// function mix() {
-// 	let emptyPos = arr.indexOf(empty);
-// 	let mixedArr = arr.map(el => {
-// 			if ((arr.indexOf(el) + difficult) === arr.indexOf(empty) ||
-// 			(arr.indexOf(el) - difficult) === arr.indexOf(empty) ||
-// 			(arr.indexOf(el) + 1) === arr.indexOf(empty) &&  (Math.ceil((arr.indexOf(el) + 1) / difficult) === Math.ceil((arr.indexOf(empty) + 1) / difficult)) ||
-// 			(arr.indexOf(el) - 1) === arr.indexOf(empty) &&  (Math.ceil((arr.indexOf(el) + 1) / difficult) === Math.ceil((arr.indexOf(empty) + 1) / difficult))) 
-// 				return el
-// 			}
-// 		).filter(e => e)
-	
-// 	let lastNum = getRandomIntInclusive(0, mixedArr.length - 1);
-// 	randMoves.push(mixedArr[lastNum]) 
-// 	arr[arr.indexOf(randMoves[randMoves.length - 1])] = empty;
-// 	arr[emptyPos] = randMoves[randMoves.length - 1];
-// 	qty--;
-// 	if(qty > 0) {mix()}
-// 		else {
-// 				for (let i = 0; i < randMoves.length; i++) {
-// 				if (randMoves[i] !== randMoves[i - 1]) finalRandMoves.push(randMoves[i])
-// 			}
-// 		}
-// 	}
 
 
 

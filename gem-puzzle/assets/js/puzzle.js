@@ -16,8 +16,10 @@ const Puzzle = {
     snapShot: [],
     finalSnapshot: [],
     startArr: [],
+    doubles: false,
     keys: [],
     turn: 0,
+    animation: false
   },
 
    init(num) {
@@ -43,13 +45,15 @@ const Puzzle = {
     document.body.appendChild(this.elements.puzzle);
     document.body.appendChild(this.elements.statistic);
     document.querySelector(".solution").classList.add("active");
+    this._getKeys();
     document.querySelector(".solution").addEventListener('click', function () {
-    	this._getKeys();
+    	Puzzle._findOptimal();
     	setTimeout(()=>{
-    		this._showSolution ()
-    	}, 150)	
+    		// добавим количество ходов игрока
+	 		Puzzle.properties.turn = Puzzle.properties.randMoves.length - 1;
+    		Puzzle._showSolution ()
+    	}, 1000)	
     })
-
   },
 
   _getStartPosition(num) {
@@ -95,7 +99,7 @@ const Puzzle = {
 	if(this.properties.qty > 0) {this._getMixed(num)}
 		else {
 			//тут находим количество ходов, сделанных с начала, по сути только для читаемости в след функциях
-			this.properties.turn = this.properties.randMoves.length - 1;
+			// this.properties.turn = this.properties.randMoves.length - 1;
 		}
   },
 
@@ -115,7 +119,7 @@ const Puzzle = {
 		  		else {gemElement.classList.add("empty");
 		  		gemElement.textContent = item;
 		  	}
-		  		
+				
 		  	fragment.appendChild(gemElement);
 
 		  	})
@@ -135,17 +139,68 @@ const Puzzle = {
 		})
 	 },
 
+	 _findOptimal () {
+	 	let start ,end;
+	 	let i = this.properties.snapShot.length - 1;
+	 	//найдет повторные снимки в snapShot - должно обрезать между ними ходы
+	 	while (i > 0) {
+	 		if (this.properties.snapShot.indexOf(this.properties.snapShot[i]) !== i) 
+	 		{
+	 			start = this.properties.snapShot.indexOf(this.properties.snapShot[i]);
+	 			end = i;
+	 			this.properties.doubles = true;
+	 			 break;}
+	 			 i--;
+	 		}
+	 		if (this.properties.doubles) {
+
+ 		 		this.properties.finalSnapshot = this.properties.snapShot.slice(0, start)
+ 				this.properties.snapShot = this.properties.finalSnapshot.concat(this.properties.snapShot.slice(end))
+
+	 			this.properties.finalRandMoves = this.properties.randMoves.slice(0, start)
+	 			this.properties.randMoves = this.properties.finalRandMoves.concat(this.properties.randMoves.slice(end));
+				this.properties.doubles = false;
+
+				this._findOptimal()
+	 		}
+	 		console.log("optimize!!")
+	 },
+
 	 _showSolution (){ 
 	 	//тут просто читаем с конца randMoves и эумлируем клик по нужной кнопке
 		setTimeout(() => {
-			this.elements.keys[this.properties.randMoves[this.properties.turn] - 1].click()
-					this.properties.turn--;
-					if (this.properties.turn >= 0) {this._showSolution()}
-		}, 500)
+			if (!this.properties.animation) {
+				//console.log(this.properties.randMoves[this.properties.turn])
+				this.elements.keys[this.properties.randMoves[this.properties.turn] - 1].click()
+				this.properties.turn--;
+					if (this.properties.turn >= 0) {this._showSolution()}}
+						else {this._showSolution()}
+		}, 1000)
 	}
 }
 
 //module.exports = {Puzzle}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
