@@ -5,14 +5,14 @@
 Puzzle.start()
 
 
-let difficult = 3,
-	form = document.querySelector(".choice"),
-	start = document.querySelector(".button"),
-	body = document.querySelector("body"),
-	popupWin = document.querySelector(".win_popup"),
-	popupMoves = document.querySelector(".win_popupMoves"),
-	popupTime = document.querySelector(".win_popupTime");
-	showSolution = document.querySelector(".solution")
+// let difficult = 3,
+// 	form = document.querySelector(".choice"),
+// 	start = document.querySelector(".button"),
+// 	body = document.querySelector("body"),
+// 	popupWin = document.querySelector(".win_popup"),
+// 	popupMoves = document.querySelector(".win_popupMoves"),
+// 	popupTime = document.querySelector(".win_popupTime");
+// 	showSolution = document.querySelector(".solution")
 
 
 	// start.addEventListener('click', function(){
@@ -29,10 +29,38 @@ let difficult = 3,
 	// 	}, 200)
 	// })
 
-function startGame () {
- 	Puzzle.init(difficult*difficult)
-let puzzleCss = document.querySelector(".puzzle"),
-	empty = document.querySelector(".empty"),
+
+
+
+	//-------------------------------------------------
+
+
+	//movesDisplay.innerHTML = counter;
+
+// function showTime() {
+// 	if (body.classList.contains("block")) return;
+// 	time++;
+// 	let hour = Math.floor(time / 3600),
+// 	min = Math.floor((time - hour*3600) / 60);
+// 	second = time % 60;
+// 	if (hour < 10) {hour = "0" + hour}
+// 	if (second < 10) {second = "0" + second}
+// 	if (min < 10) {min = "0" + min}
+// 	timer.innerHTML = `${hour}<span>:</span>${min}<span>:</span>${second}`;
+
+// 	setTimeout(showTime, 1000)
+// }	
+
+
+
+// gemsNative()
+
+
+
+
+function getClickEvents() {
+
+let empty = document.querySelector(".empty"),
 	emptyPos,
 	gems = Array.from(document.querySelectorAll(".gem")),
 	gemsCurrentPosCheck,
@@ -40,43 +68,14 @@ let puzzleCss = document.querySelector(".puzzle"),
 	anDuration = 300,
 	translate = 103,
 	counter = 0,
-	timer = document.querySelector(".timer"),
-	time = -1;
-	movesDisplay = document.querySelector(".moves");
-
-	//-------------------------------------------------
-
-	showTime(timer);
-	movesDisplay.innerHTML = counter;
-
-function showTime() {
-	if (body.classList.contains("block")) return;
-	time++;
-	let hour = Math.floor(time / 3600),
-	min = Math.floor((time - hour*3600) / 60);
-	second = time % 60;
-	if (hour < 10) {hour = "0" + hour}
-	if (second < 10) {second = "0" + second}
-	if (min < 10) {min = "0" + min}
-	timer.innerHTML = `${hour}<span>:</span>${min}<span>:</span>${second}`;
-
-	setTimeout(showTime, 1000)
-}	
-
+	movesDisplay = document.querySelector(".moves"),
+	difficult = Puzzle.properties.difficult;
 
 function gemsNative() {
 	for (var i = 1; i <= difficult*difficult ; i++) {
 		gemsNativePos += i;
 	}
 }
-gemsNative()
-
-function puzzleSize() {
-	puzzleCss.style.width = `${difficult*100}px`;
-	puzzleCss.style.height = `${difficult*100}px`;
-	puzzleCss.style.gridTemplateColumns = `repeat(${difficult}, 1fr)`;
-}
-puzzleSize()
 
 function checkWin() {
 	gems = Array.from(document.querySelectorAll(".gem"))
@@ -90,7 +89,6 @@ function checkWin() {
 		}, 100)
 	};			
 }
-
 	for (let i = 0; i < gems.length; i++) {
 		
 		if (gems[i] !== empty) {
@@ -103,24 +101,14 @@ function checkWin() {
 					counter++;
 					this.classList.add("animation-left");
 					Puzzle.properties.animation = true;
-					// this.animate([
-					//   { transform: `translate(-${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
-					// empty.animate([
-					//   { transform: `translate(${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
+					
 					setTimeout(() => {
 					 this.parentNode.insertBefore(this, empty);
 					 this.classList.remove("animation-left");
 					 movesDisplay.innerText = counter;
 					 checkWin();
 					 Puzzle.properties.randMoves.push(+this.innerText);
-					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+					 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
 					 Puzzle.properties.animation = false;
 					 }, anDuration - 10);					
 				
@@ -131,18 +119,7 @@ function checkWin() {
 					counter++;
 					this.classList.add("animation-right");
 					Puzzle.properties.animation = true;
-					// this.animate([
-					//   { transform: `translate(${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
-					// empty.animate([
-					//   { transform: `translate(-${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
+					
 					setTimeout(() => {
 					empty.parentNode.insertBefore(empty, this);
 					this.classList.remove("animation-right");
@@ -158,18 +135,7 @@ function checkWin() {
 					counter++;
 					this.classList.add("animation-bottom");
 					Puzzle.properties.animation = true;
-					// this.animate([
-					//   { transform: `translateY(${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
-					// empty.animate([
-					//   { transform: `translateY(${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
+					
 					setTimeout(() => {
 						this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
@@ -186,18 +152,7 @@ function checkWin() {
 					counter++;
 					this.classList.add("animation-top");
 					Puzzle.properties.animation = true;
-					// this.animate([
-					//   { transform: `translateY(-${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
-					// empty.animate([
-					//   { transform: `translateY(${translate}px)` }, 
-					// ], {
-					//   duration: anDuration,
-					// })
-
+					
 					setTimeout(() => {
 						this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
@@ -213,19 +168,11 @@ function checkWin() {
 			 })
 		}
 	}
-
-	// showSolution.addEventListener('click', function () {
- //    	Puzzle._getKeys();
- //    	setTimeout(()=>{
- //    		Puzzle._showSolution ()
- //    	}, 150)	
- //    })
 }
 
-
-function getRandomIntInclusive(min, max) {
-  			return Math.floor(Math.random() * (max - min + 1)) + min; 
- }
+// function getRandomIntInclusive(min, max) {
+//   			return Math.floor(Math.random() * (max - min + 1)) + min; 
+//  }
 
 
 

@@ -4,6 +4,7 @@ const Puzzle = {
   	title: null,
   	menu: null,
   	menuBtns: ["New game", "Choose Field-Size", "Saves", "High Scores"],
+  	sizes: null, 
     puzzle: null,
     statistic: null,
     moves: null,
@@ -13,7 +14,9 @@ const Puzzle = {
 
    properties: {
    	//scores: 0,
-    time: 0,
+   	size: ["child : 3 x 3", "novice : 4 x 4", "Apprentice : 5 x 5", "Adept : 6 x 6", "Expert : 7 x 7", "Master : 8 x 8"],
+   	difficult: 3,
+    time: -1,
     qty: 0,
     randMoves: [],
     finalRandMoves: [],
@@ -29,12 +32,16 @@ const Puzzle = {
   	start() {
   		 this.elements.title = document.createElement("div");
   		 this.elements.menu = document.createElement("div");
+  		 this.elements.sizes = document.createElement("div");
   		 this.elements.title.classList.add("title");
   		 this.elements.title.textContent = "The Puzzle Game";
   		 this.elements.menu.classList.add("menu");
+  		 this.elements.sizes.classList.add("sizes",  "inactive");
   		 this.elements.menu.appendChild(this._createMenu());
+  		 this.elements.sizes.appendChild(this._createSizes());
   		 document.body.appendChild(this.elements.title);
   		 document.body.appendChild(this.elements.menu);
+  		 document.body.appendChild(this.elements.sizes);
   	},
 
 	init(num) {
@@ -59,6 +66,9 @@ const Puzzle = {
 		
 		document.body.appendChild(this.elements.puzzle);
 		document.body.appendChild(this.elements.statistic);
+		this._puzzleSize();
+		this._showTime();
+		getClickEvents();
 		document.querySelector(".solution").classList.add("active");
 		this._getKeys();
 		document.querySelector(".solution").addEventListener('click', function () {
@@ -71,18 +81,58 @@ const Puzzle = {
 			}, 1000)	
 		})
   },
+
+
   _createMenu() {
   		const fragment = document.createDocumentFragment();
 
 		 this.elements.menuBtns.forEach(item => {
 		  		const menuElement = document.createElement("div");
-		  		menuElement.classList.add("1_1");
 		  		menuElement.textContent = item;	
 		  	fragment.appendChild(menuElement);
-
+		  	if (this.elements.menuBtns.indexOf(item) === 0) {
+		  		menuElement.addEventListener('click', ()=> {
+		  			this.elements.menu.classList.add("inactive")
+		  			setTimeout(()=> {
+		  				this.elements.menu.style.display = "none";
+		  				this.elements.sizes.classList.remove("inactive");
+		  			}, 600)
+		  			
+		  		})
+		  	}
 		  	})
 	  	return fragment
   },
+
+    _createSizes() {
+    	//
+  		const fragment = document.createDocumentFragment();
+
+		 this.properties.size.forEach(item => {
+		  		const menuElement = document.createElement("div");
+		  		menuElement.textContent = item;	
+		  	fragment.appendChild(menuElement);
+		  	//скрываем по нажатию на любой выбор
+		  	menuElement.addEventListener('click', ()=> {
+		  			this.elements.sizes.classList.add("inactive")
+		  			setTimeout(()=> {
+		  				this.elements.sizes.style.display = "none";
+		  				this.init(Math.pow(this.properties.difficult, 2));
+		  			}, 600)
+
+		  		})
+		  	//ставим параметр сложности
+		  	this.properties.size.indexOf(item) === 0 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 3;}):
+		  	this.properties.size.indexOf(item) === 1 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 4;}):
+		  	this.properties.size.indexOf(item) === 2 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6;}):
+		  	this.properties.size.indexOf(item) === 3 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6;}):
+		  	this.properties.size.indexOf(item) === 4 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 7;}):
+		  	menuElement.addEventListener('click', ()=> {this.properties.difficult = 8});
+		  	
+		  	})
+	  	return fragment
+  },
+
 
 
   _getStartPosition(num) {
@@ -146,14 +196,34 @@ const Puzzle = {
 		  		gemElement.classList.add("gem");
 		  		if (item !== this.properties.startArr.length) gemElement.textContent = item;
 		  		else {gemElement.classList.add("empty");
-		  		gemElement.textContent = item;
-		  	}
+		  		gemElement.textContent = item;}
 				
-		  	fragment.appendChild(gemElement);
+			  	fragment.appendChild(gemElement);
 
 		  	})
 	  	return fragment
 	 },
+
+	_puzzleSize() {
+		this.elements.puzzle.style.width = `${this.properties.difficult*100}px`;
+		this.elements.puzzle.style.height = `${this.properties.difficult*100}px`;
+		this.elements.puzzle.style.gridTemplateColumns = `repeat(${this.properties.difficult}, 1fr)`;
+	},
+
+	_showTime() {
+		if (document.body.classList.contains("block")) return;
+		Puzzle.properties.time++;
+		let hour = Math.floor(Puzzle.properties.time / 3600),
+		min = Math.floor((Puzzle.properties.time - hour*3600) / 60);
+		second = Puzzle.properties.time % 60;
+		if (hour < 10) {hour = "0" + hour}
+		if (second < 10) {second = "0" + second}
+		if (min < 10) {min = "0" + min}
+		Puzzle.elements.timer.innerHTML = `${hour}<span>:</span>${min}<span>:</span>${second}`;
+
+		setTimeout(Puzzle._showTime, 1000)
+	},
+
 
 	 _getKeys() {
 	 	//тут строим массив из кнопок, сортируем, чтобы каждый стоял под своим индексом для ускорения вызова клика

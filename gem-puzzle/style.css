@@ -73,7 +73,7 @@ body {
   letter-spacing: -4px;
   margin-bottom: 1em; }
 
-.menu {
+.menu, .sizes {
   margin: 0 auto;
   font-size: 40px;
   color: #f1ebe5;
@@ -93,13 +93,16 @@ body {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  max-width: 500px; }
-  .menu div {
-    cursor: pointer;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    transition: 0.5s; }
-    .menu div:hover {
+  max-width: 500px;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  -webkit-transform-origin: left;
+      -ms-transform-origin: left;
+          transform-origin: left; }
+  .menu div, .sizes div {
+    cursor: pointer; }
+    .menu div:hover, .sizes div:hover {
       -webkit-animation: menu 0.4s infinite;
               animation: menu 0.4s infinite;
       color: #F3F5A1; }
@@ -131,6 +134,13 @@ body {
   100% {
     -webkit-transform: translateX(0px);
             transform: translateX(0px); } }
+  .menu.inactive, .sizes.inactive {
+    -webkit-transform: rotateX(90deg);
+            transform: rotateX(90deg); }
+
+.sizes.inactive {
+  -webkit-transform: rotateX(90deg);
+          transform: rotateX(90deg); }
 
 body.block:before {
   content: '';

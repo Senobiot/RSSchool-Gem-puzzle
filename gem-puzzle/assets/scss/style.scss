@@ -19,7 +19,7 @@ body {
   	margin-bottom: 1em;
 }
 
-.menu {
+.menu, .sizes {
 	margin: 0 auto;
 	font-size: 40px;
 	color: #f1ebe5;
@@ -29,10 +29,11 @@ body {
   	display: flex;
   	flex-direction: column;
   	align-items: center;
-  	max-width: 500px;	
+  	max-width: 500px;
+  	transition: 0.5s;	
+  	transform-origin: left;
   	& div {
   		cursor: pointer;
-  		transition: 0.5s;
   		&:hover {
   			animation: menu 0.4s infinite;
   			color: #F3F5A1;
@@ -44,8 +45,15 @@ body {
 	  		100% {transform: translateX(0px);}	
   		}
 	} 
+	&.inactive{
+		transform: rotateX(90deg);
+	}
 }
-
+.sizes {
+	&.inactive{
+		transform: rotateX(90deg);
+	}
+}
 body.block {
 	&:before {
 		content: '';
