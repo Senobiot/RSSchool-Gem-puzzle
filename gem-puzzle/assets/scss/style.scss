@@ -84,6 +84,39 @@ body.block {
 	inset rgba(0,0,0,.5) -3px -3px 8px,
 	inset rgba(255,255,255,.9) 3px 3px 8px,
 	rgba(0,0,0,.8) 3px 3px 8px -3px;
+	&.animation-left {
+		animation: animation-left 0.3s ease-in forwards;
+	}
+	&.animation-right {
+		animation: animation-right 0.3s ease-in forwards;
+	}
+	&.animation-top {
+		animation: animation-top 0.3s ease-in forwards;
+	}	
+	&.animation-bottom {
+		animation: animation-bottom 0.3s ease-in forwards;
+	}
+
+	@keyframes animation-left {
+		100% {
+			transform: translate(-105px)
+		}
+	}
+	@keyframes animation-right {
+		100% {
+			transform: translate(105px)
+		}
+	}
+	@keyframes animation-top {
+		100% {
+			transform: translateY(-105px)
+		}
+	}
+	@keyframes animation-bottom {
+		100% {
+			transform: translateY(105px)
+		}
+	}
 }
 .empty {
 	font-size: 0;

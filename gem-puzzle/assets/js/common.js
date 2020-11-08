@@ -33,7 +33,7 @@ let puzzleCss = document.querySelector(".puzzle"),
 	gems = Array.from(document.querySelectorAll(".gem")),
 	gemsCurrentPosCheck,
 	gemsNativePos = "",
-	anDuration = 500,
+	anDuration = 300,
 	translate = 103,
 	counter = 0,
 	timer = document.querySelector(".timer"),
@@ -97,26 +97,27 @@ function checkWin() {
 				 	&& !Puzzle.properties.animation
 				  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
 					counter++;
+					this.classList.add("animation-left");
 					Puzzle.properties.animation = true;
-					this.animate([
-					  { transform: `translate(-${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// this.animate([
+					//   { transform: `translate(-${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
-					empty.animate([
-					  { transform: `translate(${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// empty.animate([
+					//   { transform: `translate(${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 					setTimeout(() => {
 					 this.parentNode.insertBefore(this, empty);
+					 this.classList.remove("animation-left");
 					 movesDisplay.innerText = counter;
 					 checkWin();
 					 Puzzle.properties.randMoves.push(+this.innerText);
 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
 					 Puzzle.properties.animation = false;
-
 					 }, anDuration - 10);					
 				
 				}
@@ -124,21 +125,23 @@ function checkWin() {
 						&& !Puzzle.properties.animation
 						&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
 					counter++;
+					this.classList.add("animation-right");
 					Puzzle.properties.animation = true;
-					this.animate([
-					  { transform: `translate(${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// this.animate([
+					//   { transform: `translate(${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
-					empty.animate([
-					  { transform: `translate(-${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// empty.animate([
+					//   { transform: `translate(-${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
 					setTimeout(() => {
 					empty.parentNode.insertBefore(empty, this);
+					this.classList.remove("animation-right");
 					movesDisplay.innerText = counter;
 					checkWin()
 					Puzzle.properties.randMoves.push(+this.innerText);
@@ -149,22 +152,24 @@ function checkWin() {
 				}
 				else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
 					counter++;
+					this.classList.add("animation-bottom");
 					Puzzle.properties.animation = true;
-					this.animate([
-					  { transform: `translateY(${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// this.animate([
+					//   { transform: `translateY(${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
-					empty.animate([
-					  { transform: `translateY(${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// empty.animate([
+					//   { transform: `translateY(${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
 					setTimeout(() => {
 						this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
 						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+						this.classList.remove("animation-bottom");
 						movesDisplay.innerText = counter;
 						checkWin()
 						Puzzle.properties.randMoves.push(+this.innerText);
@@ -175,22 +180,24 @@ function checkWin() {
 				}
 				else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
 					counter++;
+					this.classList.add("animation-top");
 					Puzzle.properties.animation = true;
-					this.animate([
-					  { transform: `translateY(-${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// this.animate([
+					//   { transform: `translateY(-${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
-					empty.animate([
-					  { transform: `translateY(${translate}px)` }, 
-					], {
-					  duration: anDuration,
-					})
+					// empty.animate([
+					//   { transform: `translateY(${translate}px)` }, 
+					// ], {
+					//   duration: anDuration,
+					// })
 
 					setTimeout(() => {
 						this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
-						this.parentNode.insertBefore(this, gems[emptyPos + 1]);	
+						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+						this.classList.remove("animation-top");
 						movesDisplay.innerText = counter;
 						checkWin();
 						//навесим событие, по клику будем записывать в randMoves ходы игрока и делать снимки расклада

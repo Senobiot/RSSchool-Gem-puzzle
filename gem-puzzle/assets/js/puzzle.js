@@ -19,7 +19,13 @@ const Puzzle = {
     doubles: false,
     keys: [],
     turn: 0,
-    animation: false
+    animation: false,
+    dev1: [],
+    dev2: [],
+    dev3: [],
+    dev4: [],
+    dev5: [],
+    dev6: []
   },
 
    init(num) {
@@ -47,6 +53,9 @@ const Puzzle = {
     document.querySelector(".solution").classList.add("active");
     this._getKeys();
     document.querySelector(".solution").addEventListener('click', function () {
+    	Puzzle.properties.dev1 = Puzzle.properties.randMoves; //отладка
+    	Puzzle.properties.dev2 = Puzzle.properties.snapShot; //отладка
+
     	Puzzle._findOptimal();
     	setTimeout(()=>{
     		// добавим количество ходов игрока
@@ -153,17 +162,23 @@ const Puzzle = {
 	 			 i--;
 	 		}
 	 		if (this.properties.doubles) {
+	 			console.log(`start ${start}`)
+	 			console.log(`end ${end}`)
+ 		 		this.properties.finalSnapshot = this.properties.snapShot.slice(0, start + 1)
+ 				this.properties.snapShot = this.properties.finalSnapshot.concat(this.properties.snapShot.slice(end + 1))
 
- 		 		this.properties.finalSnapshot = this.properties.snapShot.slice(0, start)
- 				this.properties.snapShot = this.properties.finalSnapshot.concat(this.properties.snapShot.slice(end))
-
-	 			this.properties.finalRandMoves = this.properties.randMoves.slice(0, start)
-	 			this.properties.randMoves = this.properties.finalRandMoves.concat(this.properties.randMoves.slice(end));
+	 			this.properties.finalRandMoves = this.properties.randMoves.slice(0, start + 1)
+	 			this.properties.randMoves = this.properties.finalRandMoves.concat(this.properties.randMoves.slice(end + 1));
 				this.properties.doubles = false;
-
+				
 				this._findOptimal()
-	 		}
+				
+	 		} 
+	 		console.log(this.properties.dev2[this.properties.dev2.length - 1])
+	 		console.log(this.properties.snapShot[this.properties.snapShot.length - 1]) 
 	 		console.log("optimize!!")
+	 		// this.properties.dev3 = this.properties.snapShot
+	 		// this.properties.dev4 = this.properties.randMoves
 	 },
 
 	 _showSolution (){ 
@@ -175,7 +190,7 @@ const Puzzle = {
 				this.properties.turn--;
 					if (this.properties.turn >= 0) {this._showSolution()}}
 						else {this._showSolution()}
-		}, 1000)
+		}, 500)
 	}
 }
 

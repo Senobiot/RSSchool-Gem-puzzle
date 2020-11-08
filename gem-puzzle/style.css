@@ -153,6 +153,58 @@ body.block:before {
   cursor: pointer;
   -webkit-box-shadow: inset rgba(0, 0, 0, 0.5) -3px -3px 8px, inset rgba(255, 255, 255, 0.9) 3px 3px 8px, rgba(0, 0, 0, 0.8) 3px 3px 8px -3px;
           box-shadow: inset rgba(0, 0, 0, 0.5) -3px -3px 8px, inset rgba(255, 255, 255, 0.9) 3px 3px 8px, rgba(0, 0, 0, 0.8) 3px 3px 8px -3px; }
+  .gem.animation-left {
+    -webkit-animation: animation-left 0.3s ease-in forwards;
+            animation: animation-left 0.3s ease-in forwards; }
+  .gem.animation-right {
+    -webkit-animation: animation-right 0.3s ease-in forwards;
+            animation: animation-right 0.3s ease-in forwards; }
+  .gem.animation-top {
+    -webkit-animation: animation-top 0.3s ease-in forwards;
+            animation: animation-top 0.3s ease-in forwards; }
+  .gem.animation-bottom {
+    -webkit-animation: animation-bottom 0.3s ease-in forwards;
+            animation: animation-bottom 0.3s ease-in forwards; }
+
+@-webkit-keyframes animation-left {
+  100% {
+    -webkit-transform: translate(-105px);
+            transform: translate(-105px); } }
+
+@keyframes animation-left {
+  100% {
+    -webkit-transform: translate(-105px);
+            transform: translate(-105px); } }
+
+@-webkit-keyframes animation-right {
+  100% {
+    -webkit-transform: translate(105px);
+            transform: translate(105px); } }
+
+@keyframes animation-right {
+  100% {
+    -webkit-transform: translate(105px);
+            transform: translate(105px); } }
+
+@-webkit-keyframes animation-top {
+  100% {
+    -webkit-transform: translateY(-105px);
+            transform: translateY(-105px); } }
+
+@keyframes animation-top {
+  100% {
+    -webkit-transform: translateY(-105px);
+            transform: translateY(-105px); } }
+
+@-webkit-keyframes animation-bottom {
+  100% {
+    -webkit-transform: translateY(105px);
+            transform: translateY(105px); } }
+
+@keyframes animation-bottom {
+  100% {
+    -webkit-transform: translateY(105px);
+            transform: translateY(105px); } }
 
 .empty {
   font-size: 0;
