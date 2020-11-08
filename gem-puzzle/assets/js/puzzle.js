@@ -6,9 +6,15 @@ const Puzzle = {
   	menuBtns: ["New game", "Choose Field-Size", "Saves", "High Scores"],
   	sizes: null, 
     puzzle: null,
-    statistic: null,
+    controlPanel: null,
+    leadersPanel: null,
     moves: null,
     timer: null,
+    solutionBtn: null,
+    leadersBtn: null,
+    backToMenu: null,
+    saveBtn: null,
+    loadBtn: null,
     gems: []
   },
 
@@ -49,29 +55,54 @@ const Puzzle = {
 		this._getStartPosition(num); //нарисуем начальное положенин
 		this._getMixed(num); // перемешивает
 		this.elements.puzzle = document.createElement("div");
-		this.elements.statistic = document.createElement("div");
 		this.elements.moves = document.createElement("div");
 		this.elements.timer = document.createElement("div");
+		this.elements.leadersBtn = document.createElement("button");
+		this.elements.solutionBtn = document.createElement("button");
+		this.elements.backToMenu = document.createElement("button");
+		this.elements.saveBtn = document.createElement("button");
+		this.elements.loadBtn = document.createElement("button");
+		this.elements.controlPanel = document.createElement("div");
+		this.elements.leadersPanel = document.createElement("div");
 
+  		this.elements.solutionBtn.innerText = "solution";
+  		this.elements.leadersBtn.innerText = "leaders";
+  		this.elements.backToMenu.innerText = "to menu";
+  		this.elements.saveBtn.innerText = "save";
+  		this.elements.loadBtn.innerText = "load";
+
+  		this.elements.solutionBtn.classList.add("solutionBtn");
+  		this.elements.solutionBtn.classList.add("leadersBtn");
+  		this.elements.backToMenu.classList.add("backBtn");
+  		this.elements.saveBtn.classList.add("saveBtn");
+  		this.elements.loadBtn.classList.add("saveBtn");
 		this.elements.puzzle.classList.add("puzzle");
-		this.elements.statistic.classList.add("statistic");
 		this.elements.moves.classList.add("moves");
-		this.elements.moves.innertText = '0';
 		this.elements.timer.classList.add("timer");
+		this.elements.leadersBtn.classList.add("leadersBtn");
+		this.elements.controlPanel.classList.add("controlPanel");
+		this.elements.leadersPanel.classList.add("leaders");
 
 		this.elements.puzzle.appendChild(this._createGems(num));
-		this.elements.statistic.appendChild(this.elements.moves);
-		this.elements.statistic.appendChild(this.elements.timer);
+		this.elements.controlPanel.appendChild(this.elements.moves);
+		this.elements.controlPanel.appendChild(this.elements.timer);
+		this.elements.controlPanel.appendChild(this.elements.backToMenu);
+		this.elements.controlPanel.appendChild(this.elements.saveBtn);
+		this.elements.controlPanel.appendChild(this.elements.loadBtn);
+		this.elements.controlPanel.appendChild(this.elements.leadersBtn);
+		this.elements.controlPanel.appendChild(this.elements.solutionBtn);
+
 		this.elements.gems = this.elements.puzzle.querySelectorAll(".gem");
-		
+
 		document.body.appendChild(this.elements.puzzle);
-		document.body.appendChild(this.elements.statistic);
+		document.body.appendChild(this.elements.controlPanel);
+		this.elements.moves.textContent = "0";
 		this._puzzleSize();
 		this._showTime();
 		getClickEvents();
-		document.querySelector(".solution").classList.add("active");
+		document.querySelector(".controlPanel").classList.add("active");
 		this._getKeys();
-		document.querySelector(".solution").addEventListener('click', function () {
+		document.querySelector(".solutionBtn").addEventListener('click', function () {
 			
 			Puzzle._findOptimal();
 			setTimeout(()=>{

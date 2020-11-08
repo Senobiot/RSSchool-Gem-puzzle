@@ -2,11 +2,12 @@
 @import "../css/reset";
 
 body {
-	padding-top: 100px;
-	position: relative;
+	padding-top: 20px;
+	//position: relative;
 	background: url("assets/images/bg.jpg") no-repeat 50%/cover;
 	font-family: 'Paytone One', sans-serif;
 	text-transform: uppercase;
+	height: 100%;
 	
 }
 
@@ -16,7 +17,7 @@ body {
   	color: #f1ebe5;
   	text-shadow: 0 13.36px 8.896px #384251,0 -2px 1px #fff;
   	letter-spacing: -4px;
-  	margin-bottom: 1em;
+  	margin-bottom: 0.5em;
 }
 
 .menu, .sizes {
@@ -91,26 +92,26 @@ body.block {
 	}
 }
 
-.choice {
-	padding-top: 200px;
-	width: 300px;
-	margin: 0 auto;
-	line-height: 2;
-	transition: all 0.2s;
-	.button {
-		width: 100px;
-		cursor: pointer;
-		height: 25px;
-		border: 1px solid #cacaca;
-		text-align: center;
-	} 
-}
+// .choice {
+// 	padding-top: 200px;
+// 	width: 300px;
+// 	margin: 0 auto;
+// 	line-height: 2;
+// 	transition: all 0.2s;
+// 	.button {
+// 		width: 100px;
+// 		cursor: pointer;
+// 		height: 25px;
+// 		border: 1px solid #cacaca;
+// 		text-align: center;
+// 	} 
+// }
 .puzzle {
 	overflow: hidden;
 	position: relative;
 	margin: 0 auto;
 	user-select: none;
-	background: #A2839E;
+	background: rgba(28,94,125, 0.5);
 	-webkit-tap-highlight-color: transparent;
 	display: grid;
 	grid-auto-rows: 95px;
@@ -118,20 +119,22 @@ body.block {
 	grid-column-gap: 5px;
 	box-shadow:
 	rgba(0,0,0,.8) 3px 3px 8px -3px;
+	margin-bottom: 1em;
 }
 .gem {
 	display: flex;
-	background-color: #A2839E;
 	justify-content: center;
 	align-items: center;
-	font-size: 26px;
-	font-family: Arial;
-	font-weight: 700;
+	background-color: rgba(28,94,125, 0.8);
+	background: linear-gradient(45deg, rgba(28,94,125, 0.8) 33%, rgba(28,94,125, 0.8) 66%, #8AA9D6);
+	color: rgba(255,255,255,.7);
+	font-size: 40px;
+	font-family: 'Paytone One', sans-serif;
 	cursor: pointer;
 	box-shadow:
-	inset rgba(0,0,0,.5) -3px -3px 8px,
-	inset rgba(255,255,255,.9) 3px 3px 8px,
-	rgba(0,0,0,.8) 3px 3px 8px -3px;
+		inset rgba(0,0,0,.5) -3px -3px 8px,
+		inset rgba(255,255,255,.9) 3px 3px 8px,
+		rgba(0,0,0,.8) 3px 3px 8px -3px;
 	&.animation-left {
 		animation: animation-left 0.3s ease-in forwards;
 	}
@@ -175,51 +178,84 @@ body.block {
 	rgba(0,0,0,.8) 3px 3px 8px -3px;
 
 }
-.statistic {
-	position: absolute;
-	width: 40%;
-	height: 50px;
-	background-color: #cacaca;
-	top: 10px;
-	left: 30%;
-	display: flex;
-	font-size: 16px;	
-	font-weight: 700;
-	font-family: Arial, serif;
-	.timer, .moves {
-		border: 1px solid #000;
-		width: 50%;
+.controlPanel {
+	position: fixed;
+	left: 5%;
+	top: 10%;
+	background: rgba(28,94,125, 0.5);
+	border-radius: 5px;
+	width: 300px;
+	padding: 15px;
+	display: none;
+		&.active {
+		display: block;
+	}
+
+}
+
+.timer, .moves {
+		width: 100%;
+		line-height: 2;
 		position: relative;
-		text-align: right;
-		padding-right: 10px;
-		font-size: 1.2em;
+		text-align: left;
+		padding-left: 7.5em;
+		font-family: 'Paytone One', sans-serif;
+		font-size: 1.5em;
 		padding-top: 0.6em;	
+		background-color: rgba(28,94,125, 0.8);
+		background: linear-gradient(45deg, rgba(28,94,125, 0.8) 33%, rgba(28,94,125, 0.8) 66%, #8AA9D6);
+		color: rgba(255,255,255,.7);
+		margin-bottom: 20px;
+		border-radius: 5px;
 		&:before {
-			content: 'Сделано ходов:';
+			content: 'Moves:';
+			font-family: 'Paytone One', sans-serif;
 			position: absolute;
 			left: 1em;
-			top: calc(50% - 0.6em);
+			top: calc(50% - 0.75em);
 		}
-	}
-	.timer:before {
-		content: 'Время:';
-	}
 }
-.solution {
-	position: absolute;
-	width: 150px;
+
+.timer:before {
+	content: 'your time:';
+}
+
+.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn  {
+	width: 180px;
 	height: 50px;
-	background-color: #976262;
-	color: #fff;
 	text-transform: uppercase;
-	font-size: 20px;
-	font-family: Arial, serif;
+	background-color: rgba(28,94,125, 0.8);
+	background: linear-gradient(45deg, rgba(28,94,125, 0.8) 33%, rgba(28,94,125, 0.8) 66%, #8AA9D6);
+	color: rgba(255,255,255,.7);
+	font-size: 2em;
+	font-family: 'Paytone One', sans-serif;
 	border-radius: 5px;
 	cursor: pointer;
-	bottom: 10px;
 	left: calc(50% - 75px);
-	display: none;
-	&.active {
-		display: block;
+	transition: 0.5s;
+	display: block;
+	margin: 0 auto 20px;
+	transition: all 0.3s;
+	&:before {
+		//content: '\27A4';
+		position: absolute;
+		left: -40px;
+	}
+	&:hover {
+		transform: translateX(30px);
+		&:before {
+			content: '\27A4'}
+	}
+
+}
+.solutionBtn {
+	&:hover {
+		animation: solution 0.05s infinite;
+  		@keyframes solution {
+  			0% {transform: translateX(0px);}	
+	  		25% {transform: translateX(3px);color: #cacaca;}	
+	  		75% {transform: translateX(-3px);}	
+	  		100% {transform: translateX(0px);color: #cacaca;}	
+  		}
 	}
 }
