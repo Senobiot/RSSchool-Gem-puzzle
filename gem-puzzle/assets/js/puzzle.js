@@ -1,6 +1,9 @@
 
 const Puzzle = {
   elements: {
+  	title: null,
+  	menu: null,
+  	menuBtns: ["New game", "Choose Field-Size", "Saves", "High Scores"],
     puzzle: null,
     statistic: null,
     moves: null,
@@ -9,6 +12,7 @@ const Puzzle = {
   },
 
    properties: {
+   	//scores: 0,
     time: 0,
     qty: 0,
     randMoves: [],
@@ -19,51 +23,67 @@ const Puzzle = {
     doubles: false,
     keys: [],
     turn: 0,
-    animation: false,
-    dev1: [],
-    dev2: [],
-    dev3: [],
-    dev4: [],
-    dev5: [],
-    dev6: []
+    animation: false
   },
 
-   init(num) {
-   	this.properties.qty = num*10 //решил, что столько рандомных перемещений достаточно 
-    this._getStartPosition(num);
-    this._getMixed(num);
-    this.elements.puzzle = document.createElement("div");
-    this.elements.statistic = document.createElement("div");
-    this.elements.moves = document.createElement("div");
-    this.elements.timer = document.createElement("div");
+  	start() {
+  		 this.elements.title = document.createElement("div");
+  		 this.elements.menu = document.createElement("div");
+  		 this.elements.title.classList.add("title");
+  		 this.elements.title.textContent = "The Puzzle Game";
+  		 this.elements.menu.classList.add("menu");
+  		 this.elements.menu.appendChild(this._createMenu());
+  		 document.body.appendChild(this.elements.title);
+  		 document.body.appendChild(this.elements.menu);
+  	},
 
-    this.elements.puzzle.classList.add("puzzle");
-    this.elements.statistic.classList.add("statistic");
-    this.elements.moves.classList.add("moves");
-    this.elements.moves.innertText = '0';
-    this.elements.timer.classList.add("timer");
+	init(num) {
+		this.properties.qty = num*10 //решил, что столько рандомных перемещений достаточно 
+		this._getStartPosition(num); //нарисуем начальное положенин
+		this._getMixed(num); // перемешивает
+		this.elements.puzzle = document.createElement("div");
+		this.elements.statistic = document.createElement("div");
+		this.elements.moves = document.createElement("div");
+		this.elements.timer = document.createElement("div");
 
-    this.elements.puzzle.appendChild(this._createGems(num));
-	this.elements.statistic.appendChild(this.elements.moves);
-	this.elements.statistic.appendChild(this.elements.timer);
-    this.elements.gems = this.elements.puzzle.querySelectorAll(".gem");
-    
-    document.body.appendChild(this.elements.puzzle);
-    document.body.appendChild(this.elements.statistic);
-    document.querySelector(".solution").classList.add("active");
-    this._getKeys();
-    document.querySelector(".solution").addEventListener('click', function () {
-    	Puzzle.properties.dev1 = Puzzle.properties.randMoves; //отладка
-    	Puzzle.properties.dev2 = Puzzle.properties.snapShot; //отладка
+		this.elements.puzzle.classList.add("puzzle");
+		this.elements.statistic.classList.add("statistic");
+		this.elements.moves.classList.add("moves");
+		this.elements.moves.innertText = '0';
+		this.elements.timer.classList.add("timer");
 
-    	Puzzle._findOptimal();
-    	setTimeout(()=>{
-    		// добавим количество ходов игрока
-	 		Puzzle.properties.turn = Puzzle.properties.randMoves.length - 1;
-    		Puzzle._showSolution ()
-    	}, 1000)	
-    })
+		this.elements.puzzle.appendChild(this._createGems(num));
+		this.elements.statistic.appendChild(this.elements.moves);
+		this.elements.statistic.appendChild(this.elements.timer);
+		this.elements.gems = this.elements.puzzle.querySelectorAll(".gem");
+		
+		document.body.appendChild(this.elements.puzzle);
+		document.body.appendChild(this.elements.statistic);
+		document.querySelector(".solution").classList.add("active");
+		this._getKeys();
+		document.querySelector(".solution").addEventListener('click', function () {
+			
+			Puzzle._findOptimal();
+			setTimeout(()=>{
+				// добавим количество ходов игрока
+		 		Puzzle.properties.turn = Puzzle.properties.randMoves.length - 1;
+				Puzzle._showSolution ()
+			}, 1000)	
+		})
   },
+  _createMenu() {
+  		const fragment = document.createDocumentFragment();
+
+		 this.elements.menuBtns.forEach(item => {
+		  		const menuElement = document.createElement("div");
+		  		menuElement.classList.add("1_1");
+		  		menuElement.textContent = item;	
+		  	fragment.appendChild(menuElement);
+
+		  	})
+	  	return fragment
+  },
+
 
   _getStartPosition(num) {
   	//тут просто исходный массив нужной размерности, который мы будем перемешивать
@@ -136,7 +156,7 @@ const Puzzle = {
 	 },
 
 	 _getKeys() {
-	 	//тут строим массив из кнопок, сортируем, чтобы каждый стоял под своим индексом для упрощения вызова клика
+	 	//тут строим массив из кнопок, сортируем, чтобы каждый стоял под своим индексом для ускорения вызова клика
 	 	this.elements.keys = Array.from(document.querySelectorAll(".gem")).sort(function (a, b) {
   			if (+a.innerHTML > +b.innerHTML) {
     		return 1;
@@ -174,18 +194,12 @@ const Puzzle = {
 				this._findOptimal()
 				
 	 		} 
-	 		console.log(this.properties.dev2[this.properties.dev2.length - 1])
-	 		console.log(this.properties.snapShot[this.properties.snapShot.length - 1]) 
-	 		console.log("optimize!!")
-	 		// this.properties.dev3 = this.properties.snapShot
-	 		// this.properties.dev4 = this.properties.randMoves
 	 },
 
 	 _showSolution (){ 
 	 	//тут просто читаем с конца randMoves и эумлируем клик по нужной кнопке
 		setTimeout(() => {
 			if (!this.properties.animation) {
-				//console.log(this.properties.randMoves[this.properties.turn])
 				this.elements.keys[this.properties.randMoves[this.properties.turn] - 1].click()
 				this.properties.turn--;
 					if (this.properties.turn >= 0) {this._showSolution()}}

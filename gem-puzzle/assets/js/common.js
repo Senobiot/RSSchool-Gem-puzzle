@@ -1,6 +1,10 @@
 //import {puzzle} from './puzzle.js';
 //document.addEventListener("DOMContentLoaded", )
 
+ 
+Puzzle.start()
+
+
 let difficult = 3,
 	form = document.querySelector(".choice"),
 	start = document.querySelector(".button"),
@@ -11,19 +15,19 @@ let difficult = 3,
 	showSolution = document.querySelector(".solution")
 
 
-	start.addEventListener('click', function(){
-		let checkSize = document.getElementsByName('size');    
-		for(i = 0; i < checkSize.length; i++) { 
-			if(checkSize[i].checked) 
-			difficult = Number(checkSize[i].value);
-		} 
-		form.style.opacity = "0";
+	// start.addEventListener('click', function(){
+	// 	let checkSize = document.getElementsByName('size');    
+	// 	for(i = 0; i < checkSize.length; i++) { 
+	// 		if(checkSize[i].checked) 
+	// 		difficult = Number(checkSize[i].value);
+	// 	} 
+	// 	form.style.opacity = "0";
 
-		setTimeout(function(){
-			form.style.display = "none";
-			startGame ()
-		}, 200)
-	})
+	// 	setTimeout(function(){
+	// 		form.style.display = "none";
+	// 		startGame ()
+	// 	}, 200)
+	// })
 
 function startGame () {
  	Puzzle.init(difficult*difficult)
