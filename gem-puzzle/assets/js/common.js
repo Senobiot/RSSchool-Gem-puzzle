@@ -1,6 +1,6 @@
 //import {puzzle} from './puzzle.js';
 //document.addEventListener("DOMContentLoaded", )
- 
+
 Puzzle.start()
 
 function getClickEvents() {
@@ -14,6 +14,10 @@ function getClickEvents() {
 		counter = 0,
 		movesDisplay = document.querySelector(".moves"),
 		difficult = Puzzle.properties.difficult;
+		myAudio1 = new Audio;
+		myAudio2 = new Audio;
+      	myAudio1.src = "assets/media/1.wav";
+      	myAudio2.src = "assets/media/2.wav";
 
 	function gemsNative() {
 		for (let i = 1; i <= Math.pow(difficult, 2) ; i++) {
@@ -39,6 +43,7 @@ function getClickEvents() {
 		
 		if (gems[i] !== empty) {
 			gems[i].addEventListener('click', function () {
+              //myAudio2.play();
 				empty = document.querySelector(".empty")
 				emptyPos = gems.indexOf(empty);
 				if (this.previousElementSibling === empty
@@ -126,6 +131,25 @@ function getClickEvents() {
 			Puzzle.reset()
 			Puzzle.start();
 		}, 500)
+	})
+
+	document.querySelector(".saveBtn").addEventListener('click', function(){
+		this.classList.toggle("active");
+		// if (document.querySelector(".loadBtn").classList.contains("active")) {document.querySelector(".loadBtn").click()}
+		let slots = document.querySelectorAll(".saveSlot");
+		for (let i = 0; i < slots.length; i++) {
+			slots[i].classList.toggle("active");
+		}
+	})
+
+	document.querySelector(".loadBtn").addEventListener('click', function(){
+		this.classList.toggle("active");
+		// if (document.querySelector(".saveBtn").classList.contains("active")) {document.querySelector(".saveBtn").click()}
+
+		let slots = document.querySelectorAll(".loadSlot");
+		for (let i = 0; i < slots.length; i++) {
+			slots[i].classList.toggle("active");
+		}
 	})
 }
 

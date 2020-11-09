@@ -286,7 +286,7 @@ body.block:before {
 .controlPanel {
   position: fixed;
   left: 5%;
-  top: 20%;
+  top: 15%;
   background: rgba(28, 94, 125, 0.5);
   border-radius: 5px;
   width: 300px;
@@ -321,7 +321,7 @@ body.block:before {
 .timer:before {
   content: 'your time:'; }
 
-.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn {
+.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn, .saveSlot, .loadSlot {
   width: 180px;
   height: 50px;
   text-transform: uppercase;
@@ -340,18 +340,57 @@ body.block:before {
   transition: 0.5s;
   display: block;
   margin: 0 auto 20px;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  transition: all 0.3s; }
-  .solutionBtn:not(:last-child):before, .leadersBtn:not(:last-child):before, .backBtn:not(:last-child):before, .saveBtn:not(:last-child):before, .loadBtn:not(:last-child):before {
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  -o-transition: transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s; }
+  .solutionBtn:not(:last-child):before, .leadersBtn:not(:last-child):before, .backBtn:not(:last-child):before, .saveBtn:not(:last-child):before, .loadBtn:not(:last-child):before, .saveSlot:not(:last-child):before, .loadSlot:not(:last-child):before {
     position: absolute;
     left: -40px; }
-  .solutionBtn:not(:last-child):hover, .leadersBtn:not(:last-child):hover, .backBtn:not(:last-child):hover, .saveBtn:not(:last-child):hover, .loadBtn:not(:last-child):hover {
+  .solutionBtn:not(:last-child):hover, .leadersBtn:not(:last-child):hover, .backBtn:not(:last-child):hover, .saveBtn:not(:last-child):hover, .loadBtn:not(:last-child):hover, .saveSlot:not(:last-child):hover, .loadSlot:not(:last-child):hover {
     -webkit-transform: translateX(30px);
         -ms-transform: translateX(30px);
             transform: translateX(30px); }
-    .solutionBtn:not(:last-child):hover:before, .leadersBtn:not(:last-child):hover:before, .backBtn:not(:last-child):hover:before, .saveBtn:not(:last-child):hover:before, .loadBtn:not(:last-child):hover:before {
+    .solutionBtn:not(:last-child):hover:before, .leadersBtn:not(:last-child):hover:before, .backBtn:not(:last-child):hover:before, .saveBtn:not(:last-child):hover:before, .loadBtn:not(:last-child):hover:before, .saveSlot:not(:last-child):hover:before, .loadSlot:not(:last-child):hover:before {
       content: '\27A4'; }
+
+.saveBtn.active, .loadBtn.active {
+  -webkit-transition: all 0s;
+  -o-transition: all 0s;
+  transition: all 0s; }
+  .saveBtn.active:before, .loadBtn.active:before {
+    content: '\27A4';
+    left: 20px;
+    -webkit-transform: translateX(-40px);
+        -ms-transform: translateX(-40px);
+            transform: translateX(-40px);
+    -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+    -webkit-transition: 0;
+    -o-transition: 0;
+    transition: 0; }
+  .saveBtn.active:hover, .loadBtn.active:hover {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none; }
+  .saveBtn.active:hover:before, .loadBtn.active:hover:before {
+    -webkit-transform: translateX(-40px);
+        -ms-transform: translateX(-40px);
+            transform: translateX(-40px);
+    -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+            transform: rotate(90deg); }
+
+.saveSlot, .loadSlot {
+  font-size: 1.5em;
+  height: 30px;
+  width: 120px;
+  margin-bottom: 10px;
+  display: none; }
+  .saveSlot.active, .loadSlot.active {
+    display: block; }
 
 .solutionBtn:hover {
   -webkit-animation: solution 0.05s infinite;

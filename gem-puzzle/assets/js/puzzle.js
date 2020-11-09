@@ -15,6 +15,12 @@ const Puzzle = {
     leadersBtn: null,
     backToMenu: null,
     saveBtn: null,
+    saveSlot1: null,
+    saveSlot2: null,
+    saveSlot3: null,
+    loadSlot1: null,
+    loadSlot2: null,
+    loadSlot3: null,
     loadBtn: null,
     gems: []
   },
@@ -86,7 +92,13 @@ const Puzzle = {
 		this.elements.solutionBtn = document.createElement("button");
 		this.elements.backToMenu = document.createElement("button");
 		this.elements.saveBtn = document.createElement("button");
+		this.elements.saveSlot1 = document.createElement("button");
+		this.elements.saveSlot2 = document.createElement("button");
+		this.elements.saveSlot3 = document.createElement("button");
 		this.elements.loadBtn = document.createElement("button");
+		this.elements.loadSlot1 = document.createElement("button")
+		this.elements.loadSlot2 = document.createElement("button")
+		this.elements.loadSlot3 = document.createElement("button")
 		this.elements.controlPanel = document.createElement("div");
 		this.elements.leadersPanel = document.createElement("div");
 
@@ -94,13 +106,26 @@ const Puzzle = {
   		this.elements.leadersBtn.innerText = "leaders";
   		this.elements.backToMenu.innerText = "to menu";
   		this.elements.saveBtn.innerText = "save";
+  		this.elements.saveSlot1.innerText = "slot 1";
+  		this.elements.saveSlot2.innerText = "slot 2";
+  		this.elements.saveSlot3.innerText = "slot 3";
   		this.elements.loadBtn.innerText = "load";
+  		this.elements.loadSlot1.innerText = "slot 1";
+  		this.elements.loadSlot2.innerText = "slot 2";
+  		this.elements.loadSlot3.innerText = "slot 3";
 
   		this.elements.solutionBtn.classList.add("solutionBtn");
   		this.elements.solutionBtn.classList.add("leadersBtn");
   		this.elements.backToMenu.classList.add("backBtn");
   		this.elements.saveBtn.classList.add("saveBtn");
-  		this.elements.loadBtn.classList.add("saveBtn");
+  		this.elements.saveSlot1.classList.add("saveSlot");
+  		this.elements.saveSlot2.classList.add("saveSlot");
+  		this.elements.saveSlot3.classList.add("saveSlot");
+  		this.elements.loadBtn.classList.add("loadBtn");
+  		this.elements.loadSlot1.classList.add("loadSlot");
+  		this.elements.loadSlot2.classList.add("loadSlot");
+  		this.elements.loadSlot3.classList.add("loadSlot");
+
 		this.elements.puzzle.classList.add("puzzle");
 		this.elements.moves.classList.add("moves");
 		this.elements.timer.classList.add("timer");
@@ -113,7 +138,13 @@ const Puzzle = {
 		this.elements.controlPanel.appendChild(this.elements.timer);
 		this.elements.controlPanel.appendChild(this.elements.backToMenu);
 		this.elements.controlPanel.appendChild(this.elements.saveBtn);
+		this.elements.controlPanel.appendChild(this.elements.saveSlot1);
+		this.elements.controlPanel.appendChild(this.elements.saveSlot2);
+		this.elements.controlPanel.appendChild(this.elements.saveSlot3);
 		this.elements.controlPanel.appendChild(this.elements.loadBtn);
+		this.elements.controlPanel.appendChild(this.elements.loadSlot1);
+		this.elements.controlPanel.appendChild(this.elements.loadSlot2);
+		this.elements.controlPanel.appendChild(this.elements.loadSlot3);
 		this.elements.controlPanel.appendChild(this.elements.leadersBtn);
 		this.elements.controlPanel.appendChild(this.elements.solutionBtn);
 
