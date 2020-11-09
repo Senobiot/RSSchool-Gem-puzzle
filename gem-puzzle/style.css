@@ -63,7 +63,10 @@ body {
   background: url("assets/images/bg.jpg") no-repeat 50%/cover;
   font-family: 'Paytone One', sans-serif;
   text-transform: uppercase;
-  height: 100%; }
+  height: 100%;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s; }
 
 .title {
   text-align: center;
@@ -283,7 +286,7 @@ body.block:before {
 .controlPanel {
   position: fixed;
   left: 5%;
-  top: 10%;
+  top: 20%;
   background: rgba(28, 94, 125, 0.5);
   border-radius: 5px;
   width: 300px;
@@ -340,14 +343,14 @@ body.block:before {
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s; }
-  .solutionBtn:before, .leadersBtn:before, .backBtn:before, .saveBtn:before, .loadBtn:before {
+  .solutionBtn:not(:last-child):before, .leadersBtn:not(:last-child):before, .backBtn:not(:last-child):before, .saveBtn:not(:last-child):before, .loadBtn:not(:last-child):before {
     position: absolute;
     left: -40px; }
-  .solutionBtn:hover, .leadersBtn:hover, .backBtn:hover, .saveBtn:hover, .loadBtn:hover {
+  .solutionBtn:not(:last-child):hover, .leadersBtn:not(:last-child):hover, .backBtn:not(:last-child):hover, .saveBtn:not(:last-child):hover, .loadBtn:not(:last-child):hover {
     -webkit-transform: translateX(30px);
         -ms-transform: translateX(30px);
             transform: translateX(30px); }
-    .solutionBtn:hover:before, .leadersBtn:hover:before, .backBtn:hover:before, .saveBtn:hover:before, .loadBtn:hover:before {
+    .solutionBtn:not(:last-child):hover:before, .leadersBtn:not(:last-child):hover:before, .backBtn:not(:last-child):hover:before, .saveBtn:not(:last-child):hover:before, .loadBtn:not(:last-child):hover:before {
       content: '\27A4'; }
 
 .solutionBtn:hover {

@@ -26,13 +26,14 @@ function getClickEvents() {
 		gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
 		if (gemsCurrentPosCheck === gemsNativePos) {
 			setTimeout(() => {
-				body.classList.add("block");
+				document.body.classList.add("block");
 				popupWin.classList.add("active")
 				popupMoves.innerText += counter;
 				popupTime.innerText = timer.innerHTML;
 			}, 100)
 		};			
 	}
+	//---------------------------- клетки ---------------------------
 
 	for (let i = 0; i < gems.length; i++) {
 		
@@ -113,6 +114,19 @@ function getClickEvents() {
 			 })
 		}
 	}
+	//-------------------------------- меню -----------------------
+	document.querySelector(".backBtn").addEventListener('click', function(){
+		document.body.style.transform = "scale(0)";
+		setTimeout(() => {
+			
+		while (document.body.firstChild) {
+    		document.body.removeChild(document.body.firstChild);
+		}
+		document.body.style.transform = "scale(1)";
+			Puzzle.reset()
+			Puzzle.start();
+		}, 500)
+	})
 }
 
 
@@ -178,4 +192,16 @@ function getClickEvents() {
 
 
 
-
+//---функция проверки свободоного места локал стор взял с гитхаба
+// var getLocalStorageSize = function() {
+//     var total = 0;
+//     for (var x in localStorage) {
+//         // Value is multiplied by 2 due to data being stored in `utf-16` format, which requires twice the space.
+//         var amount = (localStorage[x].length * 2) / 1024 / 1024;
+//         if (!isNaN(amount) && localStorage.hasOwnProperty(x)) {
+//             // console.log(x, localStorage.getItem(x), amount);
+//             total += amount;
+//         }
+//     }
+//     return total.toFixed(2);
+// };

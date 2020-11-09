@@ -1,9 +1,10 @@
 
 const Puzzle = {
   elements: {
+  	//если чего-нибудь вставлю не null, лучше в середину и поправить функуию reset()
+  	menuBtns: ["New game", "Saves", "High Scores"],
   	title: null,
   	menu: null,
-  	menuBtns: ["New game", "Choose Field-Size", "Saves", "High Scores"],
   	sizes: null, 
     puzzle: null,
     controlPanel: null,
@@ -19,7 +20,7 @@ const Puzzle = {
   },
 
    properties: {
-   	//scores: 0,
+   	//если чего-нибудь вставлю не null, лучше в середину и поправить функуию reset()
    	size: ["child : 3 x 3", "novice : 4 x 4", "Apprentice : 5 x 5", "Adept : 6 x 6", "Expert : 7 x 7", "Master : 8 x 8"],
    	difficult: 3,
     time: -1,
@@ -32,7 +33,8 @@ const Puzzle = {
     doubles: false,
     keys: [],
     turn: 0,
-    animation: false
+    animation: false,
+    reset: false
   },
 
   	start() {
@@ -48,6 +50,29 @@ const Puzzle = {
   		 document.body.appendChild(this.elements.title);
   		 document.body.appendChild(this.elements.menu);
   		 document.body.appendChild(this.elements.sizes);
+  	},
+
+  	reset() {
+  		for (let i = 1; i <= this.elements.length; i++) {
+  			if (i === this.elements.length) {this.elements[i] = []}
+  			else{this.elements[i] = null;}
+  		}
+  		this.properties.time = -1;
+  		this.properties.qty = 0;
+  		this.properties.randMoves = [];
+  		this.properties.finalRandMoves = [];
+  		this.properties.snapShot = [];
+  		this.properties.startArr = [];
+  		this.properties.finalSnapshot = [];
+  		this.properties.doubles = false;
+  		this.properties.keys = [];
+  		this.properties.turn = 0;
+  		this.properties.animation = false;
+  		this.properties.reset = true;
+  	},
+
+  	save() {
+  		localStorage.setItem('snapShot', `${this.properties.snapShot}`);
   	},
 
 	init(num) {
@@ -242,17 +267,19 @@ const Puzzle = {
 	},
 
 	_showTime() {
-		if (document.body.classList.contains("block")) return;
-		Puzzle.properties.time++;
-		let hour = Math.floor(Puzzle.properties.time / 3600),
-		min = Math.floor((Puzzle.properties.time - hour*3600) / 60);
-		second = Puzzle.properties.time % 60;
+		if (this.properties.reset) {
+			this.properties.reset = false;
+			return};
+		this.properties.time++;
+		let hour = Math.floor(this.properties.time / 3600),
+		min = Math.floor((this.properties.time - hour*3600) / 60);
+		second = this.properties.time % 60;
 		if (hour < 10) {hour = "0" + hour}
 		if (second < 10) {second = "0" + second}
 		if (min < 10) {min = "0" + min}
-		Puzzle.elements.timer.innerHTML = `${hour}<span>:</span>${min}<span>:</span>${second}`;
+		this.elements.timer.innerHTML = `${hour}<span>:</span>${min}<span>:</span>${second}`;
 
-		setTimeout(Puzzle._showTime, 1000)
+		setTimeout(()=> {this._showTime()}, 1000)
 	},
 
 
