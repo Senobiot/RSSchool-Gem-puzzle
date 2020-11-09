@@ -11,8 +11,8 @@ function getClickEvents() {
 		gemsCurrentPosCheck,
 		gemsNativePos = "",
 		anDuration = 300,
-		counter = 0,
 		movesDisplay = document.querySelector(".moves"),
+		counter = Number(movesDisplay.innerText),
 		difficult = Puzzle.properties.difficult;
 		myAudio1 = new Audio;
 		myAudio2 = new Audio;
@@ -133,12 +133,50 @@ function getClickEvents() {
 		}, 500)
 	})
 
+	let saveSlots =  document.querySelectorAll(".saveSlot"),
+		loadSlots =  document.querySelectorAll(".loadSlot");
+		const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+		//------логика сохранения -------
+		for (let i = 0; i < saveSlots.length; i++) {
+				saveSlots[i].addEventListener('click', function(){
+					let date = new Date();
+					let hour = date.getHours();
+					let min = date.getMinutes()
+					if (hour < 10) {hour = "0" + hour}
+					if (min < 10) {min = "0" + min}
+					saveSlots[i].innerText = loadSlots[i].innerText = `${Puzzle.properties.difficult}x${Puzzle.properties.difficult} ${month[date.getMonth()]} ${date.getDate()} ${hour}:${min}`
+					localStorage.setItem(`save-${i}-date`, `${saveSlots[i].innerText}`);
+					localStorage.setItem(`save-${i}-moves`, `${counter}`);
+					localStorage.setItem(`save-${i}-timer`, `${Puzzle.properties.time}`);
+					localStorage.setItem(`save-${i}-difficult`, `${Puzzle.properties.difficult}`);
+					localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`);
+					localStorage.setItem(`save-${i}-randMoves`, `${Puzzle.properties.randMoves}`);
+					localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`);
+					localStorage.setItem(`save-${i}-startPos`, `${Puzzle.properties.snapShot[Puzzle.properties.snapShot.length - 1]}`);
+				})
+		}
+
+		//-----логика загрузки
+
+		for (let i = 0; i < saveSlots.length; i++) {
+
+			loadSlots[i].addEventListener('click', function(){
+				Puzzle.load(i)
+			})
+		}
+
+
+
+
+
+		// раскрытие кнопок сохранения/хагрузки
 	document.querySelector(".saveBtn").addEventListener('click', function(){
 		this.classList.toggle("active");
 		// if (document.querySelector(".loadBtn").classList.contains("active")) {document.querySelector(".loadBtn").click()}
-		let slots = document.querySelectorAll(".saveSlot");
-		for (let i = 0; i < slots.length; i++) {
-			slots[i].classList.toggle("active");
+		
+		for (let i = 0; i < saveSlots.length; i++) {
+			saveSlots[i].classList.toggle("active");
 		}
 	})
 
@@ -146,10 +184,13 @@ function getClickEvents() {
 		this.classList.toggle("active");
 		// if (document.querySelector(".saveBtn").classList.contains("active")) {document.querySelector(".saveBtn").click()}
 
-		let slots = document.querySelectorAll(".loadSlot");
-		for (let i = 0; i < slots.length; i++) {
-			slots[i].classList.toggle("active");
+		for (let i = 0; i < loadSlots.length; i++) {
+			loadSlots[i].classList.toggle("active");
 		}
+	})
+
+	document.querySelector(".saveSlot").addEventListener('click', function(){
+
 	})
 }
 

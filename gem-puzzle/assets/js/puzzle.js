@@ -77,14 +77,35 @@ const Puzzle = {
   		this.properties.reset = true;
   	},
 
-  	save() {
-  		localStorage.setItem('snapShot', `${this.properties.snapShot}`);
+  	load(i) {
+  		document.body.style.transform = "scale(0)";
+		setTimeout(() => {
+			
+		while (document.body.firstChild) {
+    		document.body.removeChild(document.body.firstChild);
+		}
+		document.body.style.transform = "scale(1)";
+			this.reset()
+			this.elements.title = document.createElement("div");
+			 this.elements.title.classList.add("title");
+			 this.elements.title.textContent = "The Puzzle Game";
+			document.body.appendChild(this.elements.title);
+			this.properties.difficult = +localStorage.getItem(`save-${i}-difficult`);
+			this.properties.snapShot = localStorage.getItem(`save-${i}-snap`).split(",");
+			this.properties.randMoves = localStorage.getItem(`save-${i}-randMoves`).split(",").map(Number);
+			this.properties.time = +localStorage.getItem(`save-${i}-timer`);
+			this.properties.startArr = localStorage.getItem(`save-${i}-startPos`).split("+").map(Number);
+
+
+			this.init(Math.pow(this.properties.difficult, 2), true)
+
+		}, 500)
   	},
 
-	init(num) {
-		this.properties.qty = num*10 //решил, что столько рандомных перемещений достаточно 
-		this._getStartPosition(num); //нарисуем начальное положенин
-		this._getMixed(num); // перемешивает
+	init(num, loaded) {
+		if (!loaded) {this.properties.qty = num*10}; //решил, что столько рандомных перемещений достаточно 
+		if (!loaded) {this._getStartPosition(num)}; //нарисуем начальное положенин
+		if (!loaded) {this._getMixed(num)}; // перемешивает
 		this.elements.puzzle = document.createElement("div");
 		this.elements.moves = document.createElement("div");
 		this.elements.timer = document.createElement("div");
@@ -106,13 +127,13 @@ const Puzzle = {
   		this.elements.leadersBtn.innerText = "leaders";
   		this.elements.backToMenu.innerText = "to menu";
   		this.elements.saveBtn.innerText = "save";
-  		this.elements.saveSlot1.innerText = "slot 1";
-  		this.elements.saveSlot2.innerText = "slot 2";
-  		this.elements.saveSlot3.innerText = "slot 3";
+  		this.elements.saveSlot1.innerText = localStorage.getItem('save-0-date') ? localStorage.getItem('save-0-date') :	"slot 1";
+  		this.elements.saveSlot2.innerText = localStorage.getItem('save-1-date') ? localStorage.getItem('save-1-date') :	"slot 2";
+  		this.elements.saveSlot3.innerText = localStorage.getItem('save-2-date') ? localStorage.getItem('save-2-date') :	"slot 3";
   		this.elements.loadBtn.innerText = "load";
-  		this.elements.loadSlot1.innerText = "slot 1";
-  		this.elements.loadSlot2.innerText = "slot 2";
-  		this.elements.loadSlot3.innerText = "slot 3";
+  		this.elements.loadSlot1.innerText = localStorage.getItem('save-0-date') ? localStorage.getItem('save-0-date') :	"slot 1";
+  		this.elements.loadSlot2.innerText = localStorage.getItem('save-1-date') ? localStorage.getItem('save-1-date') :	"slot 2";
+  		this.elements.loadSlot3.innerText = localStorage.getItem('save-2-date') ? localStorage.getItem('save-2-date') :	"slot 3";
 
   		this.elements.solutionBtn.classList.add("solutionBtn");
   		this.elements.solutionBtn.classList.add("leadersBtn");
@@ -152,7 +173,8 @@ const Puzzle = {
 
 		document.body.appendChild(this.elements.puzzle);
 		document.body.appendChild(this.elements.controlPanel);
-		this.elements.moves.textContent = "0";
+		if (!loaded) {this.elements.moves.textContent = "0"
+		} else {this.elements.moves.textContent = localStorage.getItem('save-0-moves')};
 		this._puzzleSize();
 		this._showTime();
 		getClickEvents();
