@@ -2,7 +2,7 @@
 const Puzzle = {
   elements: {
   	//если чего-нибудь вставлю не null, лучше в середину и поправить функуию reset()
-  	menuBtns: ["New game", "Saves", "High Scores"],
+  	menuBtns: ["New game", "load Saved game", "High Scores"],
   	title: null,
   	menu: null,
   	sizes: null,
@@ -48,12 +48,15 @@ const Puzzle = {
   		 this.elements.title = document.createElement("div");
   		 this.elements.menu = document.createElement("div");
   		 this.elements.sizes = document.createElement("div");
+  		 this.elements.leadersPanel = document.createElement("div");
   		 this.elements.savesMainMenu = document.createElement("div");
   		 this.elements.title.classList.add("title");
   		 this.elements.title.textContent = "The Puzzle Game";
   		 this.elements.menu.classList.add("menu");
   		 this.elements.sizes.classList.add("sizes",  "inactive");
   		 this.elements.savesMainMenu.classList.add("savesMainMenu",  "inactive");
+  		 this.elements.leadersPanel.classList.add("leadersPanel",  "inactive");
+  		 this.elements.leadersPanel.appendChild(this._createLeaders());
   		 this.elements.menu.appendChild(this._createMenu());
   		 this.elements.sizes.appendChild(this._createSizes());
   		 this.elements.savesMainMenu.appendChild(this._createSaves());
@@ -61,6 +64,7 @@ const Puzzle = {
   		 document.body.appendChild(this.elements.menu);
   		 document.body.appendChild(this.elements.sizes);
   		 document.body.appendChild(this.elements.savesMainMenu);
+  		 document.body.appendChild(this.elements.leadersPanel);
   	},
 
   	reset(workingTimer) {
@@ -216,15 +220,30 @@ const Puzzle = {
 		  			
 		  		})
 		  	} else if (this.elements.menuBtns.indexOf(item) === 1) {
-		  		menuElement.addEventListener('click', ()=> {
-		  			this.elements.menu.classList.add("inactive")
-		  			setTimeout(()=> {
-		  				this.elements.menu.style.display = "none";
-		  				this.elements.sizes.style.display = "none";
-		  				this.elements.savesMainMenu.classList.remove("inactive");
-		  			}, 600)
-		  			
-		  		})
+		  		//проверим есть ли сохранёнки
+		  		if (localStorage.getItem(`save-0-date`) ||
+		  			localStorage.getItem(`save-1-date`) ||
+		  			localStorage.getItem(`save-2-date`)) {
+		  				menuElement.addEventListener('click', ()=> {
+				  			this.elements.menu.classList.add("inactive")
+				  			setTimeout(()=> {
+			  				this.elements.menu.style.display = "none";
+			  				this.elements.sizes.style.display = "none";
+			  				this.elements.savesMainMenu.classList.remove("inactive");
+			  			}, 600)	
+		  			})
+		  		} else {		  			
+		  			menuElement.addEventListener('click', ()=> {
+		  				let text = menuElement.textContent;
+		  				menuElement.textContent = "No Saved games yet";
+		  				menuElement.style.color = "#d66e6e";
+		  				setTimeout(()=> {
+		  					menuElement.textContent = text;
+		  					menuElement.style.color = "#f1ebe5";
+		  				}, 2000)
+		  			})		  			
+		  		}
+
 		  	}
 		 })
 	  	return fragment
@@ -267,13 +286,71 @@ const Puzzle = {
 		  		menuElement.classList.add("savesMainMenuSlot");
 			  	fragment.appendChild(menuElement);
 			  	menuElement.addEventListener('click', ()=> {
-			  		this.elements.savesMainMenu.classList.add("inactive")
-		  			this.elements.sizes.style.display = "none";
-			  		this.load(j, false);
+			  		//тут чтобы неактивные пустые сейвы
+			  		if (localStorage.getItem(`save-${j}-date`)) {
+			  			this.elements.savesMainMenu.classList.add("inactive")
+			  			this.elements.sizes.style.display = "none";
+				  		this.load(j, false);
+			  		}
+
 			  	})
   		}
 	  	return fragment
   },
+
+  _createLeaders() {
+  	const fragment = document.createDocumentFragment();
+  	let leadersDifficultiesBtns = document.createElement("div");
+  	leadersDifficultiesBtns.classList.add("leadersDifficultiesBtns")
+  	let difficulties = ["3x3", "4x4", "5x5", "6x6", "7x7", "8x8"];
+  		for (let i = 0; i <= difficulties.length - 1; i++) {
+		  		const menuElement = document.createElement("div");
+		  		menuElement.classList.add("leadersDifficulties");
+		  		menuElement.textContent = difficulties[i];
+			  	leadersDifficultiesBtns.appendChild(menuElement);
+
+			  	// menuElement.addEventListener('click', ()=> {
+
+			  	// })
+  		}
+
+  		fragment.appendChild(leadersDifficultiesBtns);
+
+  	let leadersHeader = document.createElement("div");	
+  		leadersHeader.classList.add("leadersHeader")
+		for (let i = 0; i <= 3; i++) {
+		  		const menuElement = document.createElement("div");
+		  		i === 0 ? menuElement.textContent = "Pos":
+		  		i === 1 ? menuElement.textContent = "moves":
+		  		i === 2 ? menuElement.textContent = "time":
+		  		menuElement.textContent = "name";
+			  	leadersHeader.appendChild(menuElement);
+  		}
+
+  		fragment.appendChild(leadersHeader);
+
+
+  	let leadersGrid = document.createElement("div");
+  		leadersGrid.classList.add("leadersGrid")
+  		let arr = [3, 7, 11, 15, 19, 23, 27, 31, 35 ,39];
+
+  		for (let i = 0; i < 40 ; i++) {
+  			const menuElement = document.createElement("div");
+  			i === 0 ? menuElement.textContent = 1:
+  			i % 4 === 0 ? menuElement.textContent = i / 4 + 1:
+  			arr.includes(i) ? menuElement.textContent = "computer" :
+  			menuElement.textContent = 999;
+  			leadersGrid.appendChild(menuElement);
+  		}
+
+  		fragment.appendChild(leadersGrid)
+
+  		let leadersCloseBtn = document.createElement("div");
+  		leadersCloseBtn.classList.add("leadersCloseBtn") ;
+		fragment.appendChild(leadersCloseBtn);
+
+	  	return fragment
+  	},
 
 
   _getStartPosition(num) {

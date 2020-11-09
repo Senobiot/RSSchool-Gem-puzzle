@@ -162,7 +162,10 @@ function getClickEvents() {
 		for (let i = 0; i < saveSlots.length; i++) {
 
 			loadSlots[i].addEventListener('click', function(){
-				Puzzle.load(i, true)
+				if (localStorage.getItem(`save-${i}-date`)) {
+					Puzzle.load(i, true)
+				}
+				
 			})
 		}
 
