@@ -128,7 +128,7 @@ function getClickEvents() {
     		document.body.removeChild(document.body.firstChild);
 		}
 		document.body.style.transform = "scale(1)";
-			Puzzle.reset()
+			Puzzle.reset(true)
 			Puzzle.start();
 		}, 500)
 	})
@@ -162,7 +162,7 @@ function getClickEvents() {
 		for (let i = 0; i < saveSlots.length; i++) {
 
 			loadSlots[i].addEventListener('click', function(){
-				Puzzle.load(i)
+				Puzzle.load(i, true)
 			})
 		}
 

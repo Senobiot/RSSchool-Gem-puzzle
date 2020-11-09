@@ -76,7 +76,7 @@ body {
   letter-spacing: -4px;
   margin-bottom: 0.5em; }
 
-.menu, .sizes {
+.menu, .sizes, .savesMainMenu {
   margin: 0 auto;
   font-size: 40px;
   color: #f1ebe5;
@@ -103,9 +103,9 @@ body {
   -webkit-transform-origin: left;
       -ms-transform-origin: left;
           transform-origin: left; }
-  .menu div, .sizes div {
+  .menu div, .sizes div, .savesMainMenu div {
     cursor: pointer; }
-    .menu div:hover, .sizes div:hover {
+    .menu div:hover, .sizes div:hover, .savesMainMenu div:hover {
       -webkit-animation: menu 0.4s infinite;
               animation: menu 0.4s infinite;
       color: #F3F5A1; }
@@ -137,7 +137,7 @@ body {
   100% {
     -webkit-transform: translateX(0px);
             transform: translateX(0px); } }
-  .menu.inactive, .sizes.inactive {
+  .menu.inactive, .sizes.inactive, .savesMainMenu.inactive {
     -webkit-transform: rotateX(90deg);
             transform: rotateX(90deg); }
 

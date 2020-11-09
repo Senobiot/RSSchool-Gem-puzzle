@@ -5,7 +5,8 @@ const Puzzle = {
   	menuBtns: ["New game", "Saves", "High Scores"],
   	title: null,
   	menu: null,
-  	sizes: null, 
+  	sizes: null,
+  	savesMainMenu: null, 
     puzzle: null,
     controlPanel: null,
     leadersPanel: null,
@@ -47,18 +48,22 @@ const Puzzle = {
   		 this.elements.title = document.createElement("div");
   		 this.elements.menu = document.createElement("div");
   		 this.elements.sizes = document.createElement("div");
+  		 this.elements.savesMainMenu = document.createElement("div");
   		 this.elements.title.classList.add("title");
   		 this.elements.title.textContent = "The Puzzle Game";
   		 this.elements.menu.classList.add("menu");
   		 this.elements.sizes.classList.add("sizes",  "inactive");
+  		 this.elements.savesMainMenu.classList.add("savesMainMenu",  "inactive");
   		 this.elements.menu.appendChild(this._createMenu());
   		 this.elements.sizes.appendChild(this._createSizes());
+  		 this.elements.savesMainMenu.appendChild(this._createSaves());
   		 document.body.appendChild(this.elements.title);
   		 document.body.appendChild(this.elements.menu);
   		 document.body.appendChild(this.elements.sizes);
+  		 document.body.appendChild(this.elements.savesMainMenu);
   	},
 
-  	reset() {
+  	reset(workingTimer) {
   		for (let i = 1; i <= this.elements.length; i++) {
   			if (i === this.elements.length) {this.elements[i] = []}
   			else{this.elements[i] = null;}
@@ -74,10 +79,11 @@ const Puzzle = {
   		this.properties.keys = [];
   		this.properties.turn = 0;
   		this.properties.animation = false;
-  		this.properties.reset = true;
+ 		if (workingTimer) this.properties.reset = true;
+
   	},
 
-  	load(i) {
+  	load(i, workingTimer) {
   		document.body.style.transform = "scale(0)";
 		setTimeout(() => {
 			
@@ -85,10 +91,11 @@ const Puzzle = {
     		document.body.removeChild(document.body.firstChild);
 		}
 		document.body.style.transform = "scale(1)";
-			this.reset()
+			if (workingTimer) {this.reset(true)}
+				else {this.reset(false)};
 			this.elements.title = document.createElement("div");
-			 this.elements.title.classList.add("title");
-			 this.elements.title.textContent = "The Puzzle Game";
+			this.elements.title.classList.add("title");
+			this.elements.title.textContent = "The Puzzle Game";
 			document.body.appendChild(this.elements.title);
 			this.properties.difficult = +localStorage.getItem(`save-${i}-difficult`);
 			this.properties.snapShot = localStorage.getItem(`save-${i}-snap`).split(",");
@@ -208,13 +215,22 @@ const Puzzle = {
 		  			}, 600)
 		  			
 		  		})
+		  	} else if (this.elements.menuBtns.indexOf(item) === 1) {
+		  		menuElement.addEventListener('click', ()=> {
+		  			this.elements.menu.classList.add("inactive")
+		  			setTimeout(()=> {
+		  				this.elements.menu.style.display = "none";
+		  				this.elements.sizes.style.display = "none";
+		  				this.elements.savesMainMenu.classList.remove("inactive");
+		  			}, 600)
+		  			
+		  		})
 		  	}
-		  	})
+		 })
 	  	return fragment
   },
 
     _createSizes() {
-    	//
   		const fragment = document.createDocumentFragment();
 
 		 this.properties.size.forEach(item => {
@@ -226,6 +242,7 @@ const Puzzle = {
 		  			this.elements.sizes.classList.add("inactive")
 		  			setTimeout(()=> {
 		  				this.elements.sizes.style.display = "none";
+		  				this.elements.savesMainMenu.style.display = "none";
 		  				this.init(Math.pow(this.properties.difficult, 2));
 		  			}, 600)
 
@@ -241,7 +258,22 @@ const Puzzle = {
 		  	})
 	  	return fragment
   },
+    _createSaves() {
+  		const fragment = document.createDocumentFragment();
 
+  		for (let j = 0; j <= 2; j++) {
+		  		const menuElement = document.createElement("div");
+		  		menuElement.textContent = localStorage.getItem(`save-${j}-date`) ? localStorage.getItem(`save-${j}-date`) : `slot ${j}`;	
+		  		menuElement.classList.add("savesMainMenuSlot");
+			  	fragment.appendChild(menuElement);
+			  	menuElement.addEventListener('click', ()=> {
+			  		this.elements.savesMainMenu.classList.add("inactive")
+		  			this.elements.sizes.style.display = "none";
+			  		this.load(j, false);
+			  	})
+  		}
+	  	return fragment
+  },
 
 
   _getStartPosition(num) {
@@ -319,7 +351,7 @@ const Puzzle = {
 		this.elements.puzzle.style.gridTemplateColumns = `repeat(${this.properties.difficult}, 1fr)`;
 	},
 
-	_showTime() {
+	_showTime() {	
 		if (this.properties.reset) {
 			this.properties.reset = false;
 			return};
