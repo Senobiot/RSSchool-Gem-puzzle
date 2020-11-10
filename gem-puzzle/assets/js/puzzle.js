@@ -28,7 +28,7 @@ const Puzzle = {
 
    properties: {
    	//если чего-нибудь вставлю не null, лучше в середину и поправить функуию reset()
-   	size: ["child : 3 x 3", "novice : 4 x 4", "Apprentice : 5 x 5", "Adept : 6 x 6", "Expert : 7 x 7", "Master : 8 x 8"],
+   	size: ["child : 3 x 3", "novice : 4 x 4", "Apprentice : 5 x 5", "Adept : 6 x 6", "Expert : 7 x 7", "Master : 8 x 8", "back to menu"],
    	difficult: 3,
     time: -1,
     qty: 0,
@@ -185,7 +185,7 @@ const Puzzle = {
 		document.body.appendChild(this.elements.controlPanel);
 		if (!loaded) {this.elements.moves.textContent = "0"
 		} else {this.elements.moves.textContent = localStorage.getItem('save-0-moves')};
-		this._createLeaders(3); // !!!!!!!!!!!!!!!!!
+		this._createLeaders(3);
 		this._puzzleSize();
 		this._showTime();
 		console.log("run ckicking")
@@ -260,22 +260,33 @@ const Puzzle = {
 		  		menuElement.textContent = item;	
 		  	fragment.appendChild(menuElement);
 		  	//скрываем по нажатию на любой выбор
-		  	menuElement.addEventListener('click', ()=> {
-		  			this.elements.sizes.classList.add("inactive")
-		  			setTimeout(()=> {
-		  				this.elements.sizes.style.display = "none";
-		  				this.elements.savesMainMenu.style.display = "none";
-		  				this.init(Math.pow(this.properties.difficult, 2));
-		  			}, 600)
-
+		  	  	menuElement.addEventListener('click', ()=> {
+		  	  		if (this.properties.size.indexOf(item) === 6) {
+		  	  			document.body.style.transform = "scale(0)";
+		  				setTimeout(() => {
+		  					while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
+							document.body.style.transform = "scale(1)";
+							Puzzle.reset(true)
+							Puzzle.start();
+						}, 500);
+		  	  		} else {
+		  	  			this.elements.sizes.classList.add("inactive")
+		  				setTimeout(()=> {
+			  				this.elements.sizes.style.display = "none";
+			  				this.elements.savesMainMenu.style.display = "none";
+			  				this.init(Math.pow(this.properties.difficult, 2));
+		  				}, 600)
+		  	  		}
 		  		})
+
 		  	//ставим параметр сложности
-		  	this.properties.size.indexOf(item) === 0 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 3;}):
-		  	this.properties.size.indexOf(item) === 1 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 4;}):
-		  	this.properties.size.indexOf(item) === 2 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6;}):
-		  	this.properties.size.indexOf(item) === 3 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6;}):
-		  	this.properties.size.indexOf(item) === 4 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 7;}):
-		  	menuElement.addEventListener('click', ()=> {this.properties.difficult = 8});
+		  	this.properties.size.indexOf(item) === 0 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 3 }):
+		  	this.properties.size.indexOf(item) === 1 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 4 }):
+		  	this.properties.size.indexOf(item) === 2 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6 }):
+		  	this.properties.size.indexOf(item) === 3 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6 }):
+		  	this.properties.size.indexOf(item) === 4 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 7 }):
+		  	this.properties.size.indexOf(item) === 5 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 8 }):
+		  	menuElement.style.color = "#d66e6e";
 		  	
 		  	})
 	  	return fragment
@@ -298,6 +309,22 @@ const Puzzle = {
 
 			  	})
   		}
+  		const backBtn = document.createElement("div");
+	  		backBtn.textContent = "back to menu";
+	  		backBtn.style.color = "#d66e6e";
+	  		backBtn.addEventListener('click', ()=> {
+				document.body.style.transform = "scale(0)";
+		  		setTimeout(() => {
+		  			while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
+					document.body.style.transform = "scale(1)";
+					Puzzle.reset(true)
+					Puzzle.start();
+					}, 500);
+  			});
+  			
+	  		fragment.appendChild(backBtn);
+
+
 	  	return fragment
   },
 
