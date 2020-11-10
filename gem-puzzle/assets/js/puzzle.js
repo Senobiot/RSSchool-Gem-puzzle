@@ -38,6 +38,7 @@ const Puzzle = {
     finalSnapshot: [],
     startArr: [],
     doubles: false,
+    solution: false,
     keys: [],
     turn: 0,
     animation: false,
@@ -80,6 +81,7 @@ const Puzzle = {
   		this.properties.startArr = [];
   		this.properties.finalSnapshot = [];
   		this.properties.doubles = false;
+  		this.properties.solution = false;
   		this.properties.keys = [];
   		this.properties.turn = 0;
   		this.properties.animation = false;
@@ -133,6 +135,7 @@ const Puzzle = {
 		this.elements.loadSlot3 = document.createElement("button")
 		this.elements.controlPanel = document.createElement("div");
 		this.elements.leadersPanel = document.createElement("div");
+		
 
   		this.elements.solutionBtn.innerText = "solution";
   		this.elements.leadersBtn.innerText = "leaders";
@@ -186,6 +189,7 @@ const Puzzle = {
 		if (!loaded) {this.elements.moves.textContent = "0"
 		} else {this.elements.moves.textContent = localStorage.getItem('save-0-moves')};
 		this._createLeaders(3);
+		this._createPopup();
 		this._puzzleSize();
 		this._showTime();
 		console.log("run ckicking")
@@ -193,7 +197,7 @@ const Puzzle = {
 		document.querySelector(".controlPanel").classList.add("active");
 		this._getKeys();
 		document.querySelector(".solutionBtn").addEventListener('click', function () {
-			
+			Puzzle.properties.solution = true;
 			Puzzle._findOptimal();
 			setTimeout(()=>{
 				// добавим количество ходов игрока
@@ -266,7 +270,7 @@ const Puzzle = {
 		  				setTimeout(() => {
 		  					while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
 							document.body.style.transform = "scale(1)";
-							Puzzle.reset(true)
+							Puzzle.reset()
 							Puzzle.start();
 						}, 500);
 		  	  		} else {
@@ -317,11 +321,11 @@ const Puzzle = {
 		  		setTimeout(() => {
 		  			while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
 					document.body.style.transform = "scale(1)";
-					Puzzle.reset(true)
+					Puzzle.reset()
 					Puzzle.start();
 					}, 500);
   			});
-  			
+
 	  		fragment.appendChild(backBtn);
 
 
@@ -414,6 +418,42 @@ const Puzzle = {
 		document.body.appendChild(this.elements.leadersPanel);
 
   	},
+
+  	_createPopup() {
+  		let winPopup = document.createElement("div"),
+			winPopupTitle = document.createElement("div"),
+			winPopupMoves = document.createElement("div"),
+			winPopupTime = document.createElement("div"),
+			winPopupName = document.createElement("div"),
+			winPopupSubmit = document.createElement("button");
+			winPopupCloseBtn = document.createElement("button");
+
+		winPopup.classList.add("winPopup", "inactive");
+		winPopupTitle.classList.add("winPopupTitle");	
+		winPopupMoves.classList.add("winPopupMoves");	
+		winPopupTime.classList.add("winPopupTime");	
+		winPopupName.classList.add("winPopupName");	
+		winPopupSubmit.classList.add("winPopupSubmit");	
+		winPopupCloseBtn.classList.add("winPopupCloseBtn");	
+
+		winPopupName.setAttribute("contenteditable", true);
+		winPopupSubmit.innerText = "remember me";
+
+		winPopupTitle.innerText = "congratulations! you win!"	
+		winPopupName.innerText = "enter your name for history"	
+		winPopupMoves.innerText = "number of moves: "	
+		winPopupTime.innerText = "your time is: "	
+
+		winPopup.appendChild(winPopupTitle);
+		winPopup.appendChild(winPopupMoves);
+		winPopup.appendChild(winPopupTime);
+		winPopup.appendChild(winPopupName);
+		winPopup.appendChild(winPopupSubmit);
+		winPopup.appendChild(winPopupCloseBtn);
+	
+		document.body.appendChild(winPopup);
+  	},
+
 
 
   _getStartPosition(num) {

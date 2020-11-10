@@ -9,6 +9,18 @@ body {
 	text-transform: uppercase;
 	height: 100%;
 	transition: all 0.4s;
+	&.win {
+		overflow: hidden;
+		&:before {
+			content: '';
+			top: 0;
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			z-index: 10; //50 у лидеров
+			background: linear-gradient(45deg, rgba(28,94,125, 1) 33%, rgba(28,94,125, 0.9) 66%, #8AA9D6);
+		}
+	}
 }
 
 .title {
@@ -55,37 +67,69 @@ body {
 		transform: rotateX(90deg);
 	}
 }
-body.block {
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		width: 100%;
-		height: 100vh;
-		z-index: 5;
-		overflow: hidden;
-		background-color: rgba(120,80,115,0.6);
-	}
-}
+// body.block {
+// 	&:before {
+// 		content: '';
+// 		position: absolute;
+// 		top: 0;
+// 		width: 100%;
+// 		height: 100vh;
+// 		z-index: 5;
+// 		overflow: hidden;
+// 		background-color: rgba(120,80,115,0.6);
+// 	}
+// }
 
-.win_popup {
-	position: absolute;
-	width: 30%;
-	height: 30%;
-	z-index: 6;
-	background-color: rgba(120,80,115, 1);
-	color: #fff;
-	font-size: 20px;
-	font-family: Arial, serif;
+.winPopup {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	line-height: 2;
-	padding: 10px;
-	top: 35%;
-	left: 35%;
-	border-radius: 5px;
-	box-shadow: rgba(0,0,0,.8) 3px 3px 8px -3px;
-	display: none;
-	transform: scale(0);
+	width: 50%;
+	height: 50%;
+	z-index: 100;
+	left: 25%;
+	top: 25%;
+	border-radius: 10px;
+	background: linear-gradient(45deg, #3E7E3E 33%, #294429 66%, #8AA9D6);
+	color: rgba(255,255,255,1);
+	font-size: 40px;
+	font-family: 'Paytone One', sans-serif;
 	transition: all 0.3s;
+	&.inactive {
+		top: -100%;
+		transform: scale(0);
+	}
+	.winPopupMoves, .winPopupTime {
+		padding-left: 100px;
+		font-size: 30px;
+		align-self: flex-start;
+		color: #ABD7D2;
+	}
+	.winPopupName {
+		margin: 20px 0;
+		font-size: 25px;
+	}
+	.winPopupSubmit {
+		width: 200px;
+		height: 50px;
+		border-radius: 5%;
+		background: linear-gradient(45deg, #6FAFB7 33%, #294429 66%, #8AA9D6);
+		text-transform: uppercase;
+		font-size: 20px;
+		color: rgba(255,255,255,1);
+		cursor: pointer;
+		transition: all 0.3s;
+		&:hover {
+			box-shadow: 2px 2px 10px #000;
+		}
+		&:active {
+			box-shadow: inset 2px 2px 10px #000;
+			transform: translate(1px, 1px);
+		}
+	}
 	&.active {
 		display: block;
 		transform: scale(1);
@@ -337,7 +381,7 @@ body.block {
 	font-size: 30px;
 }
 
-.leadersCloseBtn {
+.leadersCloseBtn, .winPopupCloseBtn {
 	position: absolute;
 	right: -50px;
 	top: -50px;
@@ -359,4 +403,11 @@ body.block {
 		color: rgba(255,255,255,.7);
 		cursor: pointer;
 	}
+}
+.winPopupCloseBtn {
+	background: linear-gradient(45deg, #3E7E3E 33%, #3E7E3E 66%, #8AA9D6);
+	right: -40px;
+	&:before {
+		top: -17px;
+		}
 }

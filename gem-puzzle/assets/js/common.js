@@ -12,6 +12,7 @@ function getClickEvents() {
 		gemsNativePos = "",
 		anDuration = 300,
 		movesDisplay = document.querySelector(".moves"),
+
 		counter = Number(movesDisplay.innerText),
 		difficult = Puzzle.properties.difficult;
 		myAudio1 = new Audio;
@@ -24,16 +25,18 @@ function getClickEvents() {
 			gemsNativePos += i;
 		}
 	}
+	gemsNative();
 
 	function checkWin() {
 		gems = Array.from(document.querySelectorAll(".gem"))
 		gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
 		if (gemsCurrentPosCheck === gemsNativePos) {
 			setTimeout(() => {
-				document.body.classList.add("block");
-				popupWin.classList.add("active")
-				popupMoves.innerText += counter;
-				popupTime.innerText = timer.innerHTML;
+				document.body.classList.add("win");
+				popup ();
+				// popupWin.classList.add("active")
+				// popupMoves.innerText += counter;
+				// popupTime.innerText = timer.innerHTML;
 			}, 100)
 		};			
 	}
@@ -120,18 +123,18 @@ function getClickEvents() {
 		}
 	}
 	//-------------------------------- меню -----------------------
-	document.querySelector(".backBtn").addEventListener('click', function(){
+
+	function backToMenuReset () {
 		document.body.style.transform = "scale(0)";
-		setTimeout(() => {
-			
-		while (document.body.firstChild) {
-    		document.body.removeChild(document.body.firstChild);
-		}
-		document.body.style.transform = "scale(1)";
-			Puzzle.reset(true)
-			Puzzle.start();
+		setTimeout(() => {		
+			while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
+				document.body.style.transform = "scale(1)";
+				Puzzle.reset(true)
+				Puzzle.start();
 		}, 500)
-	})
+	}
+
+	document.querySelector(".backBtn").addEventListener('click', backToMenuReset)
 
 	let saveSlots =  document.querySelectorAll(".saveSlot"),
 		loadSlots =  document.querySelectorAll(".loadSlot");
@@ -160,15 +163,12 @@ function getClickEvents() {
 		//-----логика загрузки
 
 		for (let i = 0; i < saveSlots.length; i++) {
-
 			loadSlots[i].addEventListener('click', function(){
 				if (localStorage.getItem(`save-${i}-date`)) {
 					Puzzle.load(i, true)
-				}
-				
+				}	
 			})
 		}
-
 
 		// раскрытие кнопок сохранения/хагрузки
 	document.querySelector(".saveBtn").addEventListener('click', function(){
@@ -178,7 +178,7 @@ function getClickEvents() {
 		for (let i = 0; i < saveSlots.length; i++) {
 			saveSlots[i].classList.toggle("active");
 		}
-	})
+	});
 
 	document.querySelector(".loadBtn").addEventListener('click', function(){
 		this.classList.toggle("active");
@@ -187,16 +187,63 @@ function getClickEvents() {
 		for (let i = 0; i < loadSlots.length; i++) {
 			loadSlots[i].classList.toggle("active");
 		}
-	})
+	});
 
 	document.querySelector(".leadersBtn").addEventListener('click', function(){
 		document.querySelector(".leadersPanel").classList.toggle("inactive");
-	})
-
+	});
 
 	document.querySelector(".leadersCloseBtn").addEventListener('click', function(){
 		document.querySelector(".leadersPanel").classList.add("inactive");
-	})
+	});
+
+
+	//----WIN! popup
+
+	let winPopup = document.querySelector(".winPopup"),
+		winPopupTitle = document.querySelector(".winPopupTitle")
+		winPopupMoves = document.querySelector(".winPopupMoves")
+		winPopupTime = document.querySelector(".winPopupTime")
+		winPopupName = document.querySelector(".winPopupName")
+		winPopupSubmit = document.querySelector(".winPopupSubmit")
+		winPopupCloseBtn = document.querySelector(".winPopupCloseBtn");
+		timer = document.querySelector(".timer");
+
+		function popup () {
+			if (Puzzle.properties.solution) {
+				winPopup.classList.remove("inactive");
+				winPopupTitle.innerText = `the computer solved the puzzle in ${counter} moves`
+				winPopupTitle.style.textAlign = "center";
+				winPopupTitle.style.marginBottom  = "30px";
+				winPopupMoves.remove();
+				winPopupTime.remove();
+				winPopupName.remove();
+				winPopupSubmit.innerText = "try again";
+				winPopupCloseBtn.addEventListener('click', ()=> {
+					document.body.classList.remove("win");
+					backToMenuReset();
+				});
+				winPopupSubmit.addEventListener('click', () => {
+					document.body.classList.remove("win");
+					backToMenuReset();
+				});
+			} else {
+				winPopup.classList.remove("inactive");
+				winPopupMoves.innerText += ` ${counter}`;
+
+				winPopupTime.innerText += ` ${timer.innerText}`;
+				winPopupCloseBtn.addEventListener('click', ()=> {
+					document.body.classList.remove("win");
+					backToMenuReset();
+				});
+				winPopupSubmit.addEventListener('click', () => {
+					document.body.classList.remove("win");
+					backToMenuReset();
+				});
+			}
+
+			//winPopupTime += ` ${}`;
+		}
 
 }
 
