@@ -67,18 +67,6 @@ body {
 		transform: rotateX(90deg);
 	}
 }
-// body.block {
-// 	&:before {
-// 		content: '';
-// 		position: absolute;
-// 		top: 0;
-// 		width: 100%;
-// 		height: 100vh;
-// 		z-index: 5;
-// 		overflow: hidden;
-// 		background-color: rgba(120,80,115,0.6);
-// 	}
-// }
 
 .winPopup {
 	position: fixed;
@@ -109,6 +97,7 @@ body {
 		color: #ABD7D2;
 	}
 	.winPopupName {
+		min-width: 50px;
 		margin: 20px 0;
 		font-size: 25px;
 	}
@@ -380,7 +369,11 @@ body {
 	height: 5%;
 	font-size: 30px;
 }
-
+.leader {
+	div:nth-child(4) {
+		font-size: 24px;
+	}
+}
 .leadersCloseBtn, .winPopupCloseBtn {
 	position: absolute;
 	right: -50px;
@@ -409,5 +402,5 @@ body {
 	right: -40px;
 	&:before {
 		top: -17px;
-		}
+	}
 }

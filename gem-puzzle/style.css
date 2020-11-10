@@ -203,6 +203,7 @@ body {
             align-self: flex-start;
     color: #ABD7D2; }
   .winPopup .winPopupName {
+    min-width: 50px;
     margin: 20px 0;
     font-size: 25px; }
   .winPopup .winPopupSubmit {
@@ -548,6 +549,9 @@ body {
 .leadersHeader {
   height: 5%;
   font-size: 30px; }
+
+.leader div:nth-child(4) {
+  font-size: 24px; }
 
 .leadersCloseBtn, .winPopupCloseBtn {
   position: absolute;

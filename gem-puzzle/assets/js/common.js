@@ -201,13 +201,31 @@ function getClickEvents() {
 	//----WIN! popup
 
 	let winPopup = document.querySelector(".winPopup"),
-		winPopupTitle = document.querySelector(".winPopupTitle")
-		winPopupMoves = document.querySelector(".winPopupMoves")
-		winPopupTime = document.querySelector(".winPopupTime")
-		winPopupName = document.querySelector(".winPopupName")
-		winPopupSubmit = document.querySelector(".winPopupSubmit")
-		winPopupCloseBtn = document.querySelector(".winPopupCloseBtn");
-		timer = document.querySelector(".timer");
+		winPopupTitle = document.querySelector(".winPopupTitle"),
+		winPopupMoves = document.querySelector(".winPopupMoves"),
+		winPopupTime = document.querySelector(".winPopupTime"),
+		winPopupName = document.querySelector(".winPopupName"),
+		winPopupSubmit = document.querySelector(".winPopupSubmit"),
+		winPopupCloseBtn = document.querySelector(".winPopupCloseBtn"),
+		timer = document.querySelector(".timer"),
+		arrayOfLeaders = [];
+
+		function compareLeaders(a, b) {
+  			if (a.moves < b.moves ){
+   			 	return -1;
+  			}
+  			if (a.moves > b.moves){
+   				return 1;
+  			}
+ 				return 0;
+		};
+
+			for (let key in localStorage){
+				if (key == `leadD${difficult}`) {
+					arrayOfLeaders = JSON.parse(localStorage.getItem(`leadD${difficult}`));
+				}
+			}
+			console.log(arrayOfLeaders)
 
 		function popup () {
 			if (Puzzle.properties.solution) {
@@ -228,6 +246,10 @@ function getClickEvents() {
 					backToMenuReset();
 				});
 			} else {
+				let leaderObj = {pos: '', moves: '', time: '', name: '' };
+				let time = timer.innerText;
+				let defaultName = winPopupName.innerText;
+
 				winPopup.classList.remove("inactive");
 				winPopupMoves.innerText += ` ${counter}`;
 
@@ -236,13 +258,35 @@ function getClickEvents() {
 					document.body.classList.remove("win");
 					backToMenuReset();
 				});
+
+				winPopupName.addEventListener('focus', function() {
+					setTimeout(()=> {winPopupName.innerText = "";}, 100)
+				})
+				winPopupName.addEventListener('blur', function() {
+					setTimeout(()=> {
+						if (winPopupName.innerText.length === 0) {
+							winPopupName.innerText = defaultName;
+						}
+					}, 100)
+				})
+
+
 				winPopupSubmit.addEventListener('click', () => {
+					leaderObj.moves = counter;
+					leaderObj.time = time;
+					leaderObj.name = winPopupName.innerText;
+					arrayOfLeaders.push(leaderObj);
+					arrayOfLeaders.sort(compareLeaders);
+					arrayOfLeaders.forEach((item, index) => {
+						item.pos = index + 1;
+					});
+					if (arrayOfLeaders.length > 10) arrayOfLeaders = arrayOfLeaders.slice(0,10);
+					localStorage.setItem(`leadD${difficult}`, JSON.stringify(arrayOfLeaders));
 					document.body.classList.remove("win");
 					backToMenuReset();
 				});
 			}
 
-			//winPopupTime += ` ${}`;
 		}
 
 }

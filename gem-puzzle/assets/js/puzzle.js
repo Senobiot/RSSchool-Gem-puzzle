@@ -116,7 +116,7 @@ const Puzzle = {
   	},
 
 	init(num, loaded) {
-		if (!loaded) {this.properties.qty = num*10}; //решил, что столько рандомных перемещений достаточно 
+		if (!loaded) {this.properties.qty = num*0}; //решил, что столько рандомных перемещений достаточно 
 		if (!loaded) {this._getStartPosition(num)}; //нарисуем начальное положенин
 		if (!loaded) {this._getMixed(num)}; // перемешивает
 		this.elements.puzzle = document.createElement("div");
@@ -373,25 +373,25 @@ const Puzzle = {
 
 
   	let leadersGrid = document.createElement("div");
-  		leadersGrid.classList.add("leadersGrid")
-  		
+  		leadersGrid.classList.add("leadersGrid");
+  	let arrayOfLeaders = JSON.parse(localStorage.getItem(`leadD${diff}`));
 
-  		for (let i = 1; i <= 10 ; i++) {
+  		for (let i = 0; i < 10 ; i++) {
   			const menuElement = document.createElement("div");
   			menuElement.classList.add("leader");
 	  		for (let j = 1; j <= 4; j++) {
 	  			let cell = document.createElement("div");
-	  			if (j === 1) cell.textContent = `${i}`;
+	  			if (j === 1) cell.textContent = `${i + 1}`;
 	  			if (j === 2) {
-	  				if (localStorage.getItem(`leadD${diff}P${i}moves`)) {cell.textContent = localStorage.getItem(`leadD3P${i}moves`)
+	  				if (arrayOfLeaders !== null && arrayOfLeaders[i]) {cell.textContent = arrayOfLeaders[i].moves;
 	  				} else {cell.textContent = 999};
 	  			} 
 	  			if (j === 3) {
-	  				if (localStorage.getItem(`leadD${diff}P${i}moves`)) {cell.textContent = localStorage.getItem(`leadD3P${i}time`)
+	  				if (arrayOfLeaders !== null && arrayOfLeaders[i]) {cell.textContent = arrayOfLeaders[i].time;
 	  				} else {cell.textContent = 999};
 	  			} 
 	  			if (j === 4) {
-	  				if (localStorage.getItem(`leadD${diff}P${i}moves`)) {cell.textContent = localStorage.getItem(`leadD3P${i}name`)
+	  				if (arrayOfLeaders !== null && arrayOfLeaders[i]) {cell.textContent = arrayOfLeaders[i].name;
 	  				} else {cell.textContent = "computer"};
 	  			} 
 
