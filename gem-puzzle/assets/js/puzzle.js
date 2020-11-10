@@ -48,15 +48,15 @@ const Puzzle = {
   		 this.elements.title = document.createElement("div");
   		 this.elements.menu = document.createElement("div");
   		 this.elements.sizes = document.createElement("div");
-  		 this.elements.leadersPanel = document.createElement("div");
+  		 
   		 this.elements.savesMainMenu = document.createElement("div");
   		 this.elements.title.classList.add("title");
   		 this.elements.title.textContent = "The Puzzle Game";
   		 this.elements.menu.classList.add("menu");
   		 this.elements.sizes.classList.add("sizes",  "inactive");
   		 this.elements.savesMainMenu.classList.add("savesMainMenu",  "inactive");
-  		 this.elements.leadersPanel.classList.add("leadersPanel",  "inactive");
-  		 this.elements.leadersPanel.appendChild(this._createLeaders());
+  		 
+  		 this._createLeaders(3);
   		 this.elements.menu.appendChild(this._createMenu());
   		 this.elements.sizes.appendChild(this._createSizes());
   		 this.elements.savesMainMenu.appendChild(this._createSaves());
@@ -64,12 +64,12 @@ const Puzzle = {
   		 document.body.appendChild(this.elements.menu);
   		 document.body.appendChild(this.elements.sizes);
   		 document.body.appendChild(this.elements.savesMainMenu);
-  		 document.body.appendChild(this.elements.leadersPanel);
+  		 // document.body.appendChild(this.elements.leadersPanel);
   	},
 
   	reset(workingTimer) {
-  		for (let i = 1; i <= this.elements.length; i++) {
-  			if (i === this.elements.length) {this.elements[i] = []}
+  		for (let i = 1; i <= this.elements.length - 1; i++) {
+  			if (i === this.elements.length - 1) {this.elements[i] = []}
   			else{this.elements[i] = null;}
   		}
   		this.properties.time = -1;
@@ -147,7 +147,6 @@ const Puzzle = {
   		this.elements.loadSlot3.innerText = localStorage.getItem('save-2-date') ? localStorage.getItem('save-2-date') :	"slot 3";
 
   		this.elements.solutionBtn.classList.add("solutionBtn");
-  		this.elements.solutionBtn.classList.add("leadersBtn");
   		this.elements.backToMenu.classList.add("backBtn");
   		this.elements.saveBtn.classList.add("saveBtn");
   		this.elements.saveSlot1.classList.add("saveSlot");
@@ -163,7 +162,7 @@ const Puzzle = {
 		this.elements.timer.classList.add("timer");
 		this.elements.leadersBtn.classList.add("leadersBtn");
 		this.elements.controlPanel.classList.add("controlPanel");
-		this.elements.leadersPanel.classList.add("leaders");
+
 
 		this.elements.puzzle.appendChild(this._createGems(num));
 		this.elements.controlPanel.appendChild(this.elements.moves);
@@ -186,8 +185,10 @@ const Puzzle = {
 		document.body.appendChild(this.elements.controlPanel);
 		if (!loaded) {this.elements.moves.textContent = "0"
 		} else {this.elements.moves.textContent = localStorage.getItem('save-0-moves')};
+		this._createLeaders(3); // !!!!!!!!!!!!!!!!!
 		this._puzzleSize();
 		this._showTime();
+		console.log("run ckicking")
 		getClickEvents();
 		document.querySelector(".controlPanel").classList.add("active");
 		this._getKeys();
@@ -243,7 +244,9 @@ const Puzzle = {
 		  				}, 2000)
 		  			})		  			
 		  		}
-
+		  	}	else {menuElement.addEventListener('click', ()=> {
+		  		document.querySelector(".leadersPanel").classList.remove("inactive");
+		  		}) 		
 		  	}
 		 })
 	  	return fragment
@@ -298,8 +301,14 @@ const Puzzle = {
 	  	return fragment
   },
 
-  _createLeaders() {
+  _createLeaders(diff, open) {
   	const fragment = document.createDocumentFragment();
+  	let leadersTitle = document.createElement("div");
+	leadersTitle.classList.add("leadersTitle")
+	leadersTitle.textContent = "3x3 top 10 gamers"
+	fragment.appendChild(leadersTitle);
+
+
   	let leadersDifficultiesBtns = document.createElement("div");
   	leadersDifficultiesBtns.classList.add("leadersDifficultiesBtns")
   	let difficulties = ["3x3", "4x4", "5x5", "6x6", "7x7", "8x8"];
@@ -307,11 +316,13 @@ const Puzzle = {
 		  		const menuElement = document.createElement("div");
 		  		menuElement.classList.add("leadersDifficulties");
 		  		menuElement.textContent = difficulties[i];
+			  	menuElement.addEventListener('click', ()=> {
+			  		document.querySelector(".leadersPanel").remove();	
+			  		this.elements.leadersPanel = null;
+			  		this._createLeaders(difficulties[i].slice(0,1), true)
+			  		document.querySelector(".leadersTitle").textContent = difficulties[i] +  " top 10 gamers";
+			  	})
 			  	leadersDifficultiesBtns.appendChild(menuElement);
-
-			  	// menuElement.addEventListener('click', ()=> {
-
-			  	// })
   		}
 
   		fragment.appendChild(leadersDifficultiesBtns);
@@ -332,24 +343,49 @@ const Puzzle = {
 
   	let leadersGrid = document.createElement("div");
   		leadersGrid.classList.add("leadersGrid")
-  		let arr = [3, 7, 11, 15, 19, 23, 27, 31, 35 ,39];
+  		
 
-  		for (let i = 0; i < 40 ; i++) {
+  		for (let i = 1; i <= 10 ; i++) {
   			const menuElement = document.createElement("div");
-  			i === 0 ? menuElement.textContent = 1:
-  			i % 4 === 0 ? menuElement.textContent = i / 4 + 1:
-  			arr.includes(i) ? menuElement.textContent = "computer" :
-  			menuElement.textContent = 999;
-  			leadersGrid.appendChild(menuElement);
+  			menuElement.classList.add("leader");
+	  		for (let j = 1; j <= 4; j++) {
+	  			let cell = document.createElement("div");
+	  			if (j === 1) cell.textContent = `${i}`;
+	  			if (j === 2) {
+	  				if (localStorage.getItem(`leadD${diff}P${i}moves`)) {cell.textContent = localStorage.getItem(`leadD3P${i}moves`)
+	  				} else {cell.textContent = 999};
+	  			} 
+	  			if (j === 3) {
+	  				if (localStorage.getItem(`leadD${diff}P${i}moves`)) {cell.textContent = localStorage.getItem(`leadD3P${i}time`)
+	  				} else {cell.textContent = 999};
+	  			} 
+	  			if (j === 4) {
+	  				if (localStorage.getItem(`leadD${diff}P${i}moves`)) {cell.textContent = localStorage.getItem(`leadD3P${i}name`)
+	  				} else {cell.textContent = "computer"};
+	  			} 
+
+	  			menuElement.appendChild(cell);
+	  		}
+	  		leadersGrid.appendChild(menuElement);
   		}
 
   		fragment.appendChild(leadersGrid)
 
   		let leadersCloseBtn = document.createElement("div");
-  		leadersCloseBtn.classList.add("leadersCloseBtn") ;
+  		leadersCloseBtn.classList.add("leadersCloseBtn");
+  		leadersCloseBtn.addEventListener('click', ()=> {
+  			this.elements.leadersPanel.classList.add("leadersPanel", "inactive");
+  		})
+
+
 		fragment.appendChild(leadersCloseBtn);
 
-	  	return fragment
+		this.elements.leadersPanel = document.createElement("div");
+		if (open) {this.elements.leadersPanel.classList.add("leadersPanel")}
+			else {this.elements.leadersPanel.classList.add("leadersPanel", "inactive")};
+		this.elements.leadersPanel.appendChild(fragment);
+		document.body.appendChild(this.elements.leadersPanel);
+
   	},
 
 

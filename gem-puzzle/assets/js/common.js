@@ -170,9 +170,6 @@ function getClickEvents() {
 		}
 
 
-
-
-
 		// раскрытие кнопок сохранения/хагрузки
 	document.querySelector(".saveBtn").addEventListener('click', function(){
 		this.classList.toggle("active");
@@ -192,10 +189,17 @@ function getClickEvents() {
 		}
 	})
 
-	document.querySelector(".saveSlot").addEventListener('click', function(){
-
+	document.querySelector(".leadersBtn").addEventListener('click', function(){
+		document.querySelector(".leadersPanel").classList.toggle("inactive");
 	})
+
+
+	document.querySelector(".leadersCloseBtn").addEventListener('click', function(){
+		document.querySelector(".leadersPanel").classList.add("inactive");
+	})
+
 }
+
 
 
 
