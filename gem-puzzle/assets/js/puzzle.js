@@ -28,7 +28,7 @@ const Puzzle = {
 
    properties: {
    	//если чего-нибудь вставлю не null, лучше в середину и поправить функуию reset()
-   	size: ["child : 3 x 3", "novice : 4 x 4", "Apprentice : 5 x 5", "Adept : 6 x 6", "Expert : 7 x 7", "Master : 8 x 8", "back to menu"],
+   	size: ["child : 3 x 3", "novice : 4 x 4", "Apprentice : 5 x 5", "Adept : 6 x 6", "Expert : 7 x 7", "Master : 8 x 8", "pictures instead of numbers: ","back to menu"],
    	difficult: 3,
     time: -1,
     qty: 0,
@@ -42,6 +42,7 @@ const Puzzle = {
     keys: [],
     turn: 0,
     animation: false,
+    pictures: 1,
     reset: false
   },
 
@@ -85,6 +86,7 @@ const Puzzle = {
   		this.properties.keys = [];
   		this.properties.turn = 0;
   		this.properties.animation = false;
+  		this.properties.pictures = 1;
  		if (workingTimer) this.properties.reset = true;
 
   	},
@@ -108,15 +110,16 @@ const Puzzle = {
 			this.properties.randMoves = localStorage.getItem(`save-${i}-randMoves`).split(",").map(Number);
 			this.properties.time = +localStorage.getItem(`save-${i}-timer`);
 			this.properties.startArr = localStorage.getItem(`save-${i}-startPos`).split("+").map(Number);
+			this.properties.pictures = +localStorage.getItem(`save-${i}-pictures`);
 
 
-			this.init(Math.pow(this.properties.difficult, 2), true)
+			this.init(Math.pow(this.properties.difficult, 2), true, i)
 
 		}, 500)
   	},
 
-	init(num, loaded) {
-		if (!loaded) {this.properties.qty = num*0}; //решил, что столько рандомных перемещений достаточно 
+	init(num, loaded, i) {
+		if (!loaded) {this.properties.qty = num*10}; //решил, что столько рандомных перемещений достаточно 
 		if (!loaded) {this._getStartPosition(num)}; //нарисуем начальное положенин
 		if (!loaded) {this._getMixed(num)}; // перемешивает
 		this.elements.puzzle = document.createElement("div");
@@ -192,10 +195,13 @@ const Puzzle = {
 		this._createPopup();
 		this._puzzleSize();
 		this._showTime();
-		console.log("run ckicking")
-		getClickEvents();
+		getClickEvents(num);
 		document.querySelector(".controlPanel").classList.add("active");
 		this._getKeys();
+		if (this.properties.pictures === 1 && !loaded) {this._createPictureTiles()};
+		if (loaded && this.properties.pictures === 1) {this._createPictureTiles(localStorage.getItem(`save-${i}-picturesNumber`))};
+		if (loaded && this.properties.pictures === 0) {this._createPictureTiles(null)};
+
 		document.querySelector(".solutionBtn").addEventListener('click', function () {
 			Puzzle.properties.solution = true;
 			Puzzle._findOptimal();
@@ -266,6 +272,9 @@ const Puzzle = {
 		  	//скрываем по нажатию на любой выбор
 		  	  	menuElement.addEventListener('click', ()=> {
 		  	  		if (this.properties.size.indexOf(item) === 6) {
+		  	  			menuElement.classList.toggle("active");
+		  	  		}
+		  	  		else if (this.properties.size.indexOf(item) === 7) {
 		  	  			document.body.style.transform = "scale(0)";
 		  				setTimeout(() => {
 		  					while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
@@ -290,6 +299,7 @@ const Puzzle = {
 		  	this.properties.size.indexOf(item) === 3 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 6 }):
 		  	this.properties.size.indexOf(item) === 4 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 7 }):
 		  	this.properties.size.indexOf(item) === 5 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 8 }):
+		  	this.properties.size.indexOf(item) === 6 ? menuElement.addEventListener('click', ()=> {this.properties.pictures === 1 ? this.properties.pictures = 0 : this.properties.pictures = 1 }):
 		  	menuElement.style.color = "#d66e6e";
 		  	
 		  	})
@@ -454,7 +464,27 @@ const Puzzle = {
 		document.body.appendChild(winPopup);
   	},
 
-
+  _createPictureTiles(pictureLoaded) {
+  		let tiles = this.elements.keys;
+  			// let percent = (100 / Math.sqrt(tiles.length)).toFixed(4)
+  			let percent = 100;
+  			let x = 0,y = 0;
+  			let picNum = this._getRandomIntInclusive(1, 20);
+  		for (let i = 0; i < tiles.length; i++) {
+  			if (pictureLoaded) {
+  				tiles[i].style.backgroundImage = `url("assets/images/tiles/${pictureLoaded}.jpg")`
+  			}
+  			else if (pictureLoaded === null) {}
+  			else {tiles[i].style.backgroundImage = `url("assets/images/tiles/${picNum}.jpg")`}
+  			tiles[i].style.backgroundSize = `${100*Math.sqrt(tiles.length)}px ${100*Math.sqrt(tiles.length)}px`;
+  			tiles[i].style.backgroundPosition  = `-${percent*x}px -${percent*y}px`;
+  			x++;
+  			if (x % Math.sqrt(tiles.length) === 0) {
+  				x = 0;
+  				y++;
+  			};
+  		}
+  },
 
   _getStartPosition(num) {
   	//тут просто исходный массив нужной размерности, который мы будем перемешивать

@@ -78,6 +78,15 @@ body {
       z-index: 10;
       background: -o-linear-gradient(45deg, #1c5e7d 33%, rgba(28, 94, 125, 0.9) 66%, #8AA9D6);
       background: linear-gradient(45deg, #1c5e7d 33%, rgba(28, 94, 125, 0.9) 66%, #8AA9D6); }
+  body.gradient:after {
+    content: '';
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    background: -o-radial-gradient(circle, rgba(0, 146, 255, 0.1) 19%, rgba(28, 94, 125, 0.9) 70%);
+    background: radial-gradient(circle, rgba(0, 146, 255, 0.1) 19%, rgba(28, 94, 125, 0.9) 70%); }
 
 .title {
   text-align: center;
@@ -151,6 +160,20 @@ body {
   .menu.inactive, .sizes.inactive, .savesMainMenu.inactive {
     -webkit-transform: rotateX(90deg);
             transform: rotateX(90deg); }
+
+.sizes div:nth-child(7) {
+  font-size: 24px;
+  line-height: 3.5;
+  color: #EAAB50;
+  text-shadow: 10px 10px 10px #000;
+  padding-right: 55px;
+  position: relative; }
+  .sizes div:nth-child(7):before {
+    content: 'yes';
+    right: 0;
+    position: absolute; }
+  .sizes div:nth-child(7).active:before {
+    content: 'no'; }
 
 .sizes.inactive {
   -webkit-transform: rotateX(90deg);
@@ -250,7 +273,10 @@ body {
   grid-column-gap: 5px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.8) 3px 3px 8px -3px;
           box-shadow: rgba(0, 0, 0, 0.8) 3px 3px 8px -3px;
-  margin-bottom: 1em; }
+  margin-bottom: 1em;
+  -webkit-transition: all 2s;
+  -o-transition: all 2s;
+  transition: all 2s; }
 
 .gem {
   display: -webkit-box;
@@ -272,6 +298,9 @@ body {
   font-size: 40px;
   font-family: 'Paytone One', sans-serif;
   cursor: pointer;
+  -webkit-transition: opacity 2s;
+  -o-transition: opacity 2s;
+  transition: opacity 2s;
   -webkit-box-shadow: inset rgba(0, 0, 0, 0.5) -3px -3px 8px, inset rgba(255, 255, 255, 0.9) 3px 3px 8px, rgba(0, 0, 0, 0.8) 3px 3px 8px -3px;
           box-shadow: inset rgba(0, 0, 0, 0.5) -3px -3px 8px, inset rgba(255, 255, 255, 0.9) 3px 3px 8px, rgba(0, 0, 0, 0.8) 3px 3px 8px -3px; }
   .gem.animation-left {
@@ -326,6 +355,8 @@ body {
   100% {
     -webkit-transform: translateY(105px);
             transform: translateY(105px); } }
+  .gem.gradient {
+    opacity: 0; }
 
 .empty {
   font-size: 0;

@@ -12,13 +12,15 @@ function getClickEvents() {
 		gemsNativePos = "",
 		anDuration = 300,
 		movesDisplay = document.querySelector(".moves"),
-
+		puzzleRadialGradient = document.querySelector(".puzzle"),
+		crossTimer,
 		counter = Number(movesDisplay.innerText),
 		difficult = Puzzle.properties.difficult;
 		myAudio1 = new Audio;
 		myAudio2 = new Audio;
       	myAudio1.src = "assets/media/1.wav";
       	myAudio2.src = "assets/media/2.wav";
+
 
 	function gemsNative() {
 		for (let i = 1; i <= Math.pow(difficult, 2) ; i++) {
@@ -27,17 +29,35 @@ function getClickEvents() {
 	}
 	gemsNative();
 
+	function radialGradient() {
+		document.body.classList.add("gradient");
+		let image = window.getComputedStyle(gems[1], null).getPropertyValue("background-image");
+		puzzleRadialGradient.style.background = `${image} no-repeat 50%/contain`;
+		for (var i = 0; i < gems.length; i++) {
+			gems[i].classList.add("gradient");
+		}
+	}
+
 	function checkWin() {
 		gems = Array.from(document.querySelectorAll(".gem"))
-		gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("")
+		gemsCurrentPosCheck = gems.map(gem => gem.innerHTML).join("");
+
 		if (gemsCurrentPosCheck === gemsNativePos) {
-			setTimeout(() => {
-				document.body.classList.add("win");
-				popup ();
-				// popupWin.classList.add("active")
-				// popupMoves.innerText += counter;
-				// popupTime.innerText = timer.innerHTML;
-			}, 100)
+			if (Puzzle.properties.pictures) {
+					crossTimer = timer.innerText;
+					radialGradient();
+					setTimeout(() => {
+					document.body.classList.add("win");
+					popup ();
+				}, 4000)
+			} else {
+					crossTimer = timer.innerText;
+					setTimeout(() => {
+					document.body.classList.add("win");
+					popup ();
+				}, 1000)
+			}
+
 		};			
 	}
 	//---------------------------- клетки ---------------------------
@@ -155,8 +175,10 @@ function getClickEvents() {
 					localStorage.setItem(`save-${i}-difficult`, `${Puzzle.properties.difficult}`);
 					localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`);
 					localStorage.setItem(`save-${i}-randMoves`, `${Puzzle.properties.randMoves}`);
-					localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`);
+					// localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`); ???????????
 					localStorage.setItem(`save-${i}-startPos`, `${Puzzle.properties.snapShot[Puzzle.properties.snapShot.length - 1]}`);
+					localStorage.setItem(`save-${i}-pictures`, `${Puzzle.properties.pictures}`);
+					localStorage.setItem(`save-${i}-picturesNumber`, `${window.getComputedStyle(gems[1], null).getPropertyValue("background-image").match(/\d*(?=.jpg)/)}`);
 				})
 		}
 
@@ -238,11 +260,11 @@ function getClickEvents() {
 				winPopupName.remove();
 				winPopupSubmit.innerText = "try again";
 				winPopupCloseBtn.addEventListener('click', ()=> {
-					document.body.classList.remove("win");
+					document.body.classList.remove("win", "gradient");
 					backToMenuReset();
 				});
 				winPopupSubmit.addEventListener('click', () => {
-					document.body.classList.remove("win");
+					document.body.classList.remove("win", "gradient");
 					backToMenuReset();
 				});
 			} else {
@@ -253,9 +275,9 @@ function getClickEvents() {
 				winPopup.classList.remove("inactive");
 				winPopupMoves.innerText += ` ${counter}`;
 
-				winPopupTime.innerText += ` ${timer.innerText}`;
+				winPopupTime.innerText += ` ${crossTimer}`;
 				winPopupCloseBtn.addEventListener('click', ()=> {
-					document.body.classList.remove("win");
+					document.body.classList.remove("win", "gradient");
 					backToMenuReset();
 				});
 
@@ -282,7 +304,7 @@ function getClickEvents() {
 					});
 					if (arrayOfLeaders.length > 10) arrayOfLeaders = arrayOfLeaders.slice(0,10);
 					localStorage.setItem(`leadD${difficult}`, JSON.stringify(arrayOfLeaders));
-					document.body.classList.remove("win");
+					document.body.classList.remove("win", "gradient");
 					backToMenuReset();
 				});
 			}
@@ -290,68 +312,6 @@ function getClickEvents() {
 		}
 
 }
-
-
-
-
-//----------------------------------------
-
-// let difficult = 3,
-// 	form = document.querySelector(".choice"),
-// 	start = document.querySelector(".button"),
-// 	body = document.querySelector("body"),
-// 	popupWin = document.querySelector(".win_popup"),
-// 	popupMoves = document.querySelector(".win_popupMoves"),
-// 	popupTime = document.querySelector(".win_popupTime");
-// 	showSolution = document.querySelector(".solution")
-
-
-	// start.addEventListener('click', function(){
-	// 	let checkSize = document.getElementsByName('size');    
-	// 	for(i = 0; i < checkSize.length; i++) { 
-	// 		if(checkSize[i].checked) 
-	// 		difficult = Number(checkSize[i].value);
-	// 	} 
-	// 	form.style.opacity = "0";
-
-	// 	setTimeout(function(){
-	// 		form.style.display = "none";
-	// 		startGame ()
-	// 	}, 200)
-	// })
-
-
-
-
-	//-------------------------------------------------
-
-
-	//movesDisplay.innerHTML = counter;
-
-// function showTime() {
-// 	if (body.classList.contains("block")) return;
-// 	time++;
-// 	let hour = Math.floor(time / 3600),
-// 	min = Math.floor((time - hour*3600) / 60);
-// 	second = time % 60;
-// 	if (hour < 10) {hour = "0" + hour}
-// 	if (second < 10) {second = "0" + second}
-// 	if (min < 10) {min = "0" + min}
-// 	timer.innerHTML = `${hour}<span>:</span>${min}<span>:</span>${second}`;
-
-// 	setTimeout(showTime, 1000)
-// }	
-
-
-
-// gemsNative()
-
-
-
-// function getRandomIntInclusive(min, max) {
-//   			return Math.floor(Math.random() * (max - min + 1)) + min; 
-//  }
-
 
 
 
