@@ -469,20 +469,19 @@ const Puzzle = {
   			// let percent = (100 / Math.sqrt(tiles.length)).toFixed(4)
   			let percent = 100;
   			let x = 0,y = 0;
-  			let picNum = this._getRandomIntInclusive(1, 20);
+  			let picNum = this._getRandomIntInclusive(1, 150);
   		for (let i = 0; i < tiles.length; i++) {
-  			if (pictureLoaded) {
-  				tiles[i].style.backgroundImage = `url("assets/images/tiles/${pictureLoaded}.jpg")`
-  			}
-  			else if (pictureLoaded === null) {}
-  			else {tiles[i].style.backgroundImage = `url("assets/images/tiles/${picNum}.jpg")`}
-  			tiles[i].style.backgroundSize = `${100*Math.sqrt(tiles.length)}px ${100*Math.sqrt(tiles.length)}px`;
-  			tiles[i].style.backgroundPosition  = `-${percent*x}px -${percent*y}px`;
-  			x++;
-  			if (x % Math.sqrt(tiles.length) === 0) {
+  			if (pictureLoaded) {tiles[i].style.backgroundImage = `url("assets/images/tiles/${pictureLoaded}.jpg")`};
+  			if  (!pictureLoaded && pictureLoaded !== null){tiles[i].style.backgroundImage = `url("assets/images/tiles/${picNum}.jpg")`}
+  			if (pictureLoaded !== null) {
+  				tiles[i].style.backgroundSize = `${100*Math.sqrt(tiles.length)}px ${100*Math.sqrt(tiles.length)}px`;
+  				tiles[i].style.backgroundPosition  = `-${percent*x}px -${percent*y}px`;
+  				x++;
+  				if (x % Math.sqrt(tiles.length) === 0) {
   				x = 0;
   				y++;
-  			};
+  				};
+  			}
   		}
   },
 

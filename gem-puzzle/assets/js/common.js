@@ -60,88 +60,170 @@ function getClickEvents() {
 
 		};			
 	}
+
+	//------------------------drag & drop -----------------------------
+	let ats = document.querySelectorAll(".gem");
+
+	// let slider = document.querySelector(".puzzle")
+
+	 for (var i = 0; i < ats.length; i++) {
+
+		//пустая справа
+   //  ats[i].addEventListener('mousedown',  function (event) {
+   //    //event.preventDefault(); 
+
+   //    this.style.position = 'relative';
+   //    let pointOfClick = event.clientX - this.previousElementSibling.getBoundingClientRect().left;
+   //    let positionOfStart = this.getBoundingClientRect().left
+   //    let positionOfEnd = this.getBoundingClientRect().left;
+   //    document.addEventListener('mousemove',  move = (event) => {
+			// let newPos = event.clientX - pointOfClick - this.previousElementSibling.getBoundingClientRect().left;
+			// let limit = this.previousElementSibling.offsetWidth - this.offsetWidth + 100;
+
+   //      if (newPos < 0 ) newPos = 0;
+   //      if (newPos > limit) newPos = limit;
+
+   //      this.style.left = newPos + 'px'
+   //      positionOfEnd = this.getBoundingClientRect().left
+   //  });
+
+   //    	document.addEventListener('mouseup', function up (event) {
+   //    		//if (positionOfEnd - positionOfStart > 50) тут запуск логики
+   //      	this.removeEventListener('mouseup', up)
+   //    		this.removeEventListener('mousemove', move)
+   //    	} );
+
+   //    function onMouseUp() {
+   //      document.removeEventListener('mouseup', up);
+   //      document.removeEventListener('mousemove', move);
+   //    }
+
+   	//пустая слева
+   	ats[i].addEventListener('mousedown',  function (event) {
+      //event.preventDefault(); 
+
+      this.style.position = 'relative';
+      let pointOfClick = event.clientX - this.previousElementSibling.getBoundingClientRect().left;
+      let positionOfStart = this.getBoundingClientRect().left
+      let positionOfEnd = this.getBoundingClientRect().left;
+      document.addEventListener('mousemove',  move = (event) => {
+			let newPos = event.clientX - pointOfClick - this.previousElementSibling.getBoundingClientRect().left;
+			let limit = this.previousElementSibling.offsetWidth - this.offsetWidth + 100;
+
+        if (newPos < 0 ) newPos = 0;
+        if (newPos > limit) newPos = limit;
+
+        this.style.left = newPos + 'px'
+        positionOfEnd = this.getBoundingClientRect().left
+    });
+
+      	document.addEventListener('mouseup', function up (event) {
+      		//if (positionOfEnd - positionOfStart > 50) тут запуск логики
+        	this.removeEventListener('mouseup', up)
+      		this.removeEventListener('mousemove', move)
+      	} );
+
+      function onMouseUp() {
+        document.removeEventListener('mouseup', up);
+        document.removeEventListener('mousemove', move);
+      }
+
+
+
+     });
+	}
+	
+
+
+
 	//---------------------------- клетки ---------------------------
 
-	for (let i = 0; i < gems.length; i++) {
+	// for (let i = 0; i < gems.length; i++) {
 		
-		if (gems[i] !== empty) {
-			gems[i].addEventListener('click', function () {
-              //myAudio2.play();
-				empty = document.querySelector(".empty")
-				emptyPos = gems.indexOf(empty);
-				if (this.previousElementSibling === empty
-				 	&& !Puzzle.properties.animation
-				  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
-					counter++;
-					this.classList.add("animation-left");
-					Puzzle.properties.animation = true;
+	// 	if (gems[i] !== empty) {
+	// 		gems[i].addEventListener('click', function () {
+ //              //myAudio2.play();
+	// 			empty = document.querySelector(".empty")
+	// 			emptyPos = gems.indexOf(empty);
+	// 			if (this.previousElementSibling === empty
+	// 			 	&& !Puzzle.properties.animation
+	// 			  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
+	// 				counter++;
+	// 				this.classList.add("animation-left");
+	// 				Puzzle.properties.animation = true;
 					
-					setTimeout(() => {
-						 this.parentNode.insertBefore(this, empty);
-						 this.classList.remove("animation-left");
-						 movesDisplay.innerText = counter;
-						 checkWin();
-						 Puzzle.properties.randMoves.push(+this.innerText);
-						 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-						 Puzzle.properties.animation = false;
-					 }, anDuration - 10);					
+	// 				setTimeout(() => {
+	// 					 this.parentNode.insertBefore(this, empty);
+	// 					 this.classList.remove("animation-left");
+	// 					 movesDisplay.innerText = counter;
+	// 					 checkWin();
+	// 					 Puzzle.properties.randMoves.push(+this.innerText);
+	// 					 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+	// 					 Puzzle.properties.animation = false;
+	// 				 }, anDuration - 10);					
 				
-				}
-				else if(this.nextElementSibling === empty
-						&& !Puzzle.properties.animation
-						&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
-					counter++;
-					this.classList.add("animation-right");
-					Puzzle.properties.animation = true;
+	// 			}
+	// 			else if(this.nextElementSibling === empty
+	// 					&& !Puzzle.properties.animation
+	// 					&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
+	// 				counter++;
+	// 				this.classList.add("animation-right");
+	// 				Puzzle.properties.animation = true;
 					
-					setTimeout(() => {
-						empty.parentNode.insertBefore(empty, this);
-						this.classList.remove("animation-right");
-						movesDisplay.innerText = counter;
-						checkWin()
-						Puzzle.properties.randMoves.push(+this.innerText);
-						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-						Puzzle.properties.animation = false;
-					}, anDuration - 10);		
+	// 				setTimeout(() => {
+	// 					empty.parentNode.insertBefore(empty, this);
+	// 					this.classList.remove("animation-right");
+	// 					movesDisplay.innerText = counter;
+	// 					checkWin()
+	// 					Puzzle.properties.randMoves.push(+this.innerText);
+	// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+	// 					Puzzle.properties.animation = false;
+	// 				}, anDuration - 10);		
 					
-				}
-				else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
-					counter++;
-					this.classList.add("animation-bottom");
-					Puzzle.properties.animation = true;
+	// 			}
+	// 			else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
+	// 				counter++;
+	// 				this.classList.add("animation-bottom");
+	// 				Puzzle.properties.animation = true;
 					
-					setTimeout(() => {
-						this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
-						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-						this.classList.remove("animation-bottom");
-						movesDisplay.innerText = counter;
-						checkWin()
-						Puzzle.properties.randMoves.push(+this.innerText);
-						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-						Puzzle.properties.animation = false;
-					}, anDuration - 10);
+	// 				setTimeout(() => {
+	// 					this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
+	// 					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+	// 					this.classList.remove("animation-bottom");
+	// 					movesDisplay.innerText = counter;
+	// 					checkWin()
+	// 					Puzzle.properties.randMoves.push(+this.innerText);
+	// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+	// 					Puzzle.properties.animation = false;
+	// 				}, anDuration - 10);
 						
-				}
-				else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
-					counter++;
-					this.classList.add("animation-top");
-					Puzzle.properties.animation = true;
+	// 			}
+	// 			else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
+	// 				counter++;
+	// 				this.classList.add("animation-top");
+	// 				Puzzle.properties.animation = true;
 					
-					setTimeout(() => {
-						this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
-						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-						this.classList.remove("animation-top");
-						movesDisplay.innerText = counter;
-						checkWin();
-						//навесим событие, по клику будем записывать в randMoves ходы игрока и делать снимки расклада
-						Puzzle.properties.randMoves.push(+this.innerText);
-						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-						Puzzle.properties.animation = false;
-					}, anDuration - 10);
-				};		
-			 })
-		}
-	}
+	// 				setTimeout(() => {
+	// 					this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
+	// 					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+	// 					this.classList.remove("animation-top");
+	// 					movesDisplay.innerText = counter;
+	// 					checkWin();
+	// 					//навесим событие, по клику будем записывать в randMoves ходы игрока и делать снимки расклада
+	// 					Puzzle.properties.randMoves.push(+this.innerText);
+	// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+	// 					Puzzle.properties.animation = false;
+	// 				}, anDuration - 10);
+	// 			};		
+	// 		 })
+	// 	}
+	// }
+
+
+
+
+
+
 	//-------------------------------- меню -----------------------
 
 	function backToMenuReset () {
@@ -195,8 +277,7 @@ function getClickEvents() {
 		// раскрытие кнопок сохранения/хагрузки
 	document.querySelector(".saveBtn").addEventListener('click', function(){
 		this.classList.toggle("active");
-		// if (document.querySelector(".loadBtn").classList.contains("active")) {document.querySelector(".loadBtn").click()}
-		
+				
 		for (let i = 0; i < saveSlots.length; i++) {
 			saveSlots[i].classList.toggle("active");
 		}
@@ -204,8 +285,7 @@ function getClickEvents() {
 
 	document.querySelector(".loadBtn").addEventListener('click', function(){
 		this.classList.toggle("active");
-		// if (document.querySelector(".saveBtn").classList.contains("active")) {document.querySelector(".saveBtn").click()}
-
+		
 		for (let i = 0; i < loadSlots.length; i++) {
 			loadSlots[i].classList.toggle("active");
 		}
@@ -247,7 +327,6 @@ function getClickEvents() {
 					arrayOfLeaders = JSON.parse(localStorage.getItem(`leadD${difficult}`));
 				}
 			}
-			console.log(arrayOfLeaders)
 
 		function popup () {
 			if (Puzzle.properties.solution) {
