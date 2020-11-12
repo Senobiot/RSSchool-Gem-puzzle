@@ -62,162 +62,129 @@ function getClickEvents() {
 	}
 
 	//------------------------drag & drop -----------------------------
-	let ats = document.querySelectorAll(".gem");
+	// let ats = document.querySelectorAll(".gem");
 
-	// let slider = document.querySelector(".puzzle")
+	// 	 for (var i = 0; i < ats.length; i++) {	
+ //   			ats[i].addEventListener('mousedown', emptyRight);
+ //   		}
 
-	 for (var i = 0; i < ats.length; i++) {
-
-		//пустая справа
-   //  ats[i].addEventListener('mousedown',  function (event) {
-   //    //event.preventDefault(); 
-
-   //    this.style.position = 'relative';
-   //    let pointOfClick = event.clientX - this.previousElementSibling.getBoundingClientRect().left;
-   //    let positionOfStart = this.getBoundingClientRect().left
-   //    let positionOfEnd = this.getBoundingClientRect().left;
-   //    document.addEventListener('mousemove',  move = (event) => {
-			// let newPos = event.clientX - pointOfClick - this.previousElementSibling.getBoundingClientRect().left;
-			// let limit = this.previousElementSibling.offsetWidth - this.offsetWidth + 100;
-
-   //      if (newPos < 0 ) newPos = 0;
-   //      if (newPos > limit) newPos = limit;
-
-   //      this.style.left = newPos + 'px'
-   //      positionOfEnd = this.getBoundingClientRect().left
-   //  });
-
-   //    	document.addEventListener('mouseup', function up (event) {
-   //    		//if (positionOfEnd - positionOfStart > 50) тут запуск логики
-   //      	this.removeEventListener('mouseup', up)
-   //    		this.removeEventListener('mousemove', move)
-   //    	} );
-
-   //    function onMouseUp() {
-   //      document.removeEventListener('mouseup', up);
-   //      document.removeEventListener('mousemove', move);
-   //    }
-
-   	//пустая слева
-   	ats[i].addEventListener('mousedown',  function (event) {
-      //event.preventDefault(); 
-
+// 
+    function emptyRight (event , direction) {
+      event.preventDefault();
       this.style.position = 'relative';
-      let pointOfClick = event.clientX - this.previousElementSibling.getBoundingClientRect().left;
+      let pointOfClick = event.clientX;
+
       let positionOfStart = this.getBoundingClientRect().left
       let positionOfEnd = this.getBoundingClientRect().left;
-      document.addEventListener('mousemove',  move = (event) => {
-			let newPos = event.clientX - pointOfClick - this.previousElementSibling.getBoundingClientRect().left;
-			let limit = this.previousElementSibling.offsetWidth - this.offsetWidth + 100;
 
+      document.addEventListener('mousemove',  move = (event) => {
+		let newPos = pointOfClick - event.clientX; //меняем местами - меняется сторона, ещё поменять laft/right
+		let limit = 100;
         if (newPos < 0 ) newPos = 0;
         if (newPos > limit) newPos = limit;
-
-        this.style.left = newPos + 'px'
+        this.style.right = newPos + 'px' //тут меняем что куда надо двигать
         positionOfEnd = this.getBoundingClientRect().left
     });
-
       	document.addEventListener('mouseup', function up (event) {
       		//if (positionOfEnd - positionOfStart > 50) тут запуск логики
         	this.removeEventListener('mouseup', up)
       		this.removeEventListener('mousemove', move)
       	} );
 
-      function onMouseUp() {
+	function onMouseUp() {
         document.removeEventListener('mouseup', up);
         document.removeEventListener('mousemove', move);
       }
-
-
-
-     });
 	}
+
 	
 
 
 
 	//---------------------------- клетки ---------------------------
 
-	// for (let i = 0; i < gems.length; i++) {
+	for (let i = 0; i < gems.length; i++) {
 		
-	// 	if (gems[i] !== empty) {
-	// 		gems[i].addEventListener('click', function () {
- //              //myAudio2.play();
-	// 			empty = document.querySelector(".empty")
-	// 			emptyPos = gems.indexOf(empty);
-	// 			if (this.previousElementSibling === empty
-	// 			 	&& !Puzzle.properties.animation
-	// 			  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
-	// 				counter++;
-	// 				this.classList.add("animation-left");
-	// 				Puzzle.properties.animation = true;
+		if (gems[i] !== empty) {
+			gems[i].addEventListener('click', function () {
+              //myAudio2.play();
+				empty = document.querySelector(".empty")
+				emptyPos = gems.indexOf(empty);
+				if (this.previousElementSibling === empty
+				 	&& !Puzzle.properties.animation
+				  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
+					counter++;
+					this.classList.add("animation-left");
+					Puzzle.properties.animation = true;
 					
-	// 				setTimeout(() => {
-	// 					 this.parentNode.insertBefore(this, empty);
-	// 					 this.classList.remove("animation-left");
-	// 					 movesDisplay.innerText = counter;
-	// 					 checkWin();
-	// 					 Puzzle.properties.randMoves.push(+this.innerText);
-	// 					 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-	// 					 Puzzle.properties.animation = false;
-	// 				 }, anDuration - 10);					
+					setTimeout(() => {
+						 this.parentNode.insertBefore(this, empty);
+						 this.classList.remove("animation-left");
+						 movesDisplay.innerText = counter;
+						 checkWin();
+						 Puzzle.properties.randMoves.push(+this.innerText);
+						 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+						 Puzzle.properties.animation = false;
+					 }, anDuration - 10);					
 				
-	// 			}
-	// 			else if(this.nextElementSibling === empty
-	// 					&& !Puzzle.properties.animation
-	// 					&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
-	// 				counter++;
-	// 				this.classList.add("animation-right");
-	// 				Puzzle.properties.animation = true;
+				}
+				else if(this.nextElementSibling === empty
+						&& !Puzzle.properties.animation
+						&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
+					counter++;
+
+					this.addEventListener('mousedown', emptyRight);
+					this.classList.add("animation-right");
+					Puzzle.properties.animation = true;
 					
-	// 				setTimeout(() => {
-	// 					empty.parentNode.insertBefore(empty, this);
-	// 					this.classList.remove("animation-right");
-	// 					movesDisplay.innerText = counter;
-	// 					checkWin()
-	// 					Puzzle.properties.randMoves.push(+this.innerText);
-	// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-	// 					Puzzle.properties.animation = false;
-	// 				}, anDuration - 10);		
+					setTimeout(() => {
+						empty.parentNode.insertBefore(empty, this);
+						this.classList.remove("animation-right");
+						movesDisplay.innerText = counter;
+						checkWin()
+						Puzzle.properties.randMoves.push(+this.innerText);
+						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+						Puzzle.properties.animation = false;
+					}, anDuration - 10);		
 					
-	// 			}
-	// 			else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
-	// 				counter++;
-	// 				this.classList.add("animation-bottom");
-	// 				Puzzle.properties.animation = true;
+				}
+				else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
+					counter++;
+					this.classList.add("animation-bottom");
+					Puzzle.properties.animation = true;
 					
-	// 				setTimeout(() => {
-	// 					this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
-	// 					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-	// 					this.classList.remove("animation-bottom");
-	// 					movesDisplay.innerText = counter;
-	// 					checkWin()
-	// 					Puzzle.properties.randMoves.push(+this.innerText);
-	// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-	// 					Puzzle.properties.animation = false;
-	// 				}, anDuration - 10);
+					setTimeout(() => {
+						this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
+						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+						this.classList.remove("animation-bottom");
+						movesDisplay.innerText = counter;
+						checkWin()
+						Puzzle.properties.randMoves.push(+this.innerText);
+						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+						Puzzle.properties.animation = false;
+					}, anDuration - 10);
 						
-	// 			}
-	// 			else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
-	// 				counter++;
-	// 				this.classList.add("animation-top");
-	// 				Puzzle.properties.animation = true;
+				}
+				else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
+					counter++;
+					this.classList.add("animation-top");
+					Puzzle.properties.animation = true;
 					
-	// 				setTimeout(() => {
-	// 					this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
-	// 					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-	// 					this.classList.remove("animation-top");
-	// 					movesDisplay.innerText = counter;
-	// 					checkWin();
-	// 					//навесим событие, по клику будем записывать в randMoves ходы игрока и делать снимки расклада
-	// 					Puzzle.properties.randMoves.push(+this.innerText);
-	// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-	// 					Puzzle.properties.animation = false;
-	// 				}, anDuration - 10);
-	// 			};		
-	// 		 })
-	// 	}
-	// }
+					setTimeout(() => {
+						this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
+						this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+						this.classList.remove("animation-top");
+						movesDisplay.innerText = counter;
+						checkWin();
+						//навесим событие, по клику будем записывать в randMoves ходы игрока и делать снимки расклада
+						Puzzle.properties.randMoves.push(+this.innerText);
+						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+						Puzzle.properties.animation = false;
+					}, anDuration - 10);
+				};		
+			 })
+		}
+	}
 
 
 
