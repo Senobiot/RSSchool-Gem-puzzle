@@ -13,6 +13,7 @@ function getClickEvents() {
 		anDuration = 300,
 		movesDisplay = document.querySelector(".moves"),
 		puzzleRadialGradient = document.querySelector(".puzzle"),
+		draggable = false,
 		crossTimer,
 		counter = Number(movesDisplay.innerText),
 		difficult = Puzzle.properties.difficult;
@@ -62,42 +63,206 @@ function getClickEvents() {
 	}
 
 	//------------------------drag & drop -----------------------------
-	// let ats = document.querySelectorAll(".gem");
 
-	// 	 for (var i = 0; i < ats.length; i++) {	
- //   			ats[i].addEventListener('mousedown', emptyRight);
- //   		}
+for (let i = 0; i < gems.length; i++) {		
+	if (gems[i] !== empty) {
+	gems[i].addEventListener('mousedown', function () {
+				empty = document.querySelector(".empty");
+				emptyPos = gems.indexOf(empty);
+		if (this.previousElementSibling === empty
+		&& !Puzzle.properties.animation
+		&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult)))
+		{
 
-// 
-    function emptyRight (event , direction) {
-      event.preventDefault();
-      this.style.position = 'relative';
-      let pointOfClick = event.clientX;
+			this.style.position = 'relative';
+			let pointOfClick = event.clientX,
+				positionOfStart = this.getBoundingClientRect().left,
+				positionOfEnd = positionOfStart,
+				width = this.offsetWidth;
 
-      let positionOfStart = this.getBoundingClientRect().left
-      let positionOfEnd = this.getBoundingClientRect().left;
+		document.addEventListener('mousemove',  move = (event) => {
+			let newPos = pointOfClick - event.clientX; //меняем местами - меняется сторона, ещё поменять laft/right
+			let limit = 100;
+	        if (newPos < 0 ) newPos = 0;
+	        if (newPos > limit) newPos = limit;
+	        positionOfEnd = this.getBoundingClientRect().left;
+	        this.style.right = newPos + 'px' //тут меняем что куда надо двигать    
+	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
+		});
 
-      document.addEventListener('mousemove',  move = (event) => {
-		let newPos = pointOfClick - event.clientX; //меняем местами - меняется сторона, ещё поменять laft/right
-		let limit = 100;
-        if (newPos < 0 ) newPos = 0;
-        if (newPos > limit) newPos = limit;
-        this.style.right = newPos + 'px' //тут меняем что куда надо двигать
-        positionOfEnd = this.getBoundingClientRect().left
-    });
-      	document.addEventListener('mouseup', function up (event) {
-      		//if (positionOfEnd - positionOfStart > 50) тут запуск логики
-        	this.removeEventListener('mouseup', up)
-      		this.removeEventListener('mousemove', move)
-      	} );
+      	document.addEventListener('mouseup',  up = (event) => {
+	      	if (draggable) {
+	      		if ((positionOfStart - positionOfEnd) > 0.4*width) {
+	      			counter++;
+	      			this.style.position = 'static';
+	      			this.style.right = 'auto';
+					this.parentNode.insertBefore(this, empty);
+					movesDisplay.innerText = counter;
+					checkWin();
+					Puzzle.properties.randMoves.push(+this.innerText);
+					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+					draggable = false;
+	      		}
+	      		else {
+	      			this.style.position = 'static';
+	      			this.style.right = 'auto';
+	      		}
+	      	}
+      		document.removeEventListener('mousemove', move);
+        	document.removeEventListener('mouseup', up);
+        	empty = document.querySelector(".empty");
+			emptyPos = gems.indexOf(empty);
+      	}) 
+      	}
 
-	function onMouseUp() {
-        document.removeEventListener('mouseup', up);
-        document.removeEventListener('mousemove', move);
-      }
+      	else if(this.nextElementSibling === empty
+		&& !Puzzle.properties.animation
+		&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult)))
+		{
+			this.style.position = 'relative';
+			let pointOfClick = event.clientX,
+				positionOfStart = this.getBoundingClientRect().left,
+				positionOfEnd = positionOfStart,
+				width = this.offsetWidth;
+
+		document.addEventListener('mousemove',  move = (event) => {
+			let newPos = event.clientX - pointOfClick; //меняем местами - меняется сторона, ещё поменять laft/right
+			let limit = 100;
+	        if (newPos < 0 ) newPos = 0;
+	        if (newPos > limit) newPos = limit;
+	        positionOfEnd = this.getBoundingClientRect().left;
+	        this.style.left = newPos + 'px' //тут меняем что куда надо двигать    
+	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
+		});
+
+      	document.addEventListener('mouseup',  up = (event) => {
+	      	if (draggable) {
+	      		if ((positionOfStart - positionOfEnd) < -0.4*width) {
+	      			counter++;
+	      			this.style.position = 'static';
+	      			this.style.left = 'auto';
+					empty.parentNode.insertBefore(empty, this);
+					movesDisplay.innerText = counter;
+					checkWin();
+					Puzzle.properties.randMoves.push(+this.innerText);
+					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+
+	      		}
+	      		else {
+	      				this.style.position = 'static';
+	      				this.style.left = 'auto';
+	      		}
+	      	}
+      		document.removeEventListener('mousemove', move);
+        	document.removeEventListener('mouseup', up);
+        	empty = document.querySelector(".empty");
+			emptyPos = gems.indexOf(empty);
+      	}) 
+
+		}
+
+		else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation) {
+
+			this.style.position = 'relative';
+			let pointOfClick = event.clientY,
+				positionOfStart = this.getBoundingClientRect().top,
+				positionOfEnd = positionOfStart,
+				width = this.offsetWidth;
+
+		document.addEventListener('mousemove',  move = (event) => {
+			let newPos = event.clientY - pointOfClick; //меняем местами - меняется сторона, ещё поменять laft/right
+			let limit = 100;
+	        if (newPos < 0 ) newPos = 0;
+	        if (newPos > limit) newPos = limit;
+	        positionOfEnd = this.getBoundingClientRect().top;
+	        this.style.top = newPos + 'px' //тут меняем что куда надо двигать    
+	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
+		});
+
+      	document.addEventListener('mouseup',  up = (event) => {
+	      	if (draggable) {
+	      		console.log(positionOfStart - positionOfEnd);
+	      		if ((positionOfStart - positionOfEnd) < -0.4*width) {
+
+	      			counter++;
+	      			this.style.position = 'static';
+	      			this.style.top = 'auto';
+					this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
+					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+					movesDisplay.innerText = counter;
+					checkWin();
+					Puzzle.properties.randMoves.push(+this.innerText);
+					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+					draggable = false;
+					emptyPos = gems.indexOf(empty);
+	      		}
+	      		else {
+	      			this.style.position = 'static';
+	      			this.style.top = 'auto';
+	      		}
+	      	}
+      		document.removeEventListener('mousemove', move);
+        	document.removeEventListener('mouseup', up);
+        	empty = document.querySelector(".empty");
+			emptyPos = gems.indexOf(empty);
+      	}) 
+
+		}
+		else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation) {
+
+			this.style.position = 'relative';
+			let pointOfClick = event.clientY,
+				positionOfStart = this.getBoundingClientRect().bottom,
+				positionOfEnd = positionOfStart,
+				width = this.offsetWidth;
+
+		document.addEventListener('mousemove',  move = (event) => {
+			let newPos =  pointOfClick - event.clientY; //меняем местами - меняется сторона, ещё поменять laft/right
+			let limit = 100;
+	        if (newPos < 0 ) newPos = 0;
+	        if (newPos > limit) newPos = limit;
+	        positionOfEnd = this.getBoundingClientRect().bottom;
+	        this.style.bottom = newPos + 'px' //тут меняем что куда надо двигать    
+	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
+		});
+
+      	document.addEventListener('mouseup',  up = (event) => {
+	      	if (draggable) {
+	      		console.log(`bottom ${(positionOfStart - positionOfEnd) > 0.4*width}`);
+	      		if ((positionOfStart - positionOfEnd) > 0.4*width) {
+
+	      			counter++;
+	      			this.style.position = 'static';
+	      			this.style.bottom = 'auto';
+					this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
+					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
+					movesDisplay.innerText = counter;
+					checkWin();
+					Puzzle.properties.randMoves.push(+this.innerText);
+					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+					draggable = false;
+					emptyPos = gems.indexOf(empty);
+	      		}
+	      		else {
+	      			this.style.position = 'static';
+	      			this.style.bottom = 'auto';
+	      		}
+	      	}
+      		document.removeEventListener('mousemove', move);
+        	document.removeEventListener('mouseup', up);
+        	empty = document.querySelector(".empty");
+			emptyPos = gems.indexOf(empty);
+      	}) 
+		}
+
+
+
+
+
+
+      })
 	}
-
-	
+}	
 
 
 
@@ -106,49 +271,56 @@ function getClickEvents() {
 	for (let i = 0; i < gems.length; i++) {
 		
 		if (gems[i] !== empty) {
+
 			gems[i].addEventListener('click', function () {
+
               //myAudio2.play();
 				empty = document.querySelector(".empty")
 				emptyPos = gems.indexOf(empty);
 				if (this.previousElementSibling === empty
 				 	&& !Puzzle.properties.animation
-				  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
-					counter++;
-					this.classList.add("animation-left");
-					Puzzle.properties.animation = true;
-					
-					setTimeout(() => {
-						 this.parentNode.insertBefore(this, empty);
-						 this.classList.remove("animation-left");
-						 movesDisplay.innerText = counter;
-						 checkWin();
-						 Puzzle.properties.randMoves.push(+this.innerText);
-						 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-						 Puzzle.properties.animation = false;
-					 }, anDuration - 10);					
-				
+				  	&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))
+				  	) {
+					if (!draggable) {
+						counter++;
+						this.classList.add("animation-left");
+						Puzzle.properties.animation = true;
+
+						setTimeout(() => {
+							 this.parentNode.insertBefore(this, empty);
+							 this.classList.remove("animation-left");
+							 movesDisplay.innerText = counter;
+							 checkWin();
+							 Puzzle.properties.randMoves.push(+this.innerText);
+							 Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+							 Puzzle.properties.animation = false;
+						 }, anDuration - 10);	
+					}
+					draggable = false; //в конец
 				}
 				else if(this.nextElementSibling === empty
 						&& !Puzzle.properties.animation
 						&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult))) {
-					counter++;
-
-					this.addEventListener('mousedown', emptyRight);
-					this.classList.add("animation-right");
-					Puzzle.properties.animation = true;
 					
-					setTimeout(() => {
-						empty.parentNode.insertBefore(empty, this);
-						this.classList.remove("animation-right");
-						movesDisplay.innerText = counter;
-						checkWin()
-						Puzzle.properties.randMoves.push(+this.innerText);
-						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
-						Puzzle.properties.animation = false;
-					}, anDuration - 10);		
-					
+					if (!draggable) {
+						counter++;
+						this.classList.add("animation-right");
+						Puzzle.properties.animation = true;
+						
+						setTimeout(() => {
+							empty.parentNode.insertBefore(empty, this);
+							this.classList.remove("animation-right");
+							movesDisplay.innerText = counter;
+							checkWin()
+							Puzzle.properties.randMoves.push(+this.innerText);
+							Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
+							Puzzle.properties.animation = false;
+						}, anDuration - 10);		
+					}
+					draggable = false;
 				}
 				else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation){
+					if (!draggable) {
 					counter++;
 					this.classList.add("animation-bottom");
 					Puzzle.properties.animation = true;
@@ -163,9 +335,11 @@ function getClickEvents() {
 						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
 						Puzzle.properties.animation = false;
 					}, anDuration - 10);
-						
+					}
+					draggable = false;
 				}
 				else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation){
+					if (!draggable) {
 					counter++;
 					this.classList.add("animation-top");
 					Puzzle.properties.animation = true;
@@ -181,9 +355,13 @@ function getClickEvents() {
 						Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"))
 						Puzzle.properties.animation = false;
 					}, anDuration - 10);
-				};		
+					}
+					draggable = false;
+				};	
+				
 			 })
-		}
+			draggable = false;
+		} else {draggable = false}
 	}
 
 
