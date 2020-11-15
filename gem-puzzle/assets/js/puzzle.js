@@ -621,8 +621,10 @@ const Puzzle = {
 	 _showSolution (){ 
 	 	//тут просто читаем с конца randMoves и эумлируем клик по нужной кнопке
 		setTimeout(() => {
-			console.log(this.properties.randMoves[this.properties.turn] - 1)
 			if (!this.properties.animation) {
+				console.log(`turn ${this.properties.turn}`)
+				console.log(`curr moves ${this.properties.randMoves[this.properties.turn] - 1}`)
+				
 				this.elements.keys[this.properties.randMoves[this.properties.turn] - 1].click()
 				this.properties.turn--;
 					if (this.properties.turn >= 0) {this._showSolution()}}

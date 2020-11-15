@@ -232,7 +232,6 @@ function getClickEvents() {
 			if (newPos > width) newPos = width;
 			positionOfEnd = this.getBoundingClientRect().right;
 			this.style.right = -newPos + 'px' //тут меняем что куда надо двигать
-			console.log(`there ${positionOfStart - positionOfEnd}`)
 		});
 
 		document.addEventListener('mouseup',  up = (event) => {
@@ -283,7 +282,6 @@ function getClickEvents() {
 			if (newPos > width) newPos = width;
 			positionOfEnd = this.getBoundingClientRect().top;
 			this.style.top = -newPos + 'px' //тут меняем что куда надо двигать
-			console.log(`there ${positionOfStart - positionOfEnd}`)
 		});
 
 		document.addEventListener('mouseup',  up = (event) => {
@@ -335,7 +333,6 @@ function getClickEvents() {
 			if (newPos > width) newPos = width;
 			positionOfEnd = this.getBoundingClientRect().top;
 			this.style.top = newPos + 'px' //тут меняем что куда надо двигать
-			console.log(`there ${positionOfStart - positionOfEnd}`)
 		});
 
 		document.addEventListener('mouseup',  up = (event) => {
