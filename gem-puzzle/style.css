@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /*--------------------*/
 body {
-  padding-top: 20px;
+  padding: 20px 15px 0;
   background: url("assets/images/bg.jpg") no-repeat 50%/cover;
   font-family: 'Paytone One', sans-serif;
   text-transform: uppercase;
@@ -71,10 +71,11 @@ body {
     overflow: hidden; }
     body.win:before {
       content: '';
-      top: 0;
+      top: -20px;
+      left: -15px;
       position: fixed;
-      width: 100%;
-      height: 100%;
+      width: 105%;
+      height: 105%;
       z-index: 10;
       background: -o-linear-gradient(45deg, #1c5e7d 33%, rgba(28, 94, 125, 0.9) 66%, #8AA9D6);
       background: linear-gradient(45deg, #1c5e7d 33%, rgba(28, 94, 125, 0.9) 66%, #8AA9D6); }
@@ -160,6 +161,9 @@ body {
   .menu.inactive, .sizes.inactive, .savesMainMenu.inactive {
     -webkit-transform: rotateX(90deg);
             transform: rotateX(90deg); }
+
+.menu {
+  margin-top: 100px; }
 
 .sizes div:nth-child(7) {
   font-size: 24px;
@@ -277,6 +281,15 @@ body {
   -webkit-transition: all 2s;
   -o-transition: all 2s;
   transition: all 2s; }
+  .puzzle.disabled:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0); }
 
 .gem {
   display: -webkit-box;
@@ -294,6 +307,7 @@ body {
   background-color: rgba(28, 94, 125, 0.8);
   background: -o-linear-gradient(45deg, rgba(28, 94, 125, 0.8) 33%, rgba(28, 94, 125, 0.8) 66%, #8AA9D6);
   background: linear-gradient(45deg, rgba(28, 94, 125, 0.8) 33%, rgba(28, 94, 125, 0.8) 66%, #8AA9D6);
+  text-shadow: 0px 0px 9px black;
   color: rgba(255, 255, 255, 0.7);
   font-size: 40px;
   font-family: 'Paytone One', sans-serif;
@@ -402,7 +416,7 @@ body {
 .timer:before {
   content: 'your time:'; }
 
-.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn, .saveSlot, .loadSlot {
+.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn, .saveSlot, .loadSlot, .restart {
   width: 180px;
   height: 50px;
   text-transform: uppercase;
@@ -414,8 +428,6 @@ body {
   font-family: 'Paytone One', sans-serif;
   border-radius: 5px;
   cursor: pointer;
-  left: -webkit-calc(50% - 75px);
-  left: calc(50% - 75px);
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
@@ -426,14 +438,14 @@ body {
   -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s; }
-  .solutionBtn:not(:last-child):before, .leadersBtn:not(:last-child):before, .backBtn:not(:last-child):before, .saveBtn:not(:last-child):before, .loadBtn:not(:last-child):before, .saveSlot:not(:last-child):before, .loadSlot:not(:last-child):before {
+  .solutionBtn:not(:last-child):before, .leadersBtn:not(:last-child):before, .backBtn:not(:last-child):before, .saveBtn:not(:last-child):before, .loadBtn:not(:last-child):before, .saveSlot:not(:last-child):before, .loadSlot:not(:last-child):before, .restart:not(:last-child):before {
     position: absolute;
     left: -40px; }
-  .solutionBtn:not(:last-child):hover, .leadersBtn:not(:last-child):hover, .backBtn:not(:last-child):hover, .saveBtn:not(:last-child):hover, .loadBtn:not(:last-child):hover, .saveSlot:not(:last-child):hover, .loadSlot:not(:last-child):hover {
+  .solutionBtn:not(:last-child):hover, .leadersBtn:not(:last-child):hover, .backBtn:not(:last-child):hover, .saveBtn:not(:last-child):hover, .loadBtn:not(:last-child):hover, .saveSlot:not(:last-child):hover, .loadSlot:not(:last-child):hover, .restart:not(:last-child):hover {
     -webkit-transform: translateX(30px);
         -ms-transform: translateX(30px);
             transform: translateX(30px); }
-    .solutionBtn:not(:last-child):hover:before, .leadersBtn:not(:last-child):hover:before, .backBtn:not(:last-child):hover:before, .saveBtn:not(:last-child):hover:before, .loadBtn:not(:last-child):hover:before, .saveSlot:not(:last-child):hover:before, .loadSlot:not(:last-child):hover:before {
+    .solutionBtn:not(:last-child):hover:before, .leadersBtn:not(:last-child):hover:before, .backBtn:not(:last-child):hover:before, .saveBtn:not(:last-child):hover:before, .loadBtn:not(:last-child):hover:before, .saveSlot:not(:last-child):hover:before, .loadSlot:not(:last-child):hover:before, .restart:not(:last-child):hover:before {
       content: '\27A4'; }
 
 .saveBtn.active, .loadBtn.active {
@@ -508,6 +520,19 @@ body {
     -webkit-transform: translateX(0px);
             transform: translateX(0px);
     color: #cacaca; } }
+
+.solutionBtn.disabled {
+  cursor: default;
+  -webkit-animation: none;
+          animation: none;
+  background: #4A4747; }
+
+.restart.disabled {
+  cursor: default;
+  -webkit-animation: none;
+          animation: none;
+  background: #4A4747;
+  pointer-events: none; }
 
 .leadersPanel {
   position: fixed;
@@ -618,3 +643,164 @@ body {
   right: -40px; }
   .winPopupCloseBtn:before {
     top: -17px; }
+
+.sound, .music {
+  position: fixed;
+  border-radius: 5px;
+  bottom: 5%;
+  right: 5%;
+  border: 2px solid #2B4951;
+  width: 50px;
+  height: 50px;
+  cursor: pointer; }
+
+.music {
+  right: 9%;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  background: url("assets/images/music_off.ico") no-repeat 50%/cover; }
+  .music.active {
+    background: rgba(120, 240, 155, 0.3) url("assets/images/music_on.ico") no-repeat 50%/cover; }
+
+.sound {
+  background: url("assets/images/sound_off.png") no-repeat 50% 50%/contain;
+  background-size: 80% 70%; }
+  .sound.active {
+    background: rgba(120, 240, 155, 0.3) url("assets/images/sound_on.ico") no-repeat 50%/cover; }
+
+@media (max-width: 1599px) {
+  body {
+    background-size: 200% 200%;
+    padding-top: 0; }
+  .puzzle {
+    margin-left: 400px; }
+  .music {
+    top: 20px;
+    right: 10%; }
+  .sound {
+    top: 20px; } }
+
+@media (max-width: 1250px) {
+  body {
+    padding-top: 180px;
+    padding-bottom: 50px;
+    height: 100%; }
+  .puzzle {
+    margin: 0 auto; }
+  .title {
+    font-size: 60px; }
+  .controlPanel {
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 160px;
+    position: fixed; }
+    .controlPanel.active {
+      position: fixed;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr 0.5fr repeat(3, 0.2fr);
+      grid-column-gap: 10px;
+      grid-row-gap: 5px; }
+      .controlPanel.active > div, .controlPanel.active button {
+        margin: 0;
+        height: 60px;
+        width: auto; }
+      .controlPanel.active button:nth-child(5) {
+        grid-area: 3 / 1 / 4 / 2;
+        width: 70%;
+        margin: 0 auto; }
+      .controlPanel.active button:nth-child(6) {
+        grid-area: 4 / 1 / 5 / 2;
+        width: 70%;
+        margin: 0 auto; }
+      .controlPanel.active button:nth-child(7) {
+        grid-area: 5 / 1 / 6 / 2;
+        width: 70%;
+        margin: 0 auto; }
+      .controlPanel.active button:nth-child(9) {
+        grid-area: 3 / 2 / 4 / 3;
+        width: 70%;
+        margin: 0 auto; }
+      .controlPanel.active button:nth-child(10) {
+        grid-area: 4 / 2 / 5 / 3;
+        width: 70%;
+        margin: 0 auto; }
+      .controlPanel.active button:nth-child(11) {
+        grid-area: 5 / 2 / 6 / 3;
+        width: 70%;
+        margin: 0 auto; }
+  .moves {
+    grid-area: 1 / 1 / 2 / 2;
+    padding-left: 7em; }
+  .timer {
+    grid-area: 1 / 2 / 2 / 3;
+    font-size: 1.5em;
+    padding-top: 0.65em;
+    padding-left: 4em;
+    width: 100%; }
+    .timer:before {
+      content: 'time'; }
+  .backBtn {
+    grid-area: 1 / 3 / 2 / 4; }
+  .restart {
+    grid-area: 1 / 4 / 2 / 5; }
+  .saveBtn {
+    grid-area: 2 / 1 / 2 / 2; }
+  .loadBtn {
+    grid-area: 2 / 2 / 2 / 3; }
+  .leadersBtn {
+    grid-area: 2 / 3 / 4 / 4; }
+  .solutionBtn {
+    grid-area: 2 / 4 / 4 / 4; }
+  .puzzle {
+    margin-right: auto;
+    margin-bottom: 10px; }
+  .music {
+    right: 12%; }
+  .solutionBtn:not(:last-child):before, .leadersBtn:not(:last-child):before, .backBtn:not(:last-child):before, .saveBtn:not(:last-child):before, .loadBtn:not(:last-child):before, .saveSlot:not(:last-child):before, .loadSlot:not(:last-child):before, .restart:not(:last-child):before {
+    content: ''; }
+  .solutionBtn:not(:last-child):hover, .leadersBtn:not(:last-child):hover, .backBtn:not(:last-child):hover, .saveBtn:not(:last-child):hover, .loadBtn:not(:last-child):hover, .saveSlot:not(:last-child):hover, .loadSlot:not(:last-child):hover, .restart:not(:last-child):hover {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none; }
+  .saveBtn.active, .loadBtn.active {
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none; }
+    .saveBtn.active:before, .loadBtn.active:before {
+      content: '';
+      left: 0;
+      -webkit-transform: none;
+          -ms-transform: none;
+              transform: none;
+      -webkit-transition: 0;
+      -o-transition: 0;
+      transition: 0; }
+    .saveBtn.active:hover, .loadBtn.active:hover {
+      -webkit-transform: none;
+          -ms-transform: none;
+              transform: none; }
+    .saveBtn.active:hover:before, .loadBtn.active:hover:before {
+      content: '';
+      -webkit-transform: none;
+          -ms-transform: none;
+              transform: none; }
+  .leadersPanel {
+    font-size: 20px; }
+  .leadersTitle {
+    font-size: 30px; }
+  .leadersHeader {
+    font-size: 26px; }
+  .leadersDifficultiesBtns .leadersDifficulties {
+    font-size: 26px; }
+  .music, .sound {
+    top: 180px; }
+  .winPopup {
+    padding: 0 20px;
+    font-size: 26px; } }
+
+@media (max-width: 850px) {
+  .puzzle {
+    width: 95%; } }

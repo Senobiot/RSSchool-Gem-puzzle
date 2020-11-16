@@ -2,7 +2,7 @@
 @import "../css/reset";
 
 body {
-	padding-top: 20px;
+	padding: 20px 15px 0;
 	//position: relative;
 	background: url("assets/images/bg.jpg") no-repeat 50%/cover;
 	font-family: 'Paytone One', sans-serif;
@@ -13,10 +13,11 @@ body {
 		overflow: hidden;
 		&:before {
 			content: '';
-			top: 0;
+			top: -20px;
+			left: -15px;
 			position: fixed;
-			width: 100%;
-			height: 100%;
+			width: 105%;
+			height: 105%;
 			z-index: 10; //50 у лидеров
 			background: linear-gradient(45deg, rgba(28,94,125, 1) 33%, rgba(28,94,125, 0.9) 66%, #8AA9D6);
 		}
@@ -72,6 +73,9 @@ body {
 	&.inactive{
 		transform: rotateX(90deg);
 	}
+}
+.menu {
+	margin-top: 100px;
 }
 .sizes {
 	div:nth-child(7) {
@@ -169,6 +173,18 @@ body {
 	rgba(0,0,0,.8) 3px 3px 8px -3px;
 	margin-bottom: 1em;
 	transition: all 2s;
+	&.disabled {
+		&:before {
+			position: absolute;
+			content: '';
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			background-color: rgba(0,0,0,0);
+		}
+	}
 }
 .gem {
 	display: flex;
@@ -176,6 +192,7 @@ body {
 	align-items: center;
 	background-color: rgba(28,94,125, 0.8);
 	background: linear-gradient(45deg, rgba(28,94,125, 0.8) 33%, rgba(28,94,125, 0.8) 66%, #8AA9D6);
+	text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
 	color: rgba(255,255,255,.7);
 	font-size: 40px;
 	font-family: 'Paytone One', sans-serif;
@@ -273,7 +290,7 @@ body {
 	content: 'your time:';
 }
 
-.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn, .saveSlot, .loadSlot  {
+.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn, .saveSlot, .loadSlot, .restart  {
 	width: 180px;
 	height: 50px;
 	text-transform: uppercase;
@@ -284,7 +301,6 @@ body {
 	font-family: 'Paytone One', sans-serif;
 	border-radius: 5px;
 	cursor: pointer;
-	left: calc(50% - 75px);
 	transition: 0.5s;
 	display: block;
 	margin: 0 auto 20px;
@@ -345,6 +361,20 @@ body {
 	  		75% {transform: translateX(-3px);}	
 	  		100% {transform: translateX(0px);color: #cacaca;}	
   		}
+	}
+	&.disabled {
+		cursor: default;
+		animation: none;
+		background: #4A4747;
+	}
+}
+
+.restart {
+	&.disabled {
+		cursor: default;
+		animation: none;
+		background: #4A4747;
+		pointer-events: none;
 	}
 }
 
@@ -436,5 +466,174 @@ body {
 	right: -40px;
 	&:before {
 		top: -17px;
+	}
+}
+.sound, .music {
+	position: fixed;
+	border-radius: 5px;
+	bottom: 5%;
+	right: 5%;
+	border: 2px solid #2B4951;
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+}
+.music {
+	right: 9%;
+	transition: all 0.3s;
+	background: url('assets/images/music_off.ico') no-repeat 50%/cover;
+	&.active {
+		background: rgba(120,240,155,0.3) url('assets/images/music_on.ico') no-repeat 50%/cover;
+	}
+	
+}
+.sound {
+	background: url('assets/images/sound_off.png') no-repeat 50% 50%/contain;
+	background-size: 80% 70%;
+	&.active {
+		background: rgba(120,240,155,0.3) url('assets/images/sound_on.ico') no-repeat 50%/cover;
+	}
+}
+
+@media (max-width: 1599px) {
+	body {
+		background-size: 200% 200%;
+		padding-top: 0;
+	}
+	.puzzle,  {
+		margin-left: 400px;
+	}
+	.title {
+
+	}
+	.music {
+		top: 20px;
+		right: 10%;
+	}
+	.sound {
+		top: 20px;
+	}
+}
+
+@media (max-width: 1250px) {
+	body {
+		padding-top: 180px;
+		padding-bottom: 50px;
+		height: 100%;
+	}
+	.title {
+
+	}
+	.puzzle {
+		margin: 0 auto;
+	}
+	.title {
+		font-size: 60px;
+	}
+	.controlPanel {
+		left: 0;
+		top: 0px;
+		width: 100%;
+		height: 160px;
+		position: fixed;
+		&.active {
+			position: fixed;
+			& > div, button {
+				margin: 0;
+				height: 60px;
+				width: auto;
+			}
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			grid-template-rows: 1fr 0.5fr repeat(3, 0.2fr);
+			grid-column-gap: 10px;
+			grid-row-gap: 5px;
+				button:nth-child(5){grid-area: 3 / 1 / 4 / 2; width: 70%; margin: 0 auto;}
+				button:nth-child(6){grid-area: 4 / 1 / 5 / 2; width: 70%; margin: 0 auto;}
+				button:nth-child(7){grid-area: 5 / 1 / 6 / 2; width: 70%; margin: 0 auto;}
+				button:nth-child(9) { grid-area: 3 / 2 / 4 / 3;  width: 70%; margin: 0 auto;}
+				button:nth-child(10) { grid-area: 4 / 2 / 5 / 3;  width: 70%; margin: 0 auto;}
+				button:nth-child(11) { grid-area: 5 / 2 / 6 / 3;  width: 70%; margin: 0 auto;}
+		}
+	}
+
+	.moves { grid-area: 1 / 1 / 2 / 2;
+		padding-left: 7em;
+		}
+	.timer { grid-area: 1 / 2 / 2 / 3;
+		font-size: 1.5em;
+		padding-top: 0.65em;
+		padding-left: 4em;
+		width: 100%;
+		&:before {
+			content: 'time';
+		}
+
+	 }
+	.backBtn { grid-area: 1 / 3 / 2 / 4; }
+	.restart { grid-area: 1 / 4 / 2 / 5; }
+	.saveBtn { grid-area: 2 / 1 / 2 / 2; }
+	.loadBtn { grid-area: 2 / 2 / 2 / 3; }
+	.leadersBtn { grid-area: 2 / 3 / 4 / 4; }
+	.solutionBtn { grid-area: 2 / 4 / 4 / 4; }
+	.puzzle {
+		margin-right: auto;
+		margin-bottom: 10px;
+	}
+	.music {
+		right: 12%;
+	}
+	.solutionBtn, .leadersBtn, .backBtn, .saveBtn, .loadBtn, .saveSlot, .loadSlot, .restart  {
+		&:not(:last-child):before {
+			content: '';
+		}
+		&:not(:last-child):hover {
+			transform: none;
+		}
+	}
+	.saveBtn, .loadBtn {
+		&.active {
+			transition: none;
+			&:before {
+				content: '';
+				left: 0;
+				transform: none;
+				transition: 0;
+			}
+			&:hover {
+				transform: none;
+			}
+			&:hover:before {
+				content: '';
+				transform: none;
+			}
+		}
+	}
+	.leadersPanel {
+		font-size: 20px;
+	}
+	.leadersTitle {
+		font-size: 30px;
+	}
+	.leadersHeader {
+		font-size: 26px;
+	}
+	.leadersDifficultiesBtns {
+		.leadersDifficulties {
+			font-size: 26px;
+		}
+	}
+	.music, .sound {
+		top: 180px;
+	}
+	.winPopup {
+		padding: 0 20px;
+		font-size: 26px;
+	}
+}
+
+@media (max-width: 850px) {
+	.puzzle {
+		width: 95%;
 	}
 }

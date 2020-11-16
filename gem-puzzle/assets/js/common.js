@@ -1,7 +1,25 @@
 //import {puzzle} from './puzzle.js';
 //document.addEventListener("DOMContentLoaded", )
+let myAudio2 = new Audio;    	
+let	myAudio3 = new Audio;
+let	myAudio4 = new Audio;
+let	myAudio5 = new Audio;
+
+myAudio2.src = "assets/media/bubble.mp3";
+myAudio3.src = "assets/media/music_main.mp3";
+myAudio4.src = "assets/media/music_2.mp3";
+myAudio5.src = "assets/media/music_1.mp3";
+
+
+
+myAudio3.loop = true;
+myAudio4.loop = true;
+myAudio5.loop = true;
+
 
 Puzzle.start()
+
+if (Puzzle.properties.music) myAudio3.play();
 
 function getClickEvents() {
 
@@ -18,9 +36,8 @@ function getClickEvents() {
 		counter = Number(movesDisplay.innerText),
 		difficult = Puzzle.properties.difficult;
 		myAudio1 = new Audio;
-		myAudio2 = new Audio;
-      	myAudio1.src = "assets/media/1.wav";
-      	myAudio2.src = "assets/media/2.wav";
+      	myAudio1.src = "assets/media/3.mp3";
+
 
 
 	function gemsNative() {
@@ -66,6 +83,7 @@ function getClickEvents() {
 
 	//пустая слева
 	function leftClick () {
+		if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 		empty = document.querySelector(".empty");
 		emptyPos = gems.indexOf(empty);
 		if(stopClick) return false;
@@ -88,6 +106,7 @@ function getClickEvents() {
 
 	//пустая справа
 	function rightClick () {
+		if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 		empty = document.querySelector(".empty");
 		emptyPos = gems.indexOf(empty);
 		if(stopClick) return false;
@@ -110,6 +129,7 @@ function getClickEvents() {
 
 	//пустая сверху
 	function topClick () {
+		if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 		empty = document.querySelector(".empty");
 		emptyPos = gems.indexOf(empty);
 		if(stopClick) return false;
@@ -133,6 +153,7 @@ function getClickEvents() {
 
 	//пустая снизу
 	function bottomClick () {
+		if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 		empty = document.querySelector(".empty");
 		emptyPos = gems.indexOf(empty);
 		if(stopClick) return false;
@@ -194,6 +215,7 @@ function getClickEvents() {
 				checkWin();
 				Puzzle.properties.randMoves.push(+this.innerText);
 				Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+				if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 			}
 			else {
 				this.style.position = 'static';
@@ -204,7 +226,6 @@ function getClickEvents() {
 				stopClick = true;
 				captureClick();
 			}
-
 			document.removeEventListener('mousemove', move);
 			document.removeEventListener('mouseup', up);      	
 			}) 
@@ -244,6 +265,7 @@ function getClickEvents() {
 				checkWin();
 				Puzzle.properties.randMoves.push(+this.innerText);
 				Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+				if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 			}
 			else {
 				this.style.position = 'static';
@@ -254,7 +276,6 @@ function getClickEvents() {
 				stopClick = true;
 				captureClick();
 			}
-
 			document.removeEventListener('mousemove', move);
 			document.removeEventListener('mouseup', up);      	
 			}) 
@@ -295,6 +316,7 @@ function getClickEvents() {
 				checkWin();
 				Puzzle.properties.randMoves.push(+this.innerText);
 				Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+				if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 			}
 			else {
 				this.style.position = 'static';
@@ -305,7 +327,6 @@ function getClickEvents() {
 				stopClick = true;
 				captureClick();
 			}
-
 			document.removeEventListener('mousemove', move);
 			document.removeEventListener('mouseup', up);      	
 			}) 
@@ -346,6 +367,7 @@ function getClickEvents() {
 				checkWin();
 				Puzzle.properties.randMoves.push(+this.innerText);
 				Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
+				if (Puzzle.properties.sound) {myAudio1.currentTime = 0; myAudio1.play()};
 			}
 			else {
 				this.style.position = 'static';
@@ -356,160 +378,13 @@ function getClickEvents() {
 				stopClick = true;
 				captureClick();
 			}
-
 			document.removeEventListener('mousemove', move);
 			document.removeEventListener('mouseup', up);      	
 			}) 
 		}
 	}
 
-
-
-
-
-
-//       	else if(this.nextElementSibling === empty
-// 		&& !Puzzle.properties.animation
-// 		&& Math.ceil((gems.indexOf(empty) + 1)/(difficult)) === Math.ceil((gems.indexOf(this) + 1)/(difficult)))
-// 		{
-// 			this.style.position = 'relative';
-// 			let pointOfClick = event.clientX,
-// 				positionOfStart = this.getBoundingClientRect().left,
-// 				positionOfEnd = positionOfStart,
-// 				width = this.offsetWidth;
-
-// 		document.addEventListener('mousemove',  move = (event) => {
-// 			let newPos = event.clientX - pointOfClick; //меняем местами - меняется сторона, ещё поменять laft/right
-// 			let limit = 100;
-// 	        if (newPos < 0 ) newPos = 0;
-// 	        if (newPos > limit) newPos = limit;
-// 	        positionOfEnd = this.getBoundingClientRect().left;
-// 	        this.style.left = newPos + 'px' //тут меняем что куда надо двигать    
-// 	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
-// 		});
-
-//       	document.addEventListener('mouseup',  up = (event) => {
-// 	      	if (draggable) {
-// 	      		if ((positionOfStart - positionOfEnd) < -0.4*width) {
-// 	      			counter++;
-// 	      			this.style.position = 'static';
-// 	      			this.style.left = 'auto';
-// 					empty.parentNode.insertBefore(empty, this);
-// 					movesDisplay.innerText = counter;
-// 					checkWin();
-// 					Puzzle.properties.randMoves.push(+this.innerText);
-// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
-
-// 	      		}
-// 	      		else {
-// 	      				this.style.position = 'static';
-// 	      				this.style.left = 'auto';
-// 	      		}
-// 	      	}
-//       		document.removeEventListener('mousemove', move);
-//         	document.removeEventListener('mouseup', up);
-//         	empty = document.querySelector(".empty");
-// 			emptyPos = gems.indexOf(empty);
-//       	}) 
-
-// 		}
-
-// 		else if (gems.indexOf(this) + difficult === emptyPos && !Puzzle.properties.animation) {
-
-// 			this.style.position = 'relative';
-// 			let pointOfClick = event.clientY,
-// 				positionOfStart = this.getBoundingClientRect().top,
-// 				positionOfEnd = positionOfStart,
-// 				width = this.offsetWidth;
-
-// 		document.addEventListener('mousemove',  move = (event) => {
-// 			let newPos = event.clientY - pointOfClick; //меняем местами - меняется сторона, ещё поменять laft/right
-// 			let limit = 100;
-// 	        if (newPos < 0 ) newPos = 0;
-// 	        if (newPos > limit) newPos = limit;
-// 	        positionOfEnd = this.getBoundingClientRect().top;
-// 	        this.style.top = newPos + 'px' //тут меняем что куда надо двигать    
-// 	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
-// 		});
-
-//       	document.addEventListener('mouseup',  up = (event) => {
-// 	      	if (draggable) {
-// 	      		console.log(positionOfStart - positionOfEnd);
-// 	      		if ((positionOfStart - positionOfEnd) < -0.4*width) {
-
-// 	      			counter++;
-// 	      			this.style.position = 'static';
-// 	      			this.style.top = 'auto';
-// 					this.parentNode.insertBefore(empty, gems[emptyPos - difficult]);
-// 					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-// 					movesDisplay.innerText = counter;
-// 					checkWin();
-// 					Puzzle.properties.randMoves.push(+this.innerText);
-// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
-// 					draggable = false;
-// 					emptyPos = gems.indexOf(empty);
-// 	      		}
-// 	      		else {
-// 	      			this.style.position = 'static';
-// 	      			this.style.top = 'auto';
-// 	      		}
-// 	      	}
-//       		document.removeEventListener('mousemove', move);
-//         	document.removeEventListener('mouseup', up);
-//         	empty = document.querySelector(".empty");
-// 			emptyPos = gems.indexOf(empty);
-//       	}) 
-
-// 		}
-// 		else if (gems.indexOf(this) - difficult === emptyPos && !Puzzle.properties.animation) {
-
-// 			this.style.position = 'relative';
-// 			let pointOfClick = event.clientY,
-// 				positionOfStart = this.getBoundingClientRect().bottom,
-// 				positionOfEnd = positionOfStart,
-// 				width = this.offsetWidth;
-
-// 		document.addEventListener('mousemove',  move = (event) => {
-// 			let newPos =  pointOfClick - event.clientY; //меняем местами - меняется сторона, ещё поменять laft/right
-// 			let limit = 100;
-// 	        if (newPos < 0 ) newPos = 0;
-// 	        if (newPos > limit) newPos = limit;
-// 	        positionOfEnd = this.getBoundingClientRect().bottom;
-// 	        this.style.bottom = newPos + 'px' //тут меняем что куда надо двигать    
-// 	        if ((positionOfStart - positionOfEnd) !== 0) draggable = true;
-// 		});
-
-//       	document.addEventListener('mouseup',  up = (event) => {
-// 	      	if (draggable) {
-// 	      		console.log(`bottom ${(positionOfStart - positionOfEnd) > 0.4*width}`);
-// 	      		if ((positionOfStart - positionOfEnd) > 0.4*width) {
-
-// 	      			counter++;
-// 	      			this.style.position = 'static';
-// 	      			this.style.bottom = 'auto';
-// 					this.parentNode.insertBefore(empty, gems[emptyPos + difficult]);
-// 					this.parentNode.insertBefore(this, gems[emptyPos + 1]);
-// 					movesDisplay.innerText = counter;
-// 					checkWin();
-// 					Puzzle.properties.randMoves.push(+this.innerText);
-// 					Puzzle.properties.snapShot.push(Array.from(document.querySelectorAll(".gem")).map(e => e.innerHTML).join("+"));
-// 					draggable = false;
-// 					emptyPos = gems.indexOf(empty);
-// 	      		}
-// 	      		else {
-// 	      			this.style.position = 'static';
-// 	      			this.style.bottom = 'auto';
-// 	      		}
-// 	      	}
-//       		document.removeEventListener('mousemove', move);
-//         	document.removeEventListener('mouseup', up);
-//         	empty = document.querySelector(".empty");
-// 			emptyPos = gems.indexOf(empty);
-//       	}) 
-// 		}
-//       })
-// 	}
-// }
+ 	
 
 	//---------------------------- функции клеток ---------------------------
 
@@ -523,10 +398,6 @@ function getClickEvents() {
 		gems[i].addEventListener('click', topClick);
 		gems[i].addEventListener('click', bottomClick);
 	}
-
-
-
-
 
 
 	//-------------------------------- меню -----------------------
@@ -562,12 +433,15 @@ function getClickEvents() {
 					localStorage.setItem(`save-${i}-difficult`, `${Puzzle.properties.difficult}`);
 					localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`);
 					localStorage.setItem(`save-${i}-randMoves`, `${Puzzle.properties.randMoves}`);
-					// localStorage.setItem(`save-${i}-snap`, `${Puzzle.properties.snapShot}`); ???????????
 					localStorage.setItem(`save-${i}-startPos`, `${Puzzle.properties.snapShot[Puzzle.properties.snapShot.length - 1]}`);
 					localStorage.setItem(`save-${i}-pictures`, `${Puzzle.properties.pictures}`);
 					localStorage.setItem(`save-${i}-picturesNumber`, `${window.getComputedStyle(gems[1], null).getPropertyValue("background-image").match(/\d*(?=.jpg)/)}`);
+					localStorage.setItem(`save-r-${i}-snap`,`${localStorage.getItem('save-4-snap')}`);
+					localStorage.setItem(`save-r-${i}-startPos`,`${localStorage.getItem('save-4-startPos')}`);
+					localStorage.setItem(`save-r-${i}-randMoves`,`${localStorage.getItem('save-4-randMoves')}`);
 				})
 		}
+
 
 		//-----логика загрузки
 
@@ -578,6 +452,30 @@ function getClickEvents() {
 				}	
 			})
 		}
+
+		//----кнопка растарт------------
+
+
+		localStorage.setItem(`save-4-date`, `now`);
+		localStorage.setItem(`save-4-moves`, `0`);
+		localStorage.setItem(`save-4-timer`, `0`);
+		localStorage.setItem(`save-4-difficult`, `${Puzzle.properties.difficult}`);
+		localStorage.setItem(`save-4-pictures`, `${Puzzle.properties.pictures}`);
+		Puzzle.properties.restartSlot !== false ? localStorage.setItem(`save-4-snap`, `${localStorage.getItem(`save-r-${Puzzle.properties.restartSlot}-snap`)}`) : localStorage.setItem(`save-4-snap`, `${Puzzle.properties.snapShot}`);
+		Puzzle.properties.restartSlot !== false ? localStorage.setItem(`save-4-randMoves`, `${localStorage.getItem(`save-r-${Puzzle.properties.restartSlot}-randMoves`)}`) : localStorage.setItem(`save-4-randMoves`, `${Puzzle.properties.randMoves}`);
+		Puzzle.properties.restartSlot !== false ? localStorage.setItem(`save-4-startPos`, `${localStorage.getItem(`save-r-${Puzzle.properties.restartSlot}-startPos`)}`)  : localStorage.setItem(`save-4-startPos`, `${Puzzle.properties.snapShot[Puzzle.properties.snapShot.length - 1]}`);
+		
+
+
+		 document.querySelector(".restart").addEventListener('click', function(){
+		 	localStorage.setItem(`save-4-picturesNumber`, `${window.getComputedStyle(gems[1], null).getPropertyValue("background-image").match(/\d*(?=.jpg)/)}`);
+			Puzzle.load(4, true)
+		 });
+
+
+		 //---кнопки звука ----
+
+
 
 		// раскрытие кнопок сохранения/хагрузки
 	document.querySelector(".saveBtn").addEventListener('click', function(){
@@ -695,6 +593,14 @@ function getClickEvents() {
 
 		}
 
+		window.addEventListener('resize', function(){
+			if (window.screen.width < 850) {
+				 document.getElementById("viewport").setAttribute("content", "width=830");
+
+			} else  {
+				document.getElementById("viewport").setAttribute("content", "width=device-width, initial-scale=1.0");
+			}
+		})
 }
 
 

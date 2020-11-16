@@ -23,6 +23,8 @@ const Puzzle = {
     loadSlot2: null,
     loadSlot3: null,
     loadBtn: null,
+    sound: null,
+    music: null,
     gems: []
   },
 
@@ -42,7 +44,11 @@ const Puzzle = {
     keys: [],
     turn: 0,
     animation: false,
+    restartSlot: false,
     pictures: 1,
+    sound: false,
+    music: false,
+    musicChange: false,
     reset: false
   },
 
@@ -50,6 +56,8 @@ const Puzzle = {
   		 this.elements.title = document.createElement("div");
   		 this.elements.menu = document.createElement("div");
   		 this.elements.sizes = document.createElement("div");
+  		 this.elements.sound = document.createElement("div");
+  		 this.elements.music = document.createElement("div");
   		 
   		 this.elements.savesMainMenu = document.createElement("div");
   		 this.elements.title.classList.add("title");
@@ -57,6 +65,8 @@ const Puzzle = {
   		 this.elements.menu.classList.add("menu");
   		 this.elements.sizes.classList.add("sizes",  "inactive");
   		 this.elements.savesMainMenu.classList.add("savesMainMenu",  "inactive");
+  		 this.elements.sound.classList.add("sound");
+  		 this.elements.music.classList.add("music");
   		 
   		 this._createLeaders(3);
   		 this.elements.menu.appendChild(this._createMenu());
@@ -66,7 +76,30 @@ const Puzzle = {
   		 document.body.appendChild(this.elements.menu);
   		 document.body.appendChild(this.elements.sizes);
   		 document.body.appendChild(this.elements.savesMainMenu);
+  		 document.body.appendChild(this.elements.sound);
+  		 document.body.appendChild(this.elements.music);
   		 // document.body.appendChild(this.elements.leadersPanel);
+  		 this.elements.sound.addEventListener('click', function(){
+  		 	if (!Puzzle.properties.sound) {
+  		 		myAudio2.play();
+  		 	};
+		  	this.classList.toggle("active");
+		  	Puzzle.properties.sound = !Puzzle.properties.sound;
+		  });
+  		 if (this.properties.sound) this.elements.sound.classList.add("active");
+  		 if (this.properties.music) this.elements.music.classList.add("active");
+		this.elements.music.addEventListener('click', function(){
+			if (Puzzle.properties.musicChange) {
+				if (myAudio4.paused) {myAudio4.currentTime = 0; myAudio4.play()}
+					else  myAudio4.pause();
+			} else {
+				if (myAudio3.paused) {myAudio3.currentTime = 0; myAudio3.play()}
+					else  myAudio3.pause();
+			}
+			this.classList.toggle("active");
+			Puzzle.properties.music = !Puzzle.properties.music;
+		  });
+			if (window.screen.width < 850) document.getElementById("viewport").setAttribute("content", "width=830");
   	},
 
   	reset(workingTimer) {
@@ -87,6 +120,12 @@ const Puzzle = {
   		this.properties.turn = 0;
   		this.properties.animation = false;
   		this.properties.pictures = 1;
+  		this.properties.restartSlot = false;
+  		this.properties.musicChange = false;
+  		myAudio4.pause();
+		myAudio4.currentTime = 0;
+
+  		if (this.properties.music) {myAudio3.play()};
  		if (workingTimer) this.properties.reset = true;
 
   	},
@@ -111,12 +150,15 @@ const Puzzle = {
 			this.properties.time = +localStorage.getItem(`save-${i}-timer`);
 			this.properties.startArr = localStorage.getItem(`save-${i}-startPos`).split("+").map(Number);
 			this.properties.pictures = +localStorage.getItem(`save-${i}-pictures`);
+			if (i !== 4) this.properties.restartSlot = i;
 
-
+			document.body.appendChild(this.elements.sound);
+  		 	document.body.appendChild(this.elements.music);
 			this.init(Math.pow(this.properties.difficult, 2), true, i)
 
 		}, 500)
   	},
+
 
 	init(num, loaded, i) {
 		if (!loaded) {this.properties.qty = num*10}; //решил, что столько рандомных перемещений достаточно 
@@ -137,12 +179,14 @@ const Puzzle = {
 		this.elements.loadSlot2 = document.createElement("button")
 		this.elements.loadSlot3 = document.createElement("button")
 		this.elements.controlPanel = document.createElement("div");
-		this.elements.leadersPanel = document.createElement("div");
+		//this.elements.leadersPanel = document.createElement("div");
+		this.elements.restart = document.createElement("button");
 		
 
   		this.elements.solutionBtn.innerText = "solution";
   		this.elements.leadersBtn.innerText = "leaders";
   		this.elements.backToMenu.innerText = "to menu";
+  		this.elements.restart.innerText = "restart";
   		this.elements.saveBtn.innerText = "save";
   		this.elements.saveSlot1.innerText = localStorage.getItem('save-0-date') ? localStorage.getItem('save-0-date') :	"slot 1";
   		this.elements.saveSlot2.innerText = localStorage.getItem('save-1-date') ? localStorage.getItem('save-1-date') :	"slot 2";
@@ -162,6 +206,7 @@ const Puzzle = {
   		this.elements.loadSlot1.classList.add("loadSlot");
   		this.elements.loadSlot2.classList.add("loadSlot");
   		this.elements.loadSlot3.classList.add("loadSlot");
+  		this.elements.restart.classList.add("restart");
 
 		this.elements.puzzle.classList.add("puzzle");
 		this.elements.moves.classList.add("moves");
@@ -183,6 +228,7 @@ const Puzzle = {
 		this.elements.controlPanel.appendChild(this.elements.loadSlot2);
 		this.elements.controlPanel.appendChild(this.elements.loadSlot3);
 		this.elements.controlPanel.appendChild(this.elements.leadersBtn);
+		this.elements.controlPanel.appendChild(this.elements.restart);
 		this.elements.controlPanel.appendChild(this.elements.solutionBtn);
 
 		this.elements.gems = this.elements.puzzle.querySelectorAll(".gem");
@@ -190,8 +236,8 @@ const Puzzle = {
 		document.body.appendChild(this.elements.puzzle);
 		document.body.appendChild(this.elements.controlPanel);
 		if (!loaded) {this.elements.moves.textContent = "0"
-		} else {this.elements.moves.textContent = localStorage.getItem('save-0-moves')};
-		this._createLeaders(3);
+		} else {this.elements.moves.textContent = localStorage.getItem(`save-${i}-moves`)};
+		if (loaded) this._createLeaders(3);
 		this._createPopup();
 		this._puzzleSize();
 		this._showTime();
@@ -201,8 +247,16 @@ const Puzzle = {
 		if (this.properties.pictures === 1 && !loaded) {this._createPictureTiles()};
 		if (loaded && this.properties.pictures === 1) {this._createPictureTiles(localStorage.getItem(`save-${i}-picturesNumber`))};
 		if (loaded && this.properties.pictures === 0) {this._createPictureTiles(null)};
-
+		myAudio3.pause();
+		myAudio3.currentTime = 0;
+		if (this.properties.music) {myAudio4.currentTime = 0; myAudio4.play()};
+		this.properties.musicChange = true;
 		document.querySelector(".solutionBtn").addEventListener('click', function () {
+			this.disabled = true;
+			this.classList.add("disabled");
+			document.querySelector(".restart").disabled = true;
+			document.querySelector(".restart").classList.add("disabled");
+			document.querySelector(".puzzle").classList.add("disabled");
 			Puzzle.properties.solution = true;
 			Puzzle._findOptimal();
 			setTimeout(()=>{
@@ -210,7 +264,7 @@ const Puzzle = {
 		 		Puzzle.properties.turn = Puzzle.properties.randMoves.length - 1;
 				Puzzle._showSolution ()
 			}, 1000)	
-		})
+		});
   },
 
 
@@ -258,8 +312,15 @@ const Puzzle = {
 		  		document.querySelector(".leadersPanel").classList.remove("inactive");
 		  		}) 		
 		  	}
-		 })
-	  	return fragment
+		  	menuElement.addEventListener('mouseover', function() {
+		  		if(Puzzle.properties.sound) {
+		  			myAudio2.currentTime = 0;
+					myAudio2.play();
+				}
+			})
+		 }
+		 )
+	  	return fragment;
   },
 
     _createSizes() {
@@ -279,7 +340,7 @@ const Puzzle = {
 		  				setTimeout(() => {
 		  					while (document.body.firstChild) {document.body.removeChild(document.body.firstChild)};
 							document.body.style.transform = "scale(1)";
-							Puzzle.reset()
+							Puzzle.reset();
 							Puzzle.start();
 						}, 500);
 		  	  		} else {
@@ -301,7 +362,12 @@ const Puzzle = {
 		  	this.properties.size.indexOf(item) === 5 ? menuElement.addEventListener('click', ()=> {this.properties.difficult = 8 }):
 		  	this.properties.size.indexOf(item) === 6 ? menuElement.addEventListener('click', ()=> {this.properties.pictures === 1 ? this.properties.pictures = 0 : this.properties.pictures = 1 }):
 		  	menuElement.style.color = "#d66e6e";
-		  	
+		  	menuElement.addEventListener('mouseover', function() {
+		  		if(Puzzle.properties.sound) {
+		  			myAudio2.currentTime = 0;
+					myAudio2.play();
+					}
+				})
 		  	})
 	  	return fragment
   },
@@ -322,6 +388,12 @@ const Puzzle = {
 			  		}
 
 			  	})
+			  	menuElement.addEventListener('mouseover', function() {
+		  		if(Puzzle.properties.sound) {
+		  			myAudio2.currentTime = 0;
+					myAudio2.play();
+					}
+				})
   		}
   		const backBtn = document.createElement("div");
 	  		backBtn.textContent = "back to menu";
