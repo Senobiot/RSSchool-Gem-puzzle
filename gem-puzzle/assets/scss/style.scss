@@ -9,6 +9,7 @@ body {
 	text-transform: uppercase;
 	height: 100%;
 	transition: all 0.4s;
+	overflow: hidden;
 	&.win {
 		overflow: hidden;
 		&:before {
@@ -16,8 +17,8 @@ body {
 			top: -20px;
 			left: -15px;
 			position: fixed;
-			width: 105%;
-			height: 105%;
+			width: calc(100% + 15px);
+			height: calc(100% + 20px);
 			z-index: 10; //50 у лидеров
 			background: linear-gradient(45deg, rgba(28,94,125, 1) 33%, rgba(28,94,125, 0.9) 66%, #8AA9D6);
 		}
@@ -25,10 +26,11 @@ body {
 	&.gradient {
 		&:after {
 			content: '';
-			top: 0;
+			top: -20px;
+			left: -15px;
 			position: fixed;
-			width: 100%;
-			height: 100%;
+			width: calc(100% + 15px);
+			height: calc(100% + 20px);
 			z-index: 5; //50 у лидеров
 			background: radial-gradient(circle, rgba(0,146,255,0.1) 19%, rgba(28,94,125, 0.9) 70%);
 		}

@@ -676,8 +676,6 @@ const Puzzle = {
 	 			 i--;
 	 		}
 	 		if (this.properties.doubles) {
-	 			console.log(`start ${start}`)
-	 			console.log(`end ${end}`)
  		 		this.properties.finalSnapshot = this.properties.snapShot.slice(0, start + 1)
  				this.properties.snapShot = this.properties.finalSnapshot.concat(this.properties.snapShot.slice(end + 1))
 
@@ -694,73 +692,10 @@ const Puzzle = {
 	 	//тут просто читаем с конца randMoves и эумлируем клик по нужной кнопке
 		setTimeout(() => {
 			if (!this.properties.animation) {
-				console.log(`turn ${this.properties.turn}`)
-				console.log(`curr moves ${this.properties.randMoves[this.properties.turn] - 1}`)
-				
 				this.elements.keys[this.properties.randMoves[this.properties.turn] - 1].click()
-				this.properties.turn--;
-					if (this.properties.turn >= 0) {this._showSolution()}}
-						else {this._showSolution()}
+				this.properties.turn -= 1;
+				if (this.properties.turn >= 0) {this._showSolution()}}
+			else {this._showSolution()}
 		}, 500)
 	}
 }
-
-//module.exports = {Puzzle}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 	_getRand (num) {
-	// 	if (this.properties.arrRandomNum.length < num) {
-	// 		let number = this._getRandomIntInclusive(1, num);
-	// 		if (this.properties.arrRandomNum.includes(number)) {
-	// 			this._getRand(num)
-	// 		} else {
-	// 			this.properties.arrRandomNum.push(number);
-	// 			this._getRand(num)}
-	// 	} else { this._solutionCheck(num) }
-	// },
-
-	// _solutionCheck (num) {
-		//тут проверка на решаемость, но она работает только для 4*4
-	// 	let checkNum = 0,
-	// 	array = this.properties.arrRandomNum;
-	// 	for (let i = 0; i < array.length; i++) {
-	// 		if (array[i] !== array.length) {
-	// 			for (let j = i; j < array.length; j++) {
-	// 		 		if (array[j+1] < array[i] ) checkNum++;
-	// 			 }
-	// 		} 
-	// 	}
-	// 	let empty = array.indexOf(array.length);
-	// 	let emptyOrder = Math.ceil((empty + 1) / Math.sqrt(array.length))
-	// 	checkNum += emptyOrder;
-	// 	if (checkNum % 2 === 0) {console.log("ok"); console.log(checkNum)}
-	// 	// if (checkNum % 2 === 0 && array.length % 2 === 0) {console.log("ok"); console.log(checkNum)}
-	// 	// else if (checkNum % 2 !== 0 && array.length % 2 !== 0) {console.log("ok"); console.log(checkNum)}
-	// 	else {
-	// 		this.properties.arrRandomNum = [];
-	// 		this._getRand(num);
-	// 	}
-	// },
